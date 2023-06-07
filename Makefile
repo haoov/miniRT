@@ -1,7 +1,7 @@
 #*********PROJECT**********#
 
 PROJDIR	=	$(realpath $(CURDIR))
-NAME	=	miniRT
+TARGET	=	miniRT
 LIBDIR	=	$(PROJDIR)/lib
 SRCDIR	=	$(PROJDIR)/srcs
 HDDIR	=	$(PROJDIR)/inc
@@ -12,16 +12,19 @@ DEPDIR	=	$(PROJDIR)/deps
 
 LIBFT	=	$(LIBDIR)/libft/libft.a
 LIBMLX	=	$(LIBDIR)/minilibx/libmlx.a
-SRCS	=	$(SRCDIR)/draw_circle.c
-HD		=	$(HDDIR)/miniRT.h
+SRCS	=	$(SRCDIR)/main.c\
+			$(SRCDIR)/mlx_app.c\
+			$(SRCDIR)/app_key_action.c\
+			$(SRCDIR)/mlx_image.c
+HD		=	$(HDDIR)/miniRT.h\
+			$(HDDIR)/mlx_app.h
 OBJS	=	$(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(SRCS:.c=.o))
 DEPS	=	$(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(SRCS:.c=.d))
 
 #*********COMPILER*********#
 
 CC		=	cc
-CFLAGS	=	-Wall -Wextra -Werror
-DEBUG	=	-g -fsanitize=address
+CFLAGS	=	-Wall -Wextra -Werror -g -fsanitize=address
 HDINC	=	-I $(HDDIR) -I $(LIBDIR)/libft/inc -I $(LIBDIR)/minilibx
 LIBINC	=	-L $(LIBDIR)/minilibx -lm -lmlx -lXext -lX11
 
@@ -33,14 +36,9 @@ NC		=	\e[0m
 
 #*********RULES************#
 
-all : $(NAME)
+all : $(TARGET)
 
-debug : $(NAME)
-	@printf "Linking $(BLUE)$< $(NC)with debug flags\n"
-	@$(CC) $(CFLAGS) $(DEBUG) $(OBJS) $(LIBFT) -o $(NAME) $(LIBINC)
-	@printf "$(GREEN)Done\n$(NC)"
-
-$(NAME) : $(LIBFT) $(OBJS)
+$(TARGET) : $(LIBFT) $(OBJS)
 	@printf "$(GREEN)Build complete\n$(NC)"
 	@printf "Linking $(BLUE)$@\n$(NC)"
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $@ $(LIBINC)
@@ -72,7 +70,7 @@ clean :
 fclean : clean
 	@printf "Cleaning target files...\n"
 	@make -s fclean -C $(LIBDIR)/libft/
-	@rm -f $(NAME)
+	@rm -f $(TARGET)
 	@printf "$(GREEN)Done\n$(NC)"
 
 re : fclean all
