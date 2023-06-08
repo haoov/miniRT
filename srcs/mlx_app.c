@@ -1,6 +1,10 @@
 #include "mlx_app.h"
 #include "miniRT.h"
 
+//DEBUG
+#include <stdio.h>
+void	print_vector(t_vec vec);
+
 void	app_loop(t_app *app);
 void	app_event(t_app *app);
 
@@ -22,15 +26,22 @@ int	app_init(t_app *app)
 		img_destroy(&app->img);
 		return (FAILURE);
 	}
-	for (int x = 0; x < 1280; ++x)
-	{
-		for (int y = 0; y < 720; ++y)
-		{
-			double red = (double) (x / 1280.0) * 255.0;
-			double green = (double) (y / 720.0) * 255.0;
-			img_set_pixel(&app->img, x, y, img_convert_color(red, green, 0.0));
-		}
-	}
+
+	//Test cam
+	cam_init(&app->cam);
+	cam_set_pos(&app->cam, vec_create(0.0, 0.0, 0.0));
+	cam_set_look_at(&app->cam, vec_create(0.0, 2.0, 0.0));
+	cam_set_up(&app->cam, vec_create(0.0, 0.0, 1.0));
+	cam_geometry(&app->cam);
+
+	//Display test
+	printf("Screen center:\n");
+	print_vector(app->cam.scr.c);
+	printf("\nScreen U vector:\n");
+	print_vector(app->cam.scr.u);
+	printf("\nScreen V vector:\n");
+	print_vector(app->cam.scr.v);
+
 	return (SUCCESS);
 }
 
@@ -40,6 +51,7 @@ int	app_execute(t_app *app)
 	{
 		return (FAILURE);
 	}
+	scene_render(&app->img);
 	img_display(app->win_id, &app->img, 0, 0);
 	app_event(app);
 	app_loop(app);
@@ -65,4 +77,12 @@ int	app_exit(t_app *app)
 	mlx_destroy_window(app->dsp_id, app->win_id);
 	mlx_loop_end(app->dsp_id);
 	return (SUCCESS);
+}
+
+//DEBUG FCT
+void	print_vector(t_vec vec)
+{
+	printf("x = %f\n", vec.x);
+	printf("y = %f\n", vec.y);
+	printf("z = %f\n", vec.z);
 }

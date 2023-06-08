@@ -1,5 +1,5 @@
 #ifndef MLX_IMAGE_H
-#define MLX_IMAGE_H
+# define MLX_IMAGE_H
 
 # include "libft.h"
 # include <inttypes.h>

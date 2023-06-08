@@ -15,9 +15,18 @@ LIBMLX	=	$(LIBDIR)/minilibx/libmlx.a
 SRCS	=	$(SRCDIR)/main.c\
 			$(SRCDIR)/mlx_app.c\
 			$(SRCDIR)/app_key_action.c\
-			$(SRCDIR)/mlx_image.c
+			$(SRCDIR)/mlx_image.c\
+			$(SRCDIR)/scene.c\
+			$(SRCDIR)/ray.c\
+			$(SRCDIR)/camera.c\
+			$(SRCDIR)/vector.c\
+			$(SRCDIR)/object.c\
+			$(SRCDIR)/sphere.c
 HD		=	$(HDDIR)/miniRT.h\
-			$(HDDIR)/mlx_app.h
+			$(HDDIR)/mlx_app.h\
+			$(HDINC)/scene.h\
+			$(HDINC)/ray.h\
+			$(HDINC)/vector.h
 OBJS	=	$(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(SRCS:.c=.o))
 DEPS	=	$(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(SRCS:.c=.d))
 

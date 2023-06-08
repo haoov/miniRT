@@ -19,15 +19,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9afa44ad-cbaf-401c-a776-b111aa5e2459" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inc/miniRT.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/miniRT.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inc/mlx_app.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/mlx_app.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inc/mlx_image.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/mlx_image.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/minilibx/Makefile.mk" beforeDir="false" afterPath="$PROJECT_DIR$/lib/minilibx/Makefile.mk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/minilibx/man/man1/mlx_loop.1" beforeDir="false" afterPath="$PROJECT_DIR$/lib/minilibx/man/man1/mlx_loop.1" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/minilibx/man/man1/mlx_new_image.1" beforeDir="false" afterPath="$PROJECT_DIR$/lib/minilibx/man/man1/mlx_new_image.1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/minilibx/man/man1/mlx_new_window.1" beforeDir="false" afterPath="$PROJECT_DIR$/lib/minilibx/man/man1/mlx_new_window.1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/minilibx/man/man3/mlx_loop.3" beforeDir="false" afterPath="$PROJECT_DIR$/lib/minilibx/man/man3/mlx_loop.3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/minilibx/man/man3/mlx_new_image.3" beforeDir="false" afterPath="$PROJECT_DIR$/lib/minilibx/man/man3/mlx_new_image.3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/minilibx/man/man3/mlx_new_window.3" beforeDir="false" afterPath="$PROJECT_DIR$/lib/minilibx/man/man3/mlx_new_window.3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/minilibx/test/Makefile.mk" beforeDir="false" afterPath="$PROJECT_DIR$/lib/minilibx/test/Makefile.mk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/srcs/draw_circle.c" beforeDir="false" afterPath="$PROJECT_DIR$/srcs/main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/srcs/mlx_app.c" beforeDir="false" afterPath="$PROJECT_DIR$/srcs/mlx_app.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,6 +85,9 @@
     <option name="minorVersion" value="1.3" />
   </component>
   <component name="ProjectId" id="2QptTugpVhAM7Fab4Ba8XvMGIpV" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -109,6 +116,11 @@
     </key>
   </component>
   <component name="RunManager" selected="Makefile Application.all">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="all" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="miniRT" TARGET_NAME="all" CONFIG_NAME="all" version="1" RUN_PATH="miniRT">
       <method v="2">
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
@@ -153,7 +165,7 @@
       <workItem from="1686062362482" duration="531000" />
       <workItem from="1686062904583" duration="5751000" />
       <workItem from="1686120281559" duration="22449000" />
-      <workItem from="1686149923086" duration="7001000" />
+      <workItem from="1686149923086" duration="24359000" />
     </task>
     <servers />
   </component>
@@ -163,10 +175,15 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+        <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/srcs/main.c</url>
-          <line>9</line>
-          <option name="timeStamp" value="8" />
+          <line>5</line>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/srcs/mlx_app.c</url>
+          <line>12</line>
+          <option name="timeStamp" value="18" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
