@@ -1,6 +1,8 @@
 #include "camera.h"
 #include "ray.h"
 
+#include <stdio.h>
+
 void	cam_init(t_cam *cam)
 {
 	cam->pos = vec_create(0.0, 0.0, -10.0);

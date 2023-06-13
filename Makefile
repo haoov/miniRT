@@ -33,7 +33,7 @@ DEPS	=	$(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(SRCS:.c=.d))
 #*********COMPILER*********#
 
 CC		=	cc
-CFLAGS	=	-Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS	=	-Wall -Wextra -Werror -g -fsanitize=address -Ofast
 HDINC	=	-I $(HDDIR) -I $(LIBDIR)/libft/inc -I $(LIBDIR)/minilibx
 LIBINC	=	-L $(LIBDIR)/minilibx -lm -lmlx -lXext -lX11
 

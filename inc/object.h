@@ -23,4 +23,6 @@ typedef struct s_obj
 	t_obj_type	type;
 }t_obj;
 
+bool	sphere_intersect(t_ray ray, t_vec *p, t_vec *norm, t_vec *color);
+
 #endif //OBJECT_H

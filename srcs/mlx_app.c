@@ -26,22 +26,6 @@ int	app_init(t_app *app)
 		img_destroy(&app->img);
 		return (FAILURE);
 	}
-
-	//Test cam
-	cam_init(&app->cam);
-	cam_set_pos(&app->cam, vec_create(0.0, 0.0, 0.0));
-	cam_set_look_at(&app->cam, vec_create(0.0, 2.0, 0.0));
-	cam_set_up(&app->cam, vec_create(0.0, 0.0, 1.0));
-	cam_geometry(&app->cam);
-
-	//Display test
-	printf("Screen center:\n");
-	print_vector(app->cam.scr.c);
-	printf("\nScreen U vector:\n");
-	print_vector(app->cam.scr.u);
-	printf("\nScreen V vector:\n");
-	print_vector(app->cam.scr.v);
-
 	return (SUCCESS);
 }
 
@@ -51,7 +35,7 @@ int	app_execute(t_app *app)
 	{
 		return (FAILURE);
 	}
-	scene_render(&app->img);
+	scene_render(&app->scene, &app->img);
 	img_display(app->win_id, &app->img, 0, 0);
 	app_event(app);
 	app_loop(app);

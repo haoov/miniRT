@@ -11,8 +11,8 @@ typedef struct s_app
 {
 	void	*dsp_id;
 	void	*win_id;
+    t_scene scene;
 	t_img	img;
-	t_cam	cam;
 }t_app;
 
 int	app_exit(t_app *app);
