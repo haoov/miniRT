@@ -21,6 +21,7 @@ typedef struct s_obj
 {
 	t_vec		color;
 	t_obj_type	type;
+	bool		(*intfct)(t_ray, t_vec *, t_vec *, t_vec *);
 }t_obj;
 
 bool	sphere_intersect(t_ray ray, t_vec *p, t_vec *norm, t_vec *color);

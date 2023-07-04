@@ -21,7 +21,9 @@ SRCS	=	$(SRCDIR)/main.c\
 			$(SRCDIR)/camera.c\
 			$(SRCDIR)/vector.c\
 			$(SRCDIR)/object.c\
-			$(SRCDIR)/sphere.c
+			$(SRCDIR)/sphere.c\
+			$(SRCDIR)/pointlight.c\
+			$(SRCDIR)/clean.c
 HD		=	$(HDDIR)/miniRT.h\
 			$(HDDIR)/mlx_app.h\
 			$(HDINC)/scene.h\
@@ -35,7 +37,7 @@ DEPS	=	$(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(SRCS:.c=.d))
 CC		=	cc
 CFLAGS	=	-Wall -Wextra -Werror -g -fsanitize=address -Ofast
 HDINC	=	-I $(HDDIR) -I $(LIBDIR)/libft/inc -I $(LIBDIR)/mlx
-LIBINC	=	-L $(LIBDIR)/minilibx -lm -lmlx -lXext -lX11
+LIBINC	=	-L $(LIBDIR)/mlx -lm -lmlx -lXext -lX11
 
 #*********COLORS***********#
 

@@ -7,6 +7,9 @@ int	main(int argc, char **argv)
 
 	(void)argc;
 	(void)argv;
-	app_execute(&app);
+	if (app_execute(&app) == FAILURE)
+	{
+		return (FAILURE);
+	}
 	return (SUCCESS);
 }

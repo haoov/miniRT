@@ -1,7 +1,5 @@
 #include "object.h"
 
-#include <stdio.h>
-
 bool	sphere_intersect(t_ray ray, t_vec *p, t_vec *norm, t_vec *color)
 {
 	t_vec	v;
@@ -12,7 +10,6 @@ bool	sphere_intersect(t_ray ray, t_vec *p, t_vec *norm, t_vec *color)
     double  t1;
     double  t2;
 
-	(void)p;
 	(void)norm;
 	(void)color;
 	v = ray.ab;
@@ -39,6 +36,10 @@ bool	sphere_intersect(t_ray ray, t_vec *p, t_vec *norm, t_vec *color)
             {
                 *p = vec_add(ray.pa, vec_mult(v, t2));
             }
+
+			//Compute the local normal
+			*norm = *p;
+			vec_normalize(norm);
         }
 		return (true);
 	}
