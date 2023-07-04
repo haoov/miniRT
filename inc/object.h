@@ -3,6 +3,7 @@
 
 # include "vector.h"
 # include "ray.h"
+# include "gtfm.h"
 # include <stdbool.h>
 
 # define SPHERE	1
@@ -21,9 +22,11 @@ typedef struct s_obj
 {
 	t_vec		color;
 	t_obj_type	type;
-	bool		(*intfct)(t_ray, t_vec *, t_vec *, t_vec *);
+	bool		(*intfct)(t_ray, t_vec *, t_vec *, t_vec *, struct s_obj obj);
+	t_gtfm		gtfm;
 }t_obj;
 
-bool	sphere_intersect(t_ray ray, t_vec *p, t_vec *norm, t_vec *color);
+bool	sphere_intersect(t_ray ray, t_vec *p, t_vec *norm, t_vec *color, t_obj obj);
+void	init_gtfm(t_gtfm *gtfm);
 
 #endif //OBJECT_H

@@ -1,5 +1,14 @@
 #include "vector.h"
 
+
+#include <stdio.h>
+void	vec_print(t_vec vec)
+{
+	printf("x = %f\n", vec.x);
+	printf("y = %f\n", vec.y);
+	printf("z = %f\n\n", vec.z);
+}
+
 t_vec	vec_create(double x, double y, double z)
 {
 	t_vec	vector;
@@ -8,6 +17,17 @@ t_vec	vec_create(double x, double y, double z)
 	vector.y = y;
 	vector.z = z;
 	return (vector);
+}
+
+t_vec4	vec4_create(double x, double y, double z, double w)
+{
+	t_vec4	vec4;
+
+	vec4.x = x;
+	vec4.y = y;
+	vec4.z = z;
+	vec4.w = w;
+	return (vec4);
 }
 
 double	vec_norm(t_vec vec)

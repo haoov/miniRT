@@ -20,9 +20,11 @@ SRCS	=	$(SRCDIR)/main.c\
 			$(SRCDIR)/ray.c\
 			$(SRCDIR)/camera.c\
 			$(SRCDIR)/vector.c\
+			$(SRCDIR)/matrix.c\
 			$(SRCDIR)/object.c\
 			$(SRCDIR)/sphere.c\
 			$(SRCDIR)/pointlight.c\
+			$(SRCDIR)/gtfm.c\
 			$(SRCDIR)/clean.c
 HD		=	$(HDDIR)/miniRT.h\
 			$(HDDIR)/mlx_app.h\

@@ -1,6 +1,8 @@
 #include "light.h"
 #include <math.h>
 
+#include <stdio.h>
+
 bool	point_illum(t_vec *point, t_vec *norm, t_vec *color, double *intensity, t_light light)
 {
 	t_vec	lightdir; //Vector from the point to the light

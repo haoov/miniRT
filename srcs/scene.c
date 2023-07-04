@@ -22,6 +22,7 @@ int	scene_render(t_scene *scene, t_img *img)
 	{
 		return (FAILURE);
 	}
+	init_gtfm(&scene->obj_lst->obj.gtfm);
 
 	//Create a test light
 	if (add_light(&scene->light_lst, POINT) == NULL)
@@ -66,7 +67,7 @@ int	scene_render(t_scene *scene, t_img *img)
 			while (cur != NULL)
 			{
 				//Test intersection
-				intersect = cur->obj.intfct(cam_ray, &point, &normal, &color);
+				intersect = cur->obj.intfct(cam_ray, &point, &normal, &color, cur->obj);
 
 				if (intersect)
 				{
@@ -144,6 +145,7 @@ t_light_lst	*add_light(t_light_lst **light_lst, int type)
 	{
 		return (NULL);
 	}
+	new->light.intensity = 1.0;
 	new->light.color = vec_create(255.0, 255.0, 255.0);
 	if (type == POINT)
 	{
