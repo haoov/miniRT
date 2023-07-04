@@ -3,6 +3,9 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
+  <component name="CMakePresetLoader"><![CDATA[{
+  "useNewFormat": true
+}]]></component>
   <component name="CMakeRunConfigurationManager">
     <generated>
       <config projectName="miniRT" targetName="debug" />
@@ -19,23 +22,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9afa44ad-cbaf-401c-a776-b111aa5e2459" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inc/mlx_app.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/mlx_app.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inc/object.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/object.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inc/scene.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/scene.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/minilibx/Makefile.mk" beforeDir="false" afterPath="$PROJECT_DIR$/lib/minilibx/Makefile.mk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/minilibx/man/man1/mlx_loop.1" beforeDir="false" afterPath="$PROJECT_DIR$/lib/minilibx/man/man1/mlx_loop.1" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/minilibx/man/man1/mlx_new_image.1" beforeDir="false" afterPath="$PROJECT_DIR$/lib/minilibx/man/man1/mlx_new_image.1" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/minilibx/man/man1/mlx_new_window.1" beforeDir="false" afterPath="$PROJECT_DIR$/lib/minilibx/man/man1/mlx_new_window.1" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/minilibx/man/man3/mlx_loop.3" beforeDir="false" afterPath="$PROJECT_DIR$/lib/minilibx/man/man3/mlx_loop.3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/minilibx/man/man3/mlx_new_image.3" beforeDir="false" afterPath="$PROJECT_DIR$/lib/minilibx/man/man3/mlx_new_image.3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/minilibx/man/man3/mlx_new_window.3" beforeDir="false" afterPath="$PROJECT_DIR$/lib/minilibx/man/man3/mlx_new_window.3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/minilibx/test/Makefile.mk" beforeDir="false" afterPath="$PROJECT_DIR$/lib/minilibx/test/Makefile.mk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/srcs/camera.c" beforeDir="false" afterPath="$PROJECT_DIR$/srcs/camera.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/libft" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libft" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/minilibx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/mlx/configure" beforeDir="false" afterPath="$PROJECT_DIR$/lib/mlx/configure" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/srcs/mlx_app.c" beforeDir="false" afterPath="$PROJECT_DIR$/srcs/mlx_app.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/srcs/scene.c" beforeDir="false" afterPath="$PROJECT_DIR$/srcs/scene.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/srcs/sphere.c" beforeDir="false" afterPath="$PROJECT_DIR$/srcs/sphere.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,23 +89,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/raph/Documents/42/projects/fdf&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "last_opened_file_path": "/mnt/nfs/homes/rsabbah/Documents/42/projects/miniRT",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/srcs" />
@@ -120,6 +114,11 @@
     </key>
   </component>
   <component name="RunManager" selected="Makefile Application.all">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="all" type="CLionNativeAppRunConfigurationType" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="miniRT" TARGET_NAME="all" CONFIG_NAME="all" version="1" RUN_PATH="miniRT">
       <method v="2">
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
@@ -145,11 +144,6 @@
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <list>
       <item itemvalue="Makefile Application.all" />
       <item itemvalue="Makefile Application.debug" />
@@ -171,6 +165,7 @@
       <workItem from="1686120281559" duration="22449000" />
       <workItem from="1686149923086" duration="24359000" />
       <workItem from="1686669849954" duration="5893000" />
+      <workItem from="1688454167585" duration="468000" />
     </task>
     <servers />
   </component>
@@ -187,7 +182,7 @@
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/srcs/mlx_app.c</url>
-          <line>12</line>
+          <line>8</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
       </breakpoints>

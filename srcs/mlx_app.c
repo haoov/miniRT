@@ -1,10 +1,6 @@
 #include "mlx_app.h"
 #include "miniRT.h"
 
-//DEBUG
-#include <stdio.h>
-void	print_vector(t_vec vec);
-
 void	app_loop(t_app *app);
 void	app_event(t_app *app);
 
@@ -64,6 +60,7 @@ int	app_exit(t_app *app)
 }
 
 //DEBUG FCT
+#include <stdio.h>
 void	print_vector(t_vec vec)
 {
 	printf("x = %f\n", vec.x);

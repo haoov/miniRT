@@ -11,7 +11,7 @@ DEPDIR	=	$(PROJDIR)/deps
 #*********FILES************#
 
 LIBFT	=	$(LIBDIR)/libft/libft.a
-LIBMLX	=	$(LIBDIR)/minilibx/libmlx.a
+LIBMLX	=	$(LIBDIR)/mlx/libmlx.a
 SRCS	=	$(SRCDIR)/main.c\
 			$(SRCDIR)/mlx_app.c\
 			$(SRCDIR)/app_key_action.c\
@@ -34,7 +34,7 @@ DEPS	=	$(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(SRCS:.c=.d))
 
 CC		=	cc
 CFLAGS	=	-Wall -Wextra -Werror -g -fsanitize=address -Ofast
-HDINC	=	-I $(HDDIR) -I $(LIBDIR)/libft/inc -I $(LIBDIR)/minilibx
+HDINC	=	-I $(HDDIR) -I $(LIBDIR)/libft/inc -I $(LIBDIR)/mlx
 LIBINC	=	-L $(LIBDIR)/minilibx -lm -lmlx -lXext -lX11
 
 #*********COLORS***********#
