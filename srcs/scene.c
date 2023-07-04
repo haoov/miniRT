@@ -17,12 +17,36 @@ int	scene_render(t_scene *scene, t_img *img)
     cam_set_ratio(&scene->cam, 16.0 / 9.0);
     cam_geometry(&scene->cam);
 
-	//Create a test sphere
+	//Create test sphere
 	if (add_obj(&scene->obj_lst, SPHERE) == NULL)
 	{
 		return (FAILURE);
 	}
-	init_gtfm(&scene->obj_lst->obj.gtfm);
+	if (add_obj(&scene->obj_lst, SPHERE) == NULL)
+	{
+		return (FAILURE);
+	}
+	if (add_obj(&scene->obj_lst, SPHERE) == NULL)
+	{
+		return (FAILURE);
+	}
+
+	//Modify the sphere
+	gtfm_set_transform(vec_create(-1, 0.0, 0.0),
+					   vec_create(0.0, 0.0, 0.0),
+					   vec_create(0.5, 0.5, 0.75),
+					   &scene->obj_lst->obj.gtfm);
+	scene->obj_lst->obj.color = vec_create(64.0, 128.0, 200.0);
+	gtfm_set_transform(vec_create(0.0, 0.0, 0.0),
+					   vec_create(0.0, 0.0, 0.0),
+					   vec_create(0.75, 0.5, 0.5),
+					   &scene->obj_lst->next->obj.gtfm);
+	scene->obj_lst->next->obj.color = vec_create(255.0, 128.0, 0.0);
+	gtfm_set_transform(vec_create(1, 0.0, 0.0),
+					   vec_create(0.0, 0.0, 0.0),
+					   vec_create(0.75, 0.75, 0.75),
+					   &scene->obj_lst->next->next->obj.gtfm);
+	scene->obj_lst->next->next->obj.color = vec_create(255.0, 200.0, 0.0);
 
 	//Create a test light
 	if (add_light(&scene->light_lst, POINT) == NULL)
@@ -95,7 +119,9 @@ int	scene_render(t_scene *scene, t_img *img)
 					}
 					if (illum)
 					{
-						img_set_pixel(img, x, y, img_convert_color(255.0 * intensity, 0.0, 0.0));
+						img_set_pixel(img, x, y, img_convert_color(cur->obj.color.x * intensity,
+																   cur->obj.color.y * intensity,
+																   cur->obj.color.z * intensity));
 					}
 				}
 				cur = cur->next;

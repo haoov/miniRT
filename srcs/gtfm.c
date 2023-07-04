@@ -6,7 +6,7 @@ void	init_gtfm(t_gtfm *gtfm)
 	identity(&gtfm->revtfm_mtx);
 }
 
-void	set_transform(t_vec trans, t_vec rot, t_vec scale, t_gtfm *gtfm)
+void	gtfm_set_transform(t_vec trans, t_vec rot, t_vec scale, t_gtfm *gtfm)
 {
 	//Define a matric for each component
 	t_mtx4	trans_mtx;

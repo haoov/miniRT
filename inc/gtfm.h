@@ -16,5 +16,6 @@ typedef struct s_gtfm
 
 t_ray	gtfm_ray_apply(t_gtfm gtfm,t_ray ray, int tfm);
 t_vec	gtfm_vec_apply(t_gtfm gtfm, t_vec vec, int tfm);
+void	gtfm_set_transform(t_vec trans, t_vec rot, t_vec scale, t_gtfm *gtfm);
 
 #endif

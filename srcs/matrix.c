@@ -308,6 +308,7 @@ bool	invert(t_mtx4 *mtx)
 			}
 
 			row_index = crow + 1;
+			row1_index = ccol;
 			while (row_index < 4)
 			{
 				if (!close_enough(tmp_mtx.val[row_index][ccol], 0.0))
@@ -327,6 +328,7 @@ bool	invert(t_mtx4 *mtx)
 			}
 
 			col_index = ccol + 1;
+			col1_index = crow;
 			while (col_index < 8)
 			{
 				if (!close_enough(tmp_mtx.val[crow][col_index], 0.0))
