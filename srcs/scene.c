@@ -9,7 +9,7 @@ int	scene_render(t_scene *scene, t_img *img)
 {
     //Configure the camera
     cam_init(&scene->cam);
-    cam_set_pos(&scene->cam, vec_create(0.0, -10.0, -1.0));
+    cam_set_pos(&scene->cam, vec_create(0.0, -10.0, -10.0));
     cam_set_look_at(&scene->cam, vec_create(0.0, 0.0, 0.0));
     cam_set_up(&scene->cam, vec_create(0.0, 0.0, 1.0));
     cam_set_size(&scene->cam, 0.25);
@@ -60,12 +60,25 @@ int	scene_render(t_scene *scene, t_img *img)
 					   &obj_lst_at(scene->obj_lst, 3)->obj.gtfm);
 	obj_lst_at(scene->obj_lst, 3)->obj.color = vec_create(128.0, 128.0, 128.0);
 
-	//Create a test light
+	//Create test lights
 	if (add_light(&scene->light_lst, POINT) == NULL)
 	{
 		return (FAILURE);
 	}
 	scene->light_lst->light.pos = vec_create(5.0, -10.0, -5.0);
+	scene->light_lst->light.color = vec_create(0.0, 0.0, 255.0);
+	if (add_light(&scene->light_lst, POINT) == NULL)
+	{
+		return (FAILURE);
+	}
+	light_lst_at(scene->light_lst, 1)->light.pos = vec_create(-5.0, -10.0, -5.0);
+	light_lst_at(scene->light_lst, 1)->light.color = vec_create(255.0, 0.0, 0.0);
+	if (add_light(&scene->light_lst, POINT) == NULL)
+	{
+		return (FAILURE);
+	}
+	light_lst_at(scene->light_lst, 2)->light.pos = vec_create(0.0, -10.0, -5.0);
+	light_lst_at(scene->light_lst, 2)->light.color = vec_create(0.0, 255.0, 0.0);
 
     //Loop over every pixel
     t_ray   	cam_ray;
@@ -167,9 +180,6 @@ int	scene_render(t_scene *scene, t_img *img)
 				//Compute the intensity of illumination
 				double		intensity;
 				t_vec		color;
-				double		red = 0.0;
-				double		green = 0.0;
-				double		blue = 0.0;
 				t_vec		rgb;
 				bool		valid_illum = false;
 				bool		illum_found = false;
@@ -180,14 +190,12 @@ int	scene_render(t_scene *scene, t_img *img)
 				while (cur_light != NULL)
 				{
 					valid_illum = point_illum(&closest_int_point, &closest_normal,
-											  &color, &intensity, cur_light->light);
+											  &color, &intensity, cur_light->light,
+											  scene->obj_lst, closest_obj);
 					if (valid_illum)
 					{
 						illum_found = true;
 						rgb = vec_add(rgb, vec_mult(color, intensity));
-						red += color.x * intensity;
-						green += color.y * intensity;
-						blue += color.z * intensity;
 					}
 					cur_light = cur_light->next;
 				}
@@ -196,43 +204,10 @@ int	scene_render(t_scene *scene, t_img *img)
 					rgb.x *= closest_color.x;
 					rgb.y *= closest_color.y;
 					rgb.z *= closest_color.z;
-					//img_set_pixel(img, x, y, img_convert_color(red, green, blue));
 					img_store_color(img, x, y, rgb);
 				}
 			}
         }
     }
 	return (SUCCESS);
-}
-
-t_light_lst	*add_light(t_light_lst **light_lst, int type)
-{
-	t_light_lst	*new;
-	t_light_lst	*elem;
-
-	new = (t_light_lst *) ft_calloc(1, sizeof (t_light_lst));
-	if (new == NULL)
-	{
-		return (NULL);
-	}
-	new->light.intensity = 1.0;
-	new->light.color = vec_create(255.0, 255.0, 255.0);
-	if (type == POINT)
-	{
-		new->light.illumfct = point_illum;
-	}
-	if (*light_lst == NULL)
-	{
-		*light_lst = new;
-	}
-	else
-	{
-		elem = *light_lst;
-		while (elem->next != NULL)
-		{
-			elem = elem->next;
-		}
-		elem->next = new;
-	}
-	return (*light_lst);
 }
