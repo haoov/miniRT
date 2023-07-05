@@ -69,27 +69,29 @@ int	scene_render(t_scene *scene, t_img *img)
 
     //Loop over every pixel
     t_ray   	cam_ray;
-    t_vec		point;
-    t_vec   	normal;
-    t_vec		color;
+    t_vec		int_point;
+    t_vec   	local_normal;
+    t_vec		local_color;
     double		xfact;
     double		yfact;
     double		xnorm;
     double		ynorm;
-    double		mindist;
-    double		maxdist;
+    double		min_dist;
+    double		max_dist;
     double		dist;
     bool		intersect;
 
     xfact = 1.0 / ((double) img->size_x / 2.0);
     yfact = 1.0 / ((double) img->size_y / 2.0);
-    mindist = 1e6;
-    maxdist = 0.0;
+	max_dist = 0.0;
 
     for (int x = 0; x < img->size_x; ++x)
     {
         for (int y = 0; y < img->size_y; ++y)
         {
+			//Set min dist
+			min_dist = 1e6;
+
             //Normalize x and y coordinates
             xnorm = (float) x * xfact - 1.0;
             ynorm = (float) y * yfact - 1.0;
@@ -98,16 +100,36 @@ int	scene_render(t_scene *scene, t_img *img)
             cam_ray = cam_generate_ray(&scene->cam, (float) xnorm, (float) ynorm);
 
 			//Loop on every object in the scene
-			t_obj_lst	*cur;
-			cur = scene->obj_lst;
-			while (cur != NULL)
+			t_obj_lst	*cur_obj;
+			t_obj_lst	*closest_obj;
+			t_vec		closest_int_point;
+			t_vec		closest_normal;
+			t_vec		closest_color;
+			bool		int_found = false;
+			cur_obj = scene->obj_lst;
+			while (cur_obj != NULL)
 			{
 				//Test intersection
-				intersect = cur->obj.intfct(cam_ray, &point, &normal, &color, cur->obj);
+				intersect = cur_obj->obj.intfct(cam_ray, &int_point, &local_normal, &local_color, cur_obj->obj);
 
 				if (intersect)
 				{
-					//Compute the intensity
+					//Set the flag
+					int_found = true;
+
+					//Compute the distance between the camera and the poi
+					dist = vec_norm(vec_sub(int_point, cam_ray.pa));
+
+					//If this object is closer to the cam than the others
+					if (dist < min_dist)
+					{
+						min_dist = dist;
+						closest_obj = cur_obj;
+						closest_int_point = int_point;
+						closest_normal = local_normal;
+						closest_color = local_color;
+					}
+/*					//Compute the intensity
 					double		intensity;
 					t_vec		lcolor;
 					bool		illum;
@@ -116,27 +138,67 @@ int	scene_render(t_scene *scene, t_img *img)
 					lcur = scene->light_lst;
 					while (lcur != NULL)
 					{
-						illum = lcur->light.illumfct(&point, &normal, &lcolor, &intensity, lcur->light);
+						illum = lcur->light.illumfct(&int_point, &local_normal, &lcolor, &intensity, lcur->light);
 						lcur = lcur->next;
 					}
 
-					dist = vec_norm(vec_sub(point, cam_ray.pa));
-					if (dist > maxdist)
+					dist = vec_norm(vec_sub(int_point, cam_ray.pa));
+					if (dist > max_dist)
 					{
-						maxdist = dist;
+						max_dist = dist;
 					}
-					if (dist < mindist)
+					if (dist < min_dist)
 					{
-						mindist = dist;
+						min_dist = dist;
 					}
 					if (illum)
 					{
-						img_set_pixel(img, x, y, img_convert_color(cur->obj.color.x * intensity,
-																   cur->obj.color.y * intensity,
-																   cur->obj.color.z * intensity));
-					}
+						img_set_pixel(img, x, y, img_convert_color(cur_obj->obj.local_color.x * intensity,
+																   cur_obj->obj.local_color.y * intensity,
+																   cur_obj->obj.local_color.z * intensity));
+					}*/
 				}
-				cur = cur->next;
+				cur_obj = cur_obj->next;
+			}
+
+			//Compute the illumination for the closest object
+			if (int_found)
+			{
+				//Compute the intensity of illumination
+				double		intensity;
+				t_vec		color;
+				double		red = 0.0;
+				double		green = 0.0;
+				double		blue = 0.0;
+				t_vec		rgb;
+				bool		valid_illum = false;
+				bool		illum_found = false;
+				t_light_lst	*cur_light;
+
+				rgb = vec_create(0.0, 0.0, 0.0);
+				cur_light = scene->light_lst;
+				while (cur_light != NULL)
+				{
+					valid_illum = point_illum(&closest_int_point, &closest_normal,
+											  &color, &intensity, cur_light->light);
+					if (valid_illum)
+					{
+						illum_found = true;
+						rgb = vec_add(rgb, vec_mult(color, intensity));
+						red += color.x * intensity;
+						green += color.y * intensity;
+						blue += color.z * intensity;
+					}
+					cur_light = cur_light->next;
+				}
+				if (illum_found)
+				{
+					rgb.x *= closest_color.x;
+					rgb.y *= closest_color.y;
+					rgb.z *= closest_color.z;
+					//img_set_pixel(img, x, y, img_convert_color(red, green, blue));
+					img_store_color(img, x, y, rgb);
+				}
 			}
         }
     }

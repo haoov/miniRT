@@ -3,5 +3,6 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/lib/mlx" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/qbRT" vcs="Git" />
   </component>
 </project>

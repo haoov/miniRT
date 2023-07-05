@@ -11,6 +11,8 @@ bool	point_illum(t_vec *point, t_vec *norm, t_vec *color, double *intensity, t_l
 	lightdir = vec_sub(light.pos, *point);
 	vec_normalize(&lightdir);
 
+	
+
 	//Compute the angle between the normal and the light ray
 	//We assume that the normal is a unit vector
 	angle = acos(vec_dot(*norm, lightdir));
