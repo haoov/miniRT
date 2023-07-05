@@ -7,7 +7,7 @@ bool	plane_intersect(t_ray ray, t_vec *p, t_vec *norm, t_vec *color, t_obj obj)
 	tfm_ray = gtfm_ray_apply(obj.gtfm, ray, REV);
 
 	t_vec	k;
-	k = ray.ab;
+	k = tfm_ray.ab;
 	vec_normalize(&k);
 
 	//check if there is an intersection so if the ray is not parallel to the plane
@@ -27,7 +27,7 @@ bool	plane_intersect(t_ray ray, t_vec *p, t_vec *norm, t_vec *color, t_obj obj)
 			v = tfm_ray.pa.y + k.y * t;
 
 			//If the magnitude of u and v is less than or equal to 1 then we must be in the plane
-			if (fabs(u) < 1.0 && fabs(v) < 1)
+			if (fabs(u) < 1.0 && fabs(v) < 1.0)
 			{
 				//Compute the point of intersection
 				t_vec	poi;

@@ -52,9 +52,12 @@ int	scene_render(t_scene *scene, t_img *img)
 	{
 		return (FAILURE);
 	}
-	init_gtfm(&obj_lst_at(scene->obj_lst, 3)->obj.gtfm);
 
 	//Modify the plane
+	gtfm_set_transform(vec_create(0.0, 0.0, 0.75),
+					   vec_create(0.0, 0.0, 0.0),
+					   vec_create(4.0, 4.0, 1.0),
+					   &obj_lst_at(scene->obj_lst, 3)->obj.gtfm);
 	obj_lst_at(scene->obj_lst, 3)->obj.color = vec_create(128.0, 128.0, 128.0);
 
 	//Create a test light
