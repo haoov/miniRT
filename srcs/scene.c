@@ -32,7 +32,7 @@ int	scene_render(t_scene *scene, t_img *img)
 	}
 
 	//Modify the sphere
-	gtfm_set_transform(vec_create(-1, 0.0, 0.0),
+	gtfm_set_transform(vec_create(-1.5, 0.0, 0.0),
 					   vec_create(0.0, 0.0, 0.0),
 					   vec_create(0.5, 0.5, 0.75),
 					   &scene->obj_lst->obj.gtfm);
@@ -42,7 +42,7 @@ int	scene_render(t_scene *scene, t_img *img)
 					   vec_create(0.75, 0.5, 0.5),
 					   &scene->obj_lst->next->obj.gtfm);
 	scene->obj_lst->next->obj.color = vec_create(255.0, 128.0, 0.0);
-	gtfm_set_transform(vec_create(1, 0.0, 0.0),
+	gtfm_set_transform(vec_create(1.5, 0.0, 0.0),
 					   vec_create(0.0, 0.0, 0.0),
 					   vec_create(0.75, 0.75, 0.75),
 					   &scene->obj_lst->next->next->obj.gtfm);

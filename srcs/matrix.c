@@ -213,9 +213,10 @@ int	max_row(t_mtx8 mtx, int ccol, int crow)
 
 	i = crow;
 	max = mtx.val[crow][ccol];
+	res = 0;
 	while (i < 4)
 	{
-		if (mtx.val[i][ccol] > max)
+		if (mtx.val[i][ccol] >= max)
 		{
 			max = mtx.val[i][ccol];
 			res = i;
@@ -279,7 +280,6 @@ bool	invert(t_mtx4 *mtx)
 	double	celem_val;
 	double	felem_val;
 	int		col_index;
-	int		col1_index;
 	int		diag_index = 0;
 	int		max_index;
 	int 	max_count = 100;
@@ -304,11 +304,11 @@ bool	invert(t_mtx4 *mtx)
 			if (tmp_mtx.val[crow][ccol] != 1)
 			{
 				mult_fact = 1.0 / tmp_mtx.val[crow][ccol];
+				//printf("Mult row %d by %f\n", crow, mult_fact);
 				row_mult(&tmp_mtx, crow, mult_fact);
 			}
 
 			row_index = crow + 1;
-			row1_index = ccol;
 			while (row_index < 4)
 			{
 				if (!close_enough(tmp_mtx.val[row_index][ccol], 0.0))
@@ -321,6 +321,7 @@ bool	invert(t_mtx4 *mtx)
 					if (!close_enough(felem_val, 0.0))
 					{
 						correc_fact = -(celem_val / felem_val);
+						//printf("col : Mult row %d by %f and add it to row %d\n", row1_index, correc_fact, row_index);
 						row_mult_add(&tmp_mtx, row1_index, correc_fact, row_index);
 					}
 				}
@@ -328,19 +329,19 @@ bool	invert(t_mtx4 *mtx)
 			}
 
 			col_index = ccol + 1;
-			col1_index = crow;
-			while (col_index < 8)
+			while (col_index < 4)
 			{
 				if (!close_enough(tmp_mtx.val[crow][col_index], 0.0))
 				{
-					col1_index = ccol;
+					row1_index = col_index;
 
 					celem_val = tmp_mtx.val[crow][col_index];
-					felem_val = tmp_mtx.val[crow][col1_index];
+					felem_val = tmp_mtx.val[row1_index][col_index];
 
 					if (!close_enough(felem_val, 0.0))
 					{
 						correc_fact = -(celem_val / felem_val);
+						//printf("row : Mult row %d by %f and add it to row %d\n", row1_index, correc_fact, crow);
 						row_mult_add(&tmp_mtx, row1_index, correc_fact, crow);
 					}
 				}
@@ -354,6 +355,7 @@ bool	invert(t_mtx4 *mtx)
 			complete = true;
 			*mtx = right;
 		}
+		diag_index = 0;
 		count++;
 	}
 	return (complete);

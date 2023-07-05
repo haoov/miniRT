@@ -1,5 +1,7 @@
 #include "gtfm.h"
 
+#include <stdio.h>
+
 void	init_gtfm(t_gtfm *gtfm)
 {
 	identity(&gtfm->tfm_mtx);
@@ -50,10 +52,10 @@ void	gtfm_set_transform(t_vec trans, t_vec rot, t_vec scale, t_gtfm *gtfm)
 	scale_mtx.val[2][2] = scale.z;
 
 	//Combine to the final foward matrix
-	gtfm->tfm_mtx = mtx_mult(mtx_mult(mtx_mult(mtx_mult(trans_mtx, scale_mtx),
-					rotx_mtx),
-				roty_mtx),
-			rotz_mtx);
+	gtfm->tfm_mtx = mtx_mult(trans_mtx, scale_mtx);
+	gtfm->tfm_mtx = mtx_mult(gtfm->tfm_mtx, rotx_mtx);
+	gtfm->tfm_mtx = mtx_mult(gtfm->tfm_mtx, roty_mtx);
+	gtfm->tfm_mtx = mtx_mult(gtfm->tfm_mtx, rotz_mtx);
 
 	//Compute the revtfm
 	gtfm->revtfm_mtx = gtfm->tfm_mtx;
