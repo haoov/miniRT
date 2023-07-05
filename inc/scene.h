@@ -6,12 +6,6 @@
 # include "object.h"
 # include "light.h"
 
-typedef struct s_obj_lst
-{
-	t_obj				obj;
-	struct s_obj_lst	*next;
-}t_obj_lst;
-
 typedef struct s_scene
 {
     t_cam   	cam;

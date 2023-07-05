@@ -3,14 +3,13 @@
 
 #include <stdio.h>
 
-t_obj_lst	*add_obj(t_obj_lst **obj_lst, int type);
 t_light_lst	*add_light(t_light_lst **light_lst, int type);
 
 int	scene_render(t_scene *scene, t_img *img)
 {
     //Configure the camera
     cam_init(&scene->cam);
-    cam_set_pos(&scene->cam, vec_create(0.0, -10.0, 0.0));
+    cam_set_pos(&scene->cam, vec_create(0.0, -10.0, -1.0));
     cam_set_look_at(&scene->cam, vec_create(0.0, 0.0, 0.0));
     cam_set_up(&scene->cam, vec_create(0.0, 0.0, 1.0));
     cam_set_size(&scene->cam, 0.25);
@@ -40,13 +39,23 @@ int	scene_render(t_scene *scene, t_img *img)
 	gtfm_set_transform(vec_create(0.0, 0.0, 0.0),
 					   vec_create(0.0, 0.0, 0.0),
 					   vec_create(0.75, 0.5, 0.5),
-					   &scene->obj_lst->next->obj.gtfm);
-	scene->obj_lst->next->obj.color = vec_create(255.0, 128.0, 0.0);
+					   &obj_lst_at(scene->obj_lst, 1)->obj.gtfm);
+	obj_lst_at(scene->obj_lst, 1)->obj.color = vec_create(255.0, 128.0, 0.0);
 	gtfm_set_transform(vec_create(1.5, 0.0, 0.0),
 					   vec_create(0.0, 0.0, 0.0),
 					   vec_create(0.75, 0.75, 0.75),
-					   &scene->obj_lst->next->next->obj.gtfm);
-	scene->obj_lst->next->next->obj.color = vec_create(255.0, 200.0, 0.0);
+					   &obj_lst_at(scene->obj_lst, 2)->obj.gtfm);
+	obj_lst_at(scene->obj_lst, 2)->obj.color = vec_create(255.0, 200.0, 0.0);
+
+	//Create a test plane
+	if (add_obj(&scene->obj_lst, PLANE) == NULL)
+	{
+		return (FAILURE);
+	}
+	init_gtfm(&obj_lst_at(scene->obj_lst, 3)->obj.gtfm);
+
+	//Modify the plane
+	obj_lst_at(scene->obj_lst, 3)->obj.color = vec_create(128.0, 128.0, 128.0);
 
 	//Create a test light
 	if (add_light(&scene->light_lst, POINT) == NULL)
@@ -129,36 +138,6 @@ int	scene_render(t_scene *scene, t_img *img)
         }
     }
 	return (SUCCESS);
-}
-
-t_obj_lst	*add_obj(t_obj_lst **obj_lst, int type)
-{
-	t_obj_lst	*new;
-	t_obj_lst	*elem;
-
-	new = (t_obj_lst *) ft_calloc(1, sizeof (t_obj_lst));
-	if (new == NULL)
-	{
-		return (NULL);
-	}
-	if (type == SPHERE)
-	{
-		new->obj.intfct = sphere_intersect;
-	}
-	if (*obj_lst == NULL)
-	{
-		*obj_lst = new;
-	}
-	else
-	{
-		elem = *obj_lst;
-		while (elem->next != NULL)
-		{
-			elem = elem->next;
-		}
-		elem->next = new;
-	}
-	return (*obj_lst);
 }
 
 t_light_lst	*add_light(t_light_lst **light_lst, int type)

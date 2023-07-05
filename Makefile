@@ -23,6 +23,7 @@ SRCS	=	$(SRCDIR)/main.c\
 			$(SRCDIR)/matrix.c\
 			$(SRCDIR)/object.c\
 			$(SRCDIR)/sphere.c\
+			$(SRCDIR)/plane.c\
 			$(SRCDIR)/pointlight.c\
 			$(SRCDIR)/gtfm.c\
 			$(SRCDIR)/clean.c
