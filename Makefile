@@ -13,19 +13,19 @@ DEPDIR	=	$(PROJDIR)/deps
 LIBFT	=	$(LIBDIR)/libft/libft.a
 LIBMLX	=	$(LIBDIR)/mlx/libmlx.a
 SRCS	=	$(SRCDIR)/main.c\
-			$(SRCDIR)/mlx_app.c\
-			$(SRCDIR)/app_key_action.c\
-			$(SRCDIR)/mlx_image.c\
+			$(SRCDIR)/app/mlx_app.c\
+			$(SRCDIR)/app/app_key_action.c\
+			$(SRCDIR)/app/mlx_image.c\
 			$(SRCDIR)/scene.c\
 			$(SRCDIR)/ray.c\
 			$(SRCDIR)/camera.c\
-			$(SRCDIR)/vector.c\
-			$(SRCDIR)/matrix.c\
-			$(SRCDIR)/object.c\
-			$(SRCDIR)/sphere.c\
-			$(SRCDIR)/plane.c\
-			$(SRCDIR)/light.c\
-			$(SRCDIR)/pointlight.c\
+			$(SRCDIR)/math/vector.c\
+			$(SRCDIR)/math/matrix.c\
+			$(SRCDIR)/objects/object.c\
+			$(SRCDIR)/objects/sphere.c\
+			$(SRCDIR)/objects/plane.c\
+			$(SRCDIR)/lights/light.c\
+			$(SRCDIR)/lights/pointlight.c\
 			$(SRCDIR)/gtfm.c\
 			$(SRCDIR)/clean.c
 HD		=	$(HDDIR)/miniRT.h\

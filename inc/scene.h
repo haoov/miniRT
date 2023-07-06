@@ -13,6 +13,7 @@ typedef struct s_scene
 	t_light_lst	*light_lst;
 }t_scene;
 
-int	scene_render(t_scene *scene, t_img *img);
+int		scene_render(t_scene *scene, t_img *img);
+bool	cast_ray(t_ray cast_ray, t_poi *closest_poi, t_obj_lst *obj_cur);
 
 #endif //SCENE_H
