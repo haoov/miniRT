@@ -7,15 +7,38 @@ int	scene_render(t_scene *scene, t_img *img)
 {
 	//Create some material
 	t_material	test_mat;
+	t_material	test_mat2;
+	t_material	test_mat3;
+	t_material	floor_material;
 
 	//Set up the material
 	test_mat.color = vec_create(0.25, 0.5, 0.8);
-	test_mat.reflec = 0.5;
+	test_mat.reflec = 0.1;
 	test_mat.shiny = 10.0;
+	test_mat.max_ref_ray = 3;
+	test_mat.ref_ray_count = 0;
+
+	test_mat2.color = vec_create(1.0, 0.5, 0.0);
+	test_mat2.reflec = 0.75;
+	test_mat2.shiny = 10.0;
+	test_mat2.max_ref_ray = 3;
+	test_mat2.ref_ray_count = 0;
+
+	test_mat3.color = vec_create(1.0, 0.8, 0.0);
+	test_mat3.reflec = 0.25;
+	test_mat3.shiny = 10;
+	test_mat3.max_ref_ray = 3;
+	test_mat3.ref_ray_count = 0;
+
+	floor_material.color = vec_create(1.0, 1.0, 1.0);
+	floor_material.reflec = 0.5;
+	floor_material.shiny = 0.0;
+	floor_material.max_ref_ray = 3;
+	floor_material.ref_ray_count = 0;
 
     //Configure the camera
     cam_init(&scene->cam);
-    cam_set_pos(&scene->cam, vec_create(0.0, -10.0, -1.0));
+    cam_set_pos(&scene->cam, vec_create(0.0, -10.0, -2.0));
     cam_set_look_at(&scene->cam, vec_create(0.0, 0.0, 0.0));
     cam_set_up(&scene->cam, vec_create(0.0, 0.0, 1.0));
     cam_set_size(&scene->cam, 0.25);
@@ -42,17 +65,19 @@ int	scene_render(t_scene *scene, t_img *img)
 					   vec_create(0.5, 0.5, 0.5),
 					   &scene->obj_lst->obj.gtfm);
 	scene->obj_lst->obj.color = vec_create(0.25, 0.5, 0.8);
-	scene->obj_lst->obj.material = test_mat;
+	scene->obj_lst->obj.material = test_mat3;
 	gtfm_set_transform(vec_create(0.0, 0.0, 0.0),
 					   vec_create(0.0, 0.0, 0.0),
 					   vec_create(0.5, 0.5, 0.5),
 					   &obj_lst_at(scene->obj_lst, 1)->obj.gtfm);
-	obj_lst_at(scene->obj_lst, 1)->obj.color = vec_create(1.0, 0.8, 0.0);
+	obj_lst_at(scene->obj_lst, 1)->obj.color = vec_create(1.0, 0.5, 0.0);
+	obj_lst_at(scene->obj_lst, 1)->obj.material = test_mat;
 	gtfm_set_transform(vec_create(1.5, 0.0, 0.0),
 					   vec_create(0.0, 0.0, 0.0),
 					   vec_create(0.5, 0.5, 0.5),
 					   &obj_lst_at(scene->obj_lst, 2)->obj.gtfm);
 	obj_lst_at(scene->obj_lst, 2)->obj.color = vec_create(1.0, 0.8, 0.0);
+	obj_lst_at(scene->obj_lst, 2)->obj.material = test_mat2;
 
 	//Create a test plane
 	if (add_obj(&scene->obj_lst, PLANE) == NULL)
@@ -66,6 +91,7 @@ int	scene_render(t_scene *scene, t_img *img)
 					   vec_create(4.0, 4.0, 1.0),
 					   &obj_lst_at(scene->obj_lst, 3)->obj.gtfm);
 	obj_lst_at(scene->obj_lst, 3)->obj.color = vec_create(0.5, 0.5, 0.5);
+	obj_lst_at(scene->obj_lst, 3)->obj.material = floor_material;
 
 	//Create test lights
 	if (add_light(&scene->light_lst, POINT) == NULL)
@@ -112,7 +138,7 @@ int	scene_render(t_scene *scene, t_img *img)
 			t_poi	closest_poi;
 			bool	intersection;
 
-			intersection = cast_ray(cam_ray, &closest_poi, scene->obj_lst);
+			intersection = s_cast_ray(cam_ray, &closest_poi, scene->obj_lst);
 
 			//Compute the illumination for the closest object
 			if (intersection)
@@ -123,6 +149,7 @@ int	scene_render(t_scene *scene, t_img *img)
 				if (closest_poi.obj->obj.material.type != NONE)
 				{
 					//Use the material to compute the color
+					closest_poi.obj->obj.material.ref_ray_count = 0;
 					rgb = compute_color(scene->obj_lst, scene->light_lst,
 										closest_poi, cam_ray, closest_poi.obj->obj.material);
 				}
@@ -167,7 +194,7 @@ int	scene_render(t_scene *scene, t_img *img)
 	return (SUCCESS);
 }
 
-bool	cast_ray(t_ray cam_ray, t_poi *closest_poi, t_obj_lst *obj_cur)
+bool	s_cast_ray(t_ray cam_ray, t_poi *closest_poi, t_obj_lst *obj_cur)
 {
 	t_poi	poi;
 	bool	intersection;

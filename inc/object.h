@@ -49,6 +49,8 @@ typedef struct s_material
 	t_vec	color;
 	double	reflec;
 	double	shiny;
+	int		max_ref_ray;
+	int		ref_ray_count;
 }t_material;
 
 /*******************OBJECT**************************/

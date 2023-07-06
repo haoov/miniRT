@@ -16,6 +16,15 @@ t_vec	compute_color(t_obj_lst *obj_lst, t_light_lst *light_lst, t_poi poi,
 	//Compute the diffuse component
 	dif_color = compute_diffuse_color(obj_lst, light_lst, poi, poi.obj->obj.material.color);
 
+	//Compute the reflection color
+	if (mat.reflec)
+	{
+		ref_color = compute_ref_color(obj_lst, light_lst, poi, cam_ray, poi.obj->obj.material);
+	}
+
+	//Combine reflection and diffuse component
+	mat_color = vec_add(vec_mult(ref_color, mat.reflec), vec_mult(dif_color, 1.0 - mat.reflec));
+
 	//Compute the specular component
 	if (mat.shiny > 0.0)
 	{
@@ -23,7 +32,7 @@ t_vec	compute_color(t_obj_lst *obj_lst, t_light_lst *light_lst, t_poi poi,
 	}
 
 	//Add the spec to the final color
-	mat_color = vec_add(dif_color, spec_color);
+	mat_color = vec_add(mat_color, spec_color);
 
 	return (mat_color);
 }
