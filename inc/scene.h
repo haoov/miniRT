@@ -5,6 +5,7 @@
 # include "camera.h"
 # include "object.h"
 # include "light.h"
+# include "material.h"
 
 typedef struct s_scene
 {

@@ -26,6 +26,8 @@ SRCS	=	$(SRCDIR)/main.c\
 			$(SRCDIR)/objects/plane.c\
 			$(SRCDIR)/lights/light.c\
 			$(SRCDIR)/lights/pointlight.c\
+			$(SRCDIR)/material.c\
+			$(SRCDIR)/simple_mat.c\
 			$(SRCDIR)/gtfm.c\
 			$(SRCDIR)/clean.c
 HD		=	$(HDDIR)/miniRT.h\

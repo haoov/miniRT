@@ -13,6 +13,8 @@
 typedef struct s_poi		t_poi;
 typedef struct s_obj_lst	t_obj_lst;
 
+/*********************OBJECT TYPES********************/
+
 //Struct to hold th plane data
 typedef struct s_plane
 {
@@ -32,12 +34,32 @@ typedef union u_obj_type
 	t_plane		plane;
 }t_obj_type;
 
+/*******************MATERIALS***********************/
+
+typedef struct s_simple_mat
+{
+	t_vec	color;
+	double	reflec;
+	double	shiny;
+}t_simple_mat;
+
+typedef struct s_material
+{
+	int		type;
+	t_vec	color;
+	double	reflec;
+	double	shiny;
+}t_material;
+
+/*******************OBJECT**************************/
+
 //Struct to hold the object base data
 typedef struct s_obj
 {
 	t_vec		color;
+	t_material	material;
 	t_obj_type	type;
-	bool		(*intfct)(t_ray, struct s_poi *poi, t_obj_lst *obj);
+	bool		(*intfct)(t_ray, t_poi *poi, t_obj_lst *obj);
 	t_gtfm		gtfm;
 }t_obj;
 
@@ -62,6 +84,8 @@ typedef struct s_intfct
 {
 	bool	(*fct)(t_ray, t_poi *poi, t_obj_lst *obj);
 }t_intfct;
+
+/********************FUNCTION DECLARATION***************/
 
 t_obj_lst	*add_obj(t_obj_lst **obj_lst, int type);
 t_obj_lst	*obj_lst_at(t_obj_lst *obj_lst, int index);
