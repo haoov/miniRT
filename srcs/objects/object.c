@@ -2,8 +2,9 @@
 
 #define EPSILON 1e-21F
 
-static const t_intfct	fcttab[2] = {
-		{sphere_intersect}, {plane_intersect},
+static const t_intfct	fcttab[4] = {
+		{sphere_intersect}, {plane_intersect}, {cylinder_intersect},
+		{cone_intersect}
 };
 
 void	set_gtfm(t_obj *obj,t_gtfm gtfm)

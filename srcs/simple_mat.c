@@ -1,9 +1,9 @@
 #include "material.h"
 
-t_vec	compute_spec_color(t_obj_lst *obj_lst, t_light_lst *light_lst,
+static t_vec	compute_spec_color(t_obj_lst *obj_lst, t_light_lst *light_lst,
 							t_poi poi, t_ray cam_ray, t_material mat);
 
-t_vec	compute_color(t_obj_lst *obj_lst, t_light_lst *light_lst, t_poi poi,
+t_vec	spl_compute_color(t_obj_lst *obj_lst, t_light_lst *light_lst, t_poi poi,
 					   t_ray cam_ray, t_material mat)
 {
 	//Define the initials materials colors
@@ -37,7 +37,7 @@ t_vec	compute_color(t_obj_lst *obj_lst, t_light_lst *light_lst, t_poi poi,
 	return (mat_color);
 }
 
-t_vec	compute_spec_color(t_obj_lst *obj_lst, t_light_lst *light_lst,
+static t_vec	compute_spec_color(t_obj_lst *obj_lst, t_light_lst *light_lst,
 							t_poi poi, t_ray cam_ray, t_material mat)
 {
 	t_vec	spc_color = vec_create(0.0, 0.0, 0.0);

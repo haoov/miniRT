@@ -7,8 +7,10 @@
 # include "libft.h"
 # include <stdbool.h>
 
-# define SPHERE	0
-# define PLANE	1
+# define SPHERE		0
+# define PLANE		1
+# define CYLINDER	2
+# define CONE		3
 
 typedef struct s_poi		t_poi;
 typedef struct s_obj_lst	t_obj_lst;
@@ -94,6 +96,8 @@ t_obj_lst	*obj_lst_at(t_obj_lst *obj_lst, int index);
 
 bool	sphere_intersect(t_ray cam_ray, t_poi *poi, t_obj_lst *cur_obj);
 bool	plane_intersect(t_ray cam_ray, t_poi *poi, t_obj_lst *cur_obj);
+bool	cylinder_intersect(t_ray cast_ray, t_poi *poi, t_obj_lst *obj_cur);
+bool	cone_intersect(t_ray cast_ray, t_poi *poi, t_obj_lst *obj_cur);
 
 bool	close_enough(double val1, double val2);
 

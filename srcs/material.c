@@ -62,7 +62,7 @@ t_vec	compute_ref_color(t_obj_lst *obj_lst, t_light_lst *light_lst,
 		if (closest_poi.obj->obj.material.type != NONE)
 		{
 			//Use the material to compute the color
-			mat_color = compute_color(obj_lst, light_lst, closest_poi, ref_ray,
+			mat_color = spl_compute_color(obj_lst, light_lst, closest_poi, ref_ray,
 									  closest_poi.obj->obj.material);
 		}
 		else

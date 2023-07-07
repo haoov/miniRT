@@ -29,6 +29,13 @@ bool	point_illum(t_vec *point, t_vec *norm, t_vec *color, double *intensity,
 		if (obj_lst != cur_obj)
 		{
 			valid_int = obj_lst->obj.intfct(light_ray, &poi, obj_lst);
+			if (valid_int)
+			{
+				double	light_dist = vec_norm(vec_sub(light.pos, poi.point));
+				double	dist = vec_norm(vec_sub(poi.point, start_point));
+				if (dist > light_dist)
+					valid_int = false;
+			}
 		}
 
 		/*If we have an intersection we dont need to check further because this
