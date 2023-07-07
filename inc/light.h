@@ -4,6 +4,8 @@
 # include "vector.h"
 # include "ray.h"
 # include "object.h"
+# include "libft.h"
+# include <stdbool.h>
 
 # define POINT	1
 

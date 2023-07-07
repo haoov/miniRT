@@ -30,7 +30,6 @@ void	gtfm_set_transform(t_vec trans, t_vec rot, t_vec scale, t_gtfm *gtfm)
 	trans_mtx.val[1][3] = trans.y;
 	trans_mtx.val[2][3] = trans.z;
 
-	rot = vec_mult(rot, M_PI / 180.0);
 	//rotation
 	rotx_mtx.val[1][1] = cos(rot.x);
 	rotx_mtx.val[1][2] = -sin(rot.x);
@@ -53,10 +52,10 @@ void	gtfm_set_transform(t_vec trans, t_vec rot, t_vec scale, t_gtfm *gtfm)
 	scale_mtx.val[2][2] = scale.z;
 
 	//Combine to the final foward matrix
-	gtfm->tfm_mtx = mtx_mult(trans_mtx, scale_mtx);
-	gtfm->tfm_mtx = mtx_mult(gtfm->tfm_mtx, rotx_mtx);
+	gtfm->tfm_mtx = mtx_mult(trans_mtx, rotx_mtx);
 	gtfm->tfm_mtx = mtx_mult(gtfm->tfm_mtx, roty_mtx);
 	gtfm->tfm_mtx = mtx_mult(gtfm->tfm_mtx, rotz_mtx);
+	gtfm->tfm_mtx = mtx_mult(gtfm->tfm_mtx, scale_mtx);
 
 	//Compute the revtfm
 	gtfm->revtfm_mtx = gtfm->tfm_mtx;
