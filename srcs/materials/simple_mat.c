@@ -3,6 +3,19 @@
 static t_vec	compute_spec_color(t_obj_lst *obj_lst, t_light_lst *light_lst,
 							t_poi poi, t_ray cam_ray, t_material mat);
 
+t_material	simple_mat_const(t_vec color, double ref, double shiny)
+{
+	t_material	mat;
+
+	mat.color = color;
+	mat.reflec = ref;
+	mat.shiny = shiny;
+	mat.max_ref_ray = 3;
+	mat.ref_ray_count = 0;
+	mat.has_texture = false;
+	return (mat);
+}
+
 t_vec	spl_compute_color(t_obj_lst *obj_lst, t_light_lst *light_lst, t_poi poi,
 					   t_ray cam_ray, t_material mat)
 {
@@ -14,12 +27,23 @@ t_vec	spl_compute_color(t_obj_lst *obj_lst, t_light_lst *light_lst, t_poi poi,
 	(void)ref_color;
 
 	//Compute the diffuse component
-	dif_color = compute_diffuse_color(obj_lst, light_lst, poi, poi.obj->obj.material.color);
+	if (!poi.obj->material.has_texture)
+	{
+		dif_color = compute_diffuse_color(obj_lst, light_lst, poi,
+										  poi.obj->material.color);
+	}
+	else
+	{
+		dif_color = compute_diffuse_color(obj_lst, light_lst, poi,
+										  poi.obj->material.texture.colorfct(
+												  poi.obj->material.texture,
+												  poi.u, poi.v));
+	}
 
 	//Compute the reflection color
 	if (mat.reflec)
 	{
-		ref_color = compute_ref_color(obj_lst, light_lst, poi, cam_ray, poi.obj->obj.material);
+		ref_color = compute_ref_color(obj_lst, light_lst, poi, cam_ray, poi.obj->material);
 	}
 
 	//Combine reflection and diffuse component
@@ -28,7 +52,7 @@ t_vec	spl_compute_color(t_obj_lst *obj_lst, t_light_lst *light_lst, t_poi poi,
 	//Compute the specular component
 	if (mat.shiny > 0.0)
 	{
-		spec_color = compute_spec_color(obj_lst, light_lst, poi, cam_ray, poi.obj->obj.material);
+		spec_color = compute_spec_color(obj_lst, light_lst, poi, cam_ray, poi.obj->material);
 	}
 
 	//Add the spec to the final color
@@ -66,7 +90,7 @@ static t_vec	compute_spec_color(t_obj_lst *obj_lst, t_light_lst *light_lst,
 
 		while (obj_lst != NULL)
 		{
-			valid_int = obj_lst->obj.intfct(light_ray, &ob_poi, obj_lst);
+			valid_int = obj_lst->intfct(light_ray, &ob_poi, obj_lst);
 			if (valid_int)
 			{
 				break;

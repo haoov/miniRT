@@ -4,26 +4,25 @@
 
 //DEBUG
 #include <stdio.h>
-void	print_mtx(t_mtx4 mtx)
+void	print_mtx3(t_mtx3 mtx)
 {
-	printf("%f %f %f %f\n", mtx.val[0][0], mtx.val[0][1], mtx.val[0][2], mtx.val[0][3]);
-	printf("%f %f %f %f\n", mtx.val[1][0], mtx.val[1][1], mtx.val[1][2], mtx.val[1][3]);
-	printf("%f %f %f %f\n", mtx.val[2][0], mtx.val[2][1], mtx.val[2][2], mtx.val[2][3]);
-	printf("%f %f %f %f\n", mtx.val[3][0], mtx.val[3][1], mtx.val[3][2], mtx.val[3][3]);
+	printf("%f %f %f\n", mtx.val[0][0], mtx.val[0][1], mtx.val[0][2]);
+	printf("%f %f %f\n", mtx.val[1][0], mtx.val[1][1], mtx.val[1][2]);
+	printf("%f %f %f\n", mtx.val[2][0], mtx.val[2][1], mtx.val[2][2]);
 	printf("\n");
 }
 
-t_mtx4	mtx_add(t_mtx4 mtx1, t_mtx4 mtx2)
+t_mtx3	mtx3_add(t_mtx3 mtx1, t_mtx3 mtx2)
 {
-	t_mtx4	res;
+	t_mtx3	res;
 	int		l;
 	int		c;
 
 	l = 0;
-	while (l < 4)
+	while (l < 3)
 	{
 		c = 0;
-		while (c < 4)
+		while (c < 3)
 		{
 			res.val[l][c] = mtx1.val[l][c] + mtx2.val[l][c];
 			c++;
@@ -33,17 +32,17 @@ t_mtx4	mtx_add(t_mtx4 mtx1, t_mtx4 mtx2)
 	return (res);
 }
 
-t_mtx4	mtx_sub(t_mtx4 mtx1, t_mtx4 mtx2)
+t_mtx3	mtx3_sub(t_mtx3 mtx1, t_mtx3 mtx2)
 {
-	t_mtx4	res;
+	t_mtx3	res;
 	int		l;
 	int		c;
 
 	l = 0;
-	while (l < 4)
+	while (l < 3)
 	{
 		c = 0;
-		while (c < 4)
+		while (c < 3)
 		{
 			res.val[l][c] = mtx1.val[l][c] - mtx2.val[l][c];
 			c++;
@@ -54,22 +53,22 @@ t_mtx4	mtx_sub(t_mtx4 mtx1, t_mtx4 mtx2)
 	return (res);
 }
 
-t_mtx4	mtx_mult(t_mtx4 mtx1, t_mtx4 mtx2)
+t_mtx3	mtx3_mult(t_mtx3 mtx1, t_mtx3 mtx2)
 {
-	t_mtx4	res;
+	t_mtx3	res;
 	int		l;
 	int		c;
 	int		i;
 
 	ft_memset(&res, 0, sizeof (t_mtx4));
 	l = 0;
-	while (l < 4)
+	while (l < 3)
 	{
 		c = 0;
-		while (c < 4)
+		while (c < 3)
 		{
 			i = 0;
-			while (i < 4)
+			while (i < 3)
 			{
 				res.val[l][c] += mtx1.val[l][i] * mtx2.val[i][c];
 				i++;
@@ -81,27 +80,26 @@ t_mtx4	mtx_mult(t_mtx4 mtx1, t_mtx4 mtx2)
 	return (res);
 }
 
-t_vec4	mtx_vec_mult(t_vec4 vec, t_mtx4 m)
+t_vec	mtx3_vec_mult(t_vec vec, t_mtx3 m)
 {
-	t_vec4	res;
+	t_vec	res;
 
-	res.x = vec.x * m.val[0][0] + vec.y * m.val[0][1] + vec.z * m.val[0][2] + vec.w * m.val[0][3];
-	res.y = vec.x * m.val[1][0] + vec.y * m.val[1][1] + vec.z * m.val[1][2] + vec.w * m.val[1][3];
-	res.z = vec.x * m.val[2][0] + vec.y	* m.val[2][1] + vec.z * m.val[2][2] + vec.w * m.val[2][3];
-	res.w = vec.x * m.val[3][0] + vec.y * m.val[3][1] + vec.z * m.val[3][2] + vec.w * m.val[3][3];
+	res.x = vec.x * m.val[0][0] + vec.y * m.val[0][1] + vec.z * m.val[0][2];
+	res.y = vec.x * m.val[1][0] + vec.y * m.val[1][1] + vec.z * m.val[1][2];
+	res.z = vec.x * m.val[2][0] + vec.y	* m.val[2][1] + vec.z * m.val[2][2];
 	return (res);
 }
 
-void	identity(t_mtx4 *mtx)
+void	mtx_3identity(t_mtx3 *mtx)
 {
 	int l;
 	int c;
 
 	l = 0;
-	while (l < 4)
+	while (l < 3)
 	{
 		c = 0;
-		while (c < 4)
+		while (c < 3)
 		{
 			if (l == c)
 			{
@@ -118,24 +116,24 @@ void	identity(t_mtx4 *mtx)
 }
 
 //Inverse
-t_mtx8	join_mtx(t_mtx4 mtx1, t_mtx4 mtx2)
+static t_mtx3_6 	join_mtx(t_mtx3 mtx1, t_mtx3 mtx2)
 {
-	t_mtx8	res;
+	t_mtx3_6 	res;
 	int	l;
 	int c;
 
 	l = 0;
-	while (l < 4)
+	while (l < 3)
 	{
 		c = 0;
-		while (c < 8)
+		while (c < 6)
 		{
-			while (c < 4)
+			while (c < 3)
 			{
 				res.val[l][c] = mtx1.val[l][c];
 				c++;
 			}
-			res.val[l][c] = mtx2.val[l][c - 4];
+			res.val[l][c] = mtx2.val[l][c - 3];
 			c++;
 		}
 		l++;
@@ -143,60 +141,60 @@ t_mtx8	join_mtx(t_mtx4 mtx1, t_mtx4 mtx2)
 	return (res);
 }
 
-void	sep_mtx(t_mtx8 mtx, t_mtx4 *mtx1, t_mtx4 *mtx2)
+static void	sep_mtx(t_mtx3_6 mtx, t_mtx3 *mtx1, t_mtx3 *mtx2)
 {
 	int	l;
 	int c;
 
 	l = 0;
-	while (l < 4)
+	while (l < 3)
 	{
 		c = 0;
-		while (c < 8)
+		while (c < 6)
 		{
-			while (c < 4)
+			while (c < 3)
 			{
 				mtx1->val[l][c] = mtx.val[l][c];
 				c++;
 			}
-			mtx2->val[l][c - 4] = mtx.val[l][c];
+			mtx2->val[l][c - 3] = mtx.val[l][c];
 			c++;
 		}
 		l++;
 	}
 }
 
-void	row_mult(t_mtx8 *mtx, int row, double x)
+static void	row_mult(t_mtx3_6 *mtx, int row, double x)
 {
 	int	i;
 
 	i = 0;
-	while (i < 8)
+	while (i < 6)
 	{
 		mtx->val[row][i] *= x;
 		i++;
 	}
 }
 
-void	row_mult_add(t_mtx8 *mtx, int row_mult, double x, int row_add)
+static void	row_mult_add(t_mtx3_6 *mtx, int row_mult, double x, int row_add)
 {
 	int		i;
 
 	i = 0;
-	while (i < 8)
+	while (i < 6)
 	{
 		mtx->val[row_add][i] += mtx->val[row_mult][i] * x;
 		i++;
 	}
 }
 
-void	swap_rows(t_mtx8 *mtx, int row1, int row2)
+static void	swap_rows(t_mtx3_6 *mtx, int row1, int row2)
 {
 	double	tmp;
 	int 	i;
 
 	i = 0;
-	while (i < 8)
+	while (i < 6)
 	{
 		tmp = mtx->val[row1][i];
 		mtx->val[row1][i] = mtx->val[row2][i];
@@ -205,7 +203,7 @@ void	swap_rows(t_mtx8 *mtx, int row1, int row2)
 	}
 }
 
-int	max_row(t_mtx8 mtx, int ccol, int crow)
+static int	max_row(t_mtx3_6 mtx, int ccol, int crow)
 {
 	double	max;
 	int		res;
@@ -214,7 +212,7 @@ int	max_row(t_mtx8 mtx, int ccol, int crow)
 	i = crow;
 	max = mtx.val[crow][ccol];
 	res = 0;
-	while (i < 4)
+	while (i < 3)
 	{
 		if (mtx.val[i][ccol] >= max)
 		{
@@ -226,21 +224,16 @@ int	max_row(t_mtx8 mtx, int ccol, int crow)
 	return (res);
 }
 
-bool	close_enough(double val1, double val2)
-{
-	return (fabs(val1 - val2) < 1e-9);
-}
-
-bool	is_identity(t_mtx4 mtx)
+static bool	is_identity(t_mtx3 mtx)
 {
 	int	row;
 	int	col;
 
 	row = 0;
-	while (row < 4)
+	while (row < 3)
 	{
 		col = 0;
-		while (col < 4)
+		while (col < 3)
 		{
 			if (row == col)
 			{
@@ -263,14 +256,14 @@ bool	is_identity(t_mtx4 mtx)
 	return (true);
 }
 
-bool	invert(t_mtx4 *mtx)
+bool	mtx3_invert(t_mtx3 *mtx)
 {
-	t_mtx4	id_mtx;
-	t_mtx8	tmp_mtx;
-	t_mtx4	left;
-	t_mtx4	right;
+	t_mtx3		id_mtx;
+	t_mtx3_6	tmp_mtx;
+	t_mtx3		left;
+	t_mtx3 		right;
 
-	identity(&id_mtx);
+	mtx_3identity(&id_mtx);
 	tmp_mtx = join_mtx(*mtx, id_mtx);
 
 	int		crow;
@@ -290,7 +283,7 @@ bool	invert(t_mtx4 *mtx)
 
 	while (complete == false && count < max_count)
 	{
-		while (diag_index < 4)
+		while (diag_index < 3)
 		{
 			crow = diag_index;
 			ccol = diag_index;
@@ -309,7 +302,7 @@ bool	invert(t_mtx4 *mtx)
 			}
 
 			row_index = crow + 1;
-			while (row_index < 4)
+			while (row_index < 3)
 			{
 				if (!close_enough(tmp_mtx.val[row_index][ccol], 0.0))
 				{
@@ -329,7 +322,7 @@ bool	invert(t_mtx4 *mtx)
 			}
 
 			col_index = ccol + 1;
-			while (col_index < 4)
+			while (col_index < 3)
 			{
 				if (!close_enough(tmp_mtx.val[crow][col_index], 0.0))
 				{

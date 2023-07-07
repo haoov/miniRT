@@ -1,12 +1,24 @@
 #include "object.h"
 #include <math.h>
 
+t_obj_lst	*cone_create(void)
+{
+	t_obj_lst	*cone;
+
+	cone = (t_obj_lst *) ft_calloc(1, sizeof (t_obj_lst));
+	if (cone == NULL)
+		return (NULL);
+	cone->color = vec_create(0.0, 0.0, 0.0);
+	cone->intfct = cone_intersect;
+	return (cone);
+}
+
 bool	cone_intersect(t_ray cast_ray, t_poi *poi, t_obj_lst *obj_cur)
 {
 	t_ray 	tfm_ray;
 
 	//Apply rev transform to the ray
-	tfm_ray = gtfm_ray_apply(obj_cur->obj.gtfm, cast_ray, REV);
+	tfm_ray = gtfm_ray_apply(obj_cur->gtfm, cast_ray, REV);
 
 	//ab vector from ray and normalize
 	t_vec	v;
@@ -123,7 +135,7 @@ bool	cone_intersect(t_ray cast_ray, t_poi *poi, t_obj_lst *obj_cur)
 	if (min_index < 2)
 	{
 		//Transform the int point back to the world coordinates
-		poi->point = gtfm_vec_apply(obj_cur->obj.gtfm, valid_intp, FWD);
+		poi->point = gtfm_vec_apply(obj_cur->gtfm, valid_intp, FWD);
 
 		//Compute the local normal
 		t_vec	org_normal;
@@ -131,16 +143,21 @@ bool	cone_intersect(t_ray cast_ray, t_poi *poi, t_obj_lst *obj_cur)
 		t_vec	origin;
 		t_vec	new_origin;
 		origin = vec_create(0.0, 0.0, 0.0);
-		new_origin = gtfm_vec_apply(obj_cur->obj.gtfm, origin, FWD);
+		new_origin = gtfm_vec_apply(obj_cur->gtfm, origin, FWD);
 		org_normal.x = valid_intp.x;
 		org_normal.y = valid_intp.y;
 		org_normal.z = -sqrt(pow(valid_intp.x, 2.0) + pow(valid_intp.y, 2.0));
-		new_normal = vec_sub(gtfm_vec_apply(obj_cur->obj.gtfm, org_normal, FWD),
+		new_normal = vec_sub(gtfm_vec_apply(obj_cur->gtfm, org_normal, FWD),
 							 new_origin);
 		vec_normalize(&new_normal);
 		poi->normal = new_normal;
-		poi->color = obj_cur->obj.color;
+		poi->color = obj_cur->color;
 		poi->obj = obj_cur;
+
+		//Compute u and v
+		poi->u = atan2(valid_intp.y, valid_intp.x) / M_PI;
+		poi->v = (valid_intp.z * 2.0) + 1.0;
+
 		return (true);
 	}
 	else
@@ -152,7 +169,7 @@ bool	cone_intersect(t_ray cast_ray, t_poi *poi, t_obj_lst *obj_cur)
 			if (sqrt(pow(valid_intp.x, 2.0) + pow(valid_intp.y, 2.0)) < 1.0)
 			{
 				//Transform back into world coordinate
-				poi->point = gtfm_vec_apply(obj_cur->obj.gtfm, valid_intp, FWD);
+				poi->point = gtfm_vec_apply(obj_cur->gtfm, valid_intp, FWD);
 
 				//Compute the local normal
 				t_vec	origin;
@@ -160,12 +177,17 @@ bool	cone_intersect(t_ray cast_ray, t_poi *poi, t_obj_lst *obj_cur)
 				t_vec	normal_vec;
 				normal_vec = vec_create(0.0, 0.0, 0.0 + valid_intp.z);
 				origin = vec_create(0.0, 0.0, 0.0);
-				new_origin = gtfm_vec_apply(obj_cur->obj.gtfm, origin, FWD);
-				poi->normal = vec_sub(gtfm_vec_apply(obj_cur->obj.gtfm,
+				new_origin = gtfm_vec_apply(obj_cur->gtfm, origin, FWD);
+				poi->normal = vec_sub(gtfm_vec_apply(obj_cur->gtfm,
 													 normal_vec, FWD), new_origin);
 				vec_normalize(&poi->normal);
-				poi->color = obj_cur->obj.color;
+				poi->color = obj_cur->color;
 				poi->obj = obj_cur;
+
+				//Compute u and v
+				poi->u = valid_intp.x;
+				poi->v = valid_intp.y;
+
 				return (true);
 			}
 			else

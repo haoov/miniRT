@@ -24,12 +24,6 @@ typedef struct s_cam
 }t_cam;
 
 void	cam_init(t_cam *cam);
-void	cam_set_pos(t_cam *cam, t_vec pos);
-void	cam_set_look_at(t_cam *cam, t_vec look_at);
-void	cam_set_up(t_cam *cam, t_vec up_vec);
-void	cam_set_dist(t_cam *cam, double dist);
-void	cam_set_size(t_cam *cam, double size);
-void	cam_set_ratio(t_cam *cam, double ratio);
 void	cam_geometry(t_cam *cam);
 t_ray	cam_generate_ray(t_cam *cam, float x, float y);
 

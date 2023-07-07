@@ -2,6 +2,12 @@
 
 bool	cast_ray(t_ray cast_ray, t_poi *closest_poi, t_obj_lst *obj_lst, t_obj_lst *obj_cur);
 
+void	assign_material(t_obj_lst *obj, t_material material)
+{
+	obj->material = material;
+	obj->has_material = true;
+}
+
 t_vec	compute_diffuse_color(t_obj_lst *obj_lst, t_light_lst *light_lst,
 							   t_poi poi, t_vec base_color)
 {
@@ -59,16 +65,16 @@ t_vec	compute_ref_color(t_obj_lst *obj_lst, t_light_lst *light_lst,
 		mat.ref_ray_count++;
 
 		//Check if material
-		if (closest_poi.obj->obj.material.type != NONE)
+		if (closest_poi.obj->has_material)
 		{
 			//Use the material to compute the color
 			mat_color = spl_compute_color(obj_lst, light_lst, closest_poi, ref_ray,
-									  closest_poi.obj->obj.material);
+									  closest_poi.obj->material);
 		}
 		else
 		{
 			mat_color = compute_diffuse_color(obj_lst, light_lst, closest_poi,
-											  closest_poi.obj->obj.color);
+											  closest_poi.obj->color);
 		}
 	}
 	ref_color = mat_color;
@@ -90,7 +96,7 @@ bool	cast_ray(t_ray cast_ray, t_poi *closest_poi, t_obj_lst *obj_lst, t_obj_lst 
 		//Test intersection
 		if (obj_lst != obj_cur)
 		{
-			intersection = obj_lst->obj.intfct(cast_ray, &poi, obj_lst);
+			intersection = obj_lst->intfct(cast_ray, &poi, obj_lst);
 		}
 
 		if (intersection)

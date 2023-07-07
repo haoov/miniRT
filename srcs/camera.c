@@ -12,36 +12,6 @@ void	cam_init(t_cam *cam)
 	cam->ratio = 1;
 }
 
-void	cam_set_pos(t_cam *cam, t_vec pos)
-{
-	cam->pos = pos;
-}
-
-void	cam_set_look_at(t_cam *cam, t_vec look_at)
-{
-	cam->look_at = look_at;
-}
-
-void	cam_set_up(t_cam *cam, t_vec up_vec)
-{
-	cam->up = up_vec;
-}
-
-void	cam_set_dist(t_cam *cam, double dist)
-{
-	cam->dist = dist;
-}
-
-void	cam_set_size(t_cam *cam, double size)
-{
-	cam->size = size;
-}
-
-void	cam_set_ratio(t_cam *cam, double ratio)
-{
-	cam->ratio = ratio;
-}
-
 void	cam_geometry(t_cam *cam)
 {
 	cam->align = vec_sub(cam->look_at, cam->pos);

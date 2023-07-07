@@ -4,8 +4,8 @@
 
 void	init_gtfm(t_gtfm *gtfm)
 {
-	identity(&gtfm->tfm_mtx);
-	identity(&gtfm->revtfm_mtx);
+	mtx4_identity(&gtfm->tfm_mtx);
+	mtx4_identity(&gtfm->revtfm_mtx);
 }
 
 void	gtfm_set_transform(t_vec trans, t_vec rot, t_vec scale, t_gtfm *gtfm)
@@ -17,12 +17,12 @@ void	gtfm_set_transform(t_vec trans, t_vec rot, t_vec scale, t_gtfm *gtfm)
 	t_mtx4 	rotz_mtx;
 	t_mtx4	scale_mtx;
 
-	//Set the matrix to identity
-	identity(&trans_mtx);
-	identity(&rotx_mtx);
-	identity(&roty_mtx);
-	identity(&rotz_mtx);
-	identity(&scale_mtx);
+	//Set the matrix to mtx4_identity
+	mtx4_identity(&trans_mtx);
+	mtx4_identity(&rotx_mtx);
+	mtx4_identity(&roty_mtx);
+	mtx4_identity(&rotz_mtx);
+	mtx4_identity(&scale_mtx);
 
 	//Set values
 	//Translation
@@ -52,14 +52,14 @@ void	gtfm_set_transform(t_vec trans, t_vec rot, t_vec scale, t_gtfm *gtfm)
 	scale_mtx.val[2][2] = scale.z;
 
 	//Combine to the final foward matrix
-	gtfm->tfm_mtx = mtx_mult(trans_mtx, rotx_mtx);
-	gtfm->tfm_mtx = mtx_mult(gtfm->tfm_mtx, roty_mtx);
-	gtfm->tfm_mtx = mtx_mult(gtfm->tfm_mtx, rotz_mtx);
-	gtfm->tfm_mtx = mtx_mult(gtfm->tfm_mtx, scale_mtx);
+	gtfm->tfm_mtx = mtx4_mult(trans_mtx, rotx_mtx);
+	gtfm->tfm_mtx = mtx4_mult(gtfm->tfm_mtx, roty_mtx);
+	gtfm->tfm_mtx = mtx4_mult(gtfm->tfm_mtx, rotz_mtx);
+	gtfm->tfm_mtx = mtx4_mult(gtfm->tfm_mtx, scale_mtx);
 
 	//Compute the revtfm
 	gtfm->revtfm_mtx = gtfm->tfm_mtx;
-	invert(&gtfm->revtfm_mtx);
+	mtx4_invert(&gtfm->revtfm_mtx);
 }
 
 t_vec	gtfm_vec_apply(t_gtfm gtfm, t_vec vec, int tfm)

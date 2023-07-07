@@ -2,6 +2,18 @@
 
 #include <stdio.h>
 
+t_obj_lst	*sphere_create(void)
+{
+	t_obj_lst	*sphere;
+
+	sphere = (t_obj_lst *) ft_calloc(1, sizeof (t_obj_lst));
+	if (sphere == NULL)
+		return (NULL);
+	sphere->color = vec_create(0.0, 0.0, 0.0);
+	sphere->intfct = sphere_intersect;
+	return (sphere);
+}
+
 static bool	solve_equation(t_vec v, t_vec ray_origin, double *t1, double *t2)
 {
 	double	b;
@@ -26,20 +38,27 @@ static bool	solve_equation(t_vec v, t_vec ray_origin, double *t1, double *t2)
 
 static bool	compute_intersection(t_ray tfm_ray, t_poi *poi)
 {
-	t_vec	v;
+	t_vec	k;
 	double	t1;
 	double	t2;
 
-	v = tfm_ray.ab;
-	vec_normalize(&v);
-	if (!solve_equation(v, tfm_ray.pa, &t1, &t2))
+	k = tfm_ray.ab;
+	vec_normalize(&k);
+	if (!solve_equation(k, tfm_ray.pa, &t1, &t2))
 		return (false);
 	else
 	{
 		if (t1 < t2)
-			poi->point = vec_add(tfm_ray.pa, vec_mult(v, t1));
+			poi->point = vec_add(tfm_ray.pa, vec_mult(k, t1));
 		if (t1 > t2)
-			poi->point = vec_add(tfm_ray.pa, vec_mult(v, t2));
+			poi->point = vec_add(tfm_ray.pa, vec_mult(k, t2));
+		poi->u = atan(sqrt(pow(poi->point.x, 2.0)
+				+ pow(poi->point.y, 2.0)) / poi->point.z);
+		poi->v = atan(poi->point.y / poi->point.x);
+		if (poi->point.x < 0)
+			poi->v += M_PI;
+		poi->u /= M_PI;
+		poi->v /= M_PI;
 	}
 	return (true);
 }
@@ -51,22 +70,22 @@ bool	sphere_intersect(t_ray cam_ray, t_poi *poi, t_obj_lst *cur_obj)
 	t_vec 	obj_new_origin;
 
 	//Apply the rev gtfm to the ray
-	tfm_ray = gtfm_ray_apply(cur_obj->obj.gtfm, cam_ray, REV);
+	tfm_ray = gtfm_ray_apply(cur_obj->gtfm, cam_ray, REV);
 
 	//Compute intersection point
 	if (!compute_intersection(tfm_ray, poi))
 		return (false);
 
 	//Apply the transform to the point of intersection
-	poi->point = gtfm_vec_apply(cur_obj->obj.gtfm, poi->point, FWD);
+	poi->point = gtfm_vec_apply(cur_obj->gtfm, poi->point, FWD);
 
 	//Compute the local normal
 	obj_origin = vec_create(0.0, 0.0, 0.0);
-	obj_new_origin = gtfm_vec_apply(cur_obj->obj.gtfm, obj_origin, FWD);
+	obj_new_origin = gtfm_vec_apply(cur_obj->gtfm, obj_origin, FWD);
 	poi->normal = vec_sub(poi->point, obj_new_origin);
 	vec_normalize(&poi->normal);
 
-	poi->color = cur_obj->obj.color;
+	poi->color = cur_obj->color;
 	poi->obj = cur_obj;
 	return (true);
 }

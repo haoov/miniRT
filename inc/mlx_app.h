@@ -7,6 +7,9 @@
 # include "camera.h"
 # include <X11/keysym.h>
 
+# define SIZE_X	1280
+# define SIZE_Y 720
+
 typedef struct s_app
 {
 	void	*dsp_id;

@@ -9,62 +9,62 @@ int	scene_render(t_scene *scene, t_img *img)
 	t_material	floor_material;
 	t_material	blue_diffuse;
 	t_material	yellow_diffuse;
+	t_material	silver_metal;
 
 	//Set up the material
-	floor_material.color = vec_create(1.0, 1.0, 1.0);
-	floor_material.reflec = 0.5;
-	floor_material.shiny = 0.0;
-	floor_material.max_ref_ray = 3;
-	floor_material.ref_ray_count = 0;
+	floor_material = simple_mat_const(vec_create(1.0, 1.0, 1.0), 0.5, 0.0);
+	blue_diffuse = simple_mat_const(vec_create(0.2, 0.2, 0.8), 0.05, 5.0);
+	yellow_diffuse = simple_mat_const(vec_create(0.8, 0.8, 0.3), 0.05, 5.0);
+	silver_metal = simple_mat_const(vec_create(0.5, 0.5, 0.8), 0.5, 20.0);
 
-	blue_diffuse.color = vec_create(0.2, 0.2, 0.8);
-	blue_diffuse.reflec = 0.05;
-	blue_diffuse.shiny = 5.0;
-	blue_diffuse.max_ref_ray = 3;
-	blue_diffuse.ref_ray_count = 0;
+	//Create some textures
+	t_texture floor_texture = create_checker_texture();
 
-	yellow_diffuse.color = vec_create(0.8, 0.8, 0.3);
-	yellow_diffuse.reflec = 0.05;
-	yellow_diffuse.shiny = 5.0;
-	yellow_diffuse.max_ref_ray = 3;
-	yellow_diffuse.ref_ray_count = 0;
+	//Set up the texture
+	floor_texture.tfm = set_transform(vec_create(0.0, 0.0, 0.0), 0.0,
+									  vec_create(16.0, 16.0, 0.0));
 
     //Configure the camera
     cam_init(&scene->cam);
-    cam_set_pos(&scene->cam, vec_create(0.0, -10.0, -2.0));
-    cam_set_look_at(&scene->cam, vec_create(0.0, 0.0, 0.0));
-    cam_set_up(&scene->cam, vec_create(0.0, 0.0, 1.0));
-    cam_set_size(&scene->cam, 0.25);
-    cam_set_ratio(&scene->cam, 16.0 / 9.0);
+	scene->cam.pos = vec_create(0.0, -10.0, -3.0);
+	scene->cam.look_at = vec_create(0.0, 0.0, 0.0);
+	scene->cam.up = vec_create(0.0, 0.0, 1.0);
+	scene->cam.size = 0.5;
+	scene->cam.ratio = 16.0 / 9.0;
     cam_geometry(&scene->cam);
 
 	//Create some objects
-	if (add_obj(&scene->obj_lst, PLANE) == NULL)
-		return (FAILURE);
-	gtfm_set_transform(vec_create(0.0, 0.0, 1.0),
-					   vec_create(0.0, 0.0, 0.0),
-					   vec_create(16.0, 16.0, 1.0),
-					   &obj_lst_at(scene->obj_lst, 0)->obj.gtfm);
-	obj_lst_at(scene->obj_lst, 0)->obj.color = vec_create(0.0, 0.0, 0.0);
-	obj_lst_at(scene->obj_lst, 0)->obj.material = floor_material;
+	t_obj_lst	*floor;
+	t_obj_lst	*cylinder;
+	t_obj_lst	*cone;
 
-	if (add_obj(&scene->obj_lst, CYLINDER) == NULL)
-		return (FAILURE);
-	gtfm_set_transform(vec_create(-1.0, 0.0, 0.0),
-					   vec_create(-M_PI_4, 0.0, 0.0),
-					   vec_create(0.5, 0.5, 1.0),
-					   &obj_lst_at(scene->obj_lst, 1)->obj.gtfm);
-	obj_lst_at(scene->obj_lst, 1)->obj.color = vec_create(0.0, 0.0, 0.0);
-	obj_lst_at(scene->obj_lst, 1)->obj.material = blue_diffuse;
+	floor = plane_create();
+	cylinder = cylinder_create();
+	cone = cone_create();
 
-	if (add_obj(&scene->obj_lst, CONE) == NULL)
-		return (FAILURE);
-	gtfm_set_transform(vec_create(1.0, 0.0, 0.0),
-					   vec_create(M_PI_4, 0.0, 0.0),
-					   vec_create(0.5, 0.5, 1.0),
-					   &obj_lst_at(scene->obj_lst, 2)->obj.gtfm);
-	obj_lst_at(scene->obj_lst, 2)->obj.color = vec_create(0.0, 0.0, 0.0);
-	obj_lst_at(scene->obj_lst, 2)->obj.material = yellow_diffuse;
+	gtfm_set_transform(vec_create(0.0, 0.0, 1.0), vec_create(0.0, 0.0, 0.0),
+					   vec_create(16.0, 16.0, 1.0), &floor->gtfm);
+	assign_material(floor, floor_material);
+	assign_texture(&floor->material, floor_texture);
+/*	floor->material = floor_material;
+	floor->material.type = 1;
+	floor->material.texture = floor_texture;
+	floor->material.texture.type = 1;*/
+
+	gtfm_set_transform(vec_create(-1.0, 0.0, 0.0), vec_create(-M_PI_4, 0.0, 0.0),
+					   vec_create(0.5, 0.5, 1.0), &cylinder->gtfm);
+	assign_material(cylinder, blue_diffuse);
+/*	cylinder->material = blue_diffuse;*/
+
+	gtfm_set_transform(vec_create(1.0, 0.0, 0.0), vec_create(M_PI_4, 0.0, 0.0),
+					   vec_create(0.5, 0.5, 1.0), &cone->gtfm);
+	assign_material(cone, yellow_diffuse);
+/*	cone->material = yellow_diffuse;*/
+
+	//Add objects to the scene
+	add_obj(&scene->obj_lst, floor);
+	add_obj(&scene->obj_lst, cylinder);
+	add_obj(&scene->obj_lst, cone);
 
 	//Create test lights
 	if (add_light(&scene->light_lst, POINT) == NULL)
@@ -120,18 +120,18 @@ int	scene_render(t_scene *scene, t_img *img)
 				t_vec rgb;
 
 				//Check if the object has material
-				if (closest_poi.obj->obj.material.type != NONE)
+				if (closest_poi.obj->has_material)
 				{
 					//Use the material to compute the color
-					closest_poi.obj->obj.material.ref_ray_count = 0;
+					closest_poi.obj->material.ref_ray_count = 0;
 					rgb = spl_compute_color(scene->obj_lst, scene->light_lst,
-										closest_poi, cam_ray, closest_poi.obj->obj.material);
+										closest_poi, cam_ray, closest_poi.obj->material);
 				}
 				else
 				{
 					rgb = compute_diffuse_color(scene->obj_lst,
 												scene->light_lst, closest_poi,
-												closest_poi.obj->obj.color);
+												closest_poi.obj->color);
 				}
 				img_store_color(img, x, y, rgb);
 			}
@@ -153,7 +153,7 @@ bool	s_cast_ray(t_ray cam_ray, t_poi *closest_poi, t_obj_lst *obj_cur)
 	while (obj_cur != NULL)
 	{
 		//Test intersection
-		intersection = obj_cur->obj.intfct(cam_ray, &poi, obj_cur);
+		intersection = obj_cur->intfct(cam_ray, &poi, obj_cur);
 
 		if (intersection)
 		{
