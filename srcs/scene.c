@@ -18,11 +18,11 @@ int	scene_render(t_scene *scene, t_img *img)
 	silver_metal = simple_mat_const(vec_create(0.5, 0.5, 0.8), 0.5, 20.0);
 
 	//Create some textures
-	t_texture floor_texture = create_checker_texture();
+	t_texture checker1 = create_checker_texture();
 
 	//Set up the texture
-	floor_texture.tfm = set_transform(vec_create(0.0, 0.0, 0.0), 0.0,
-									  vec_create(16.0, 16.0, 0.0));
+	checker1.tfm = set_transform(vec_create(0.0, 0.0, 0.0), 0.0,
+								 vec_create(16.0, 16.0, 0.0));
 
     //Configure the camera
     cam_init(&scene->cam);
@@ -45,21 +45,15 @@ int	scene_render(t_scene *scene, t_img *img)
 	gtfm_set_transform(vec_create(0.0, 0.0, 1.0), vec_create(0.0, 0.0, 0.0),
 					   vec_create(16.0, 16.0, 1.0), &floor->gtfm);
 	assign_material(floor, floor_material);
-	assign_texture(&floor->material, floor_texture);
-/*	floor->material = floor_material;
-	floor->material.type = 1;
-	floor->material.texture = floor_texture;
-	floor->material.texture.type = 1;*/
+	assign_texture(&floor->material, checker1);
 
 	gtfm_set_transform(vec_create(-1.0, 0.0, 0.0), vec_create(-M_PI_4, 0.0, 0.0),
 					   vec_create(0.5, 0.5, 1.0), &cylinder->gtfm);
 	assign_material(cylinder, blue_diffuse);
-/*	cylinder->material = blue_diffuse;*/
 
 	gtfm_set_transform(vec_create(1.0, 0.0, 0.0), vec_create(M_PI_4, 0.0, 0.0),
 					   vec_create(0.5, 0.5, 1.0), &cone->gtfm);
 	assign_material(cone, yellow_diffuse);
-/*	cone->material = yellow_diffuse;*/
 
 	//Add objects to the scene
 	add_obj(&scene->obj_lst, floor);

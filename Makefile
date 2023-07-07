@@ -31,9 +31,10 @@ SRCS	=	$(SRCDIR)/main.c\
 			$(SRCDIR)/lights/pointlight.c\
 			$(SRCDIR)/materials/material.c\
 			$(SRCDIR)/materials/simple_mat.c\
-			$(SRCDIR)/textures.c\
-			$(SRCDIR)/flat.c\
-			$(SRCDIR)/checker.c\
+			$(SRCDIR)/textures/textures.c\
+			$(SRCDIR)/textures/flat.c\
+			$(SRCDIR)/textures/checker.c\
+			$(SRCDIR)/textures/img.c\
 			$(SRCDIR)/gtfm.c\
 			$(SRCDIR)/clean.c
 HD		=	$(HDDIR)/miniRT.h\

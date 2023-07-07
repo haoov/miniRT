@@ -9,6 +9,9 @@ typedef struct s_texture
 {
 	t_vec4	color1;
 	t_vec4	color2;
+	t_img	img;
+	int		img_width;
+	int		img_height;
 	t_vec	(*colorfct)(struct s_texture, double, double);
 	t_mtx3	tfm;
 }t_texture;
