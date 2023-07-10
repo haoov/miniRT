@@ -16,6 +16,7 @@
 
 typedef struct s_poi		t_poi;
 typedef struct s_obj_lst	t_obj_lst;
+typedef struct s_light_lst	t_light_lst;
 
 /*********************OBJECT TYPES********************/
 
@@ -40,22 +41,21 @@ typedef union u_obj_type
 
 /*******************MATERIALS***********************/
 
-typedef struct s_simple_mat
-{
-	t_vec	color;
-	double	reflec;
-	double	shiny;
-}t_simple_mat;
-
 typedef struct s_material
 {
 	t_vec		color;
 	double		reflec;
 	double		shiny;
+	double		translucency;
+	double		ior;
 	int			max_ref_ray;
 	int			ref_ray_count;
 	t_texture	texture;
 	bool		has_texture;
+	t_vec		ambiant_color;
+	double		ambiant_intensity;
+	t_vec		(*colorfct)(t_obj_lst *, t_light_lst *,
+			t_poi, t_ray, struct s_material);
 }t_material;
 
 /*******************OBJECT**************************/

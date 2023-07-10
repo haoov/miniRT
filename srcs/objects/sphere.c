@@ -27,7 +27,7 @@ static bool	solve_equation(t_vec v, t_vec ray_origin, double *t1, double *t2)
 	{
 		*t1 = (-b + sqrt(test)) / 2.0;
 		*t2 = (-b - sqrt(test)) / 2.0;
-		if (*t1 < 0.0 || *t2 < 0.0)
+		if ((*t1 < 0.0) && (*t2 < 0.0))
 			return (false);
 		else
 			return (true);
@@ -49,9 +49,33 @@ static bool	compute_intersection(t_ray tfm_ray, t_poi *poi)
 	else
 	{
 		if (t1 < t2)
-			poi->point = vec_add(tfm_ray.pa, vec_mult(k, t1));
-		if (t1 > t2)
-			poi->point = vec_add(tfm_ray.pa, vec_mult(k, t2));
+		{
+			if (t1 > 0.0)
+			{
+				poi->point = vec_add(tfm_ray.pa, vec_mult(k, t1));
+			}
+			else
+			{
+				if (t2 > 0.0)
+					poi->point = vec_add(tfm_ray.pa, vec_mult(k, t2));
+				else
+					return (false);
+			}
+		}
+		else
+		{
+			if (t2 > 0.0)
+			{
+				poi->point = vec_add(tfm_ray.pa, vec_mult(k, t2));
+			}
+			else
+			{
+				if (t1 > 0.0)
+					poi->point = vec_add(tfm_ray.pa, vec_mult(k, t1));
+				else
+					return (false);
+			}
+		}
 		poi->u = atan2(sqrt(pow(poi->point.x, 2.0)
 				+ pow(poi->point.y, 2.0)), poi->point.z);
 		poi->v = atan2(poi->point.y, poi->point.x);

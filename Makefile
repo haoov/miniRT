@@ -31,6 +31,7 @@ SRCS	=	$(SRCDIR)/main.c\
 			$(SRCDIR)/lights/pointlight.c\
 			$(SRCDIR)/materials/material.c\
 			$(SRCDIR)/materials/simple_mat.c\
+			$(SRCDIR)/materials/refractive_mat.c\
 			$(SRCDIR)/textures/textures.c\
 			$(SRCDIR)/textures/flat.c\
 			$(SRCDIR)/textures/checker.c\

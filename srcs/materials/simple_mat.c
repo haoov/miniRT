@@ -1,8 +1,5 @@
 #include "material.h"
 
-static t_vec	compute_spec_color(t_obj_lst *obj_lst, t_light_lst *light_lst,
-							t_poi poi, t_ray cam_ray, t_material mat);
-
 t_material	simple_mat_const(t_vec color, double ref, double shiny)
 {
 	t_material	mat;
@@ -13,6 +10,9 @@ t_material	simple_mat_const(t_vec color, double ref, double shiny)
 	mat.max_ref_ray = 3;
 	mat.ref_ray_count = 0;
 	mat.has_texture = false;
+	mat.colorfct = spl_compute_color;
+	mat.ambiant_color = vec_create(1.0, 1.0, 1.0);
+	mat.ambiant_intensity = 0.2;
 	return (mat);
 }
 
@@ -28,17 +28,13 @@ t_vec	spl_compute_color(t_obj_lst *obj_lst, t_light_lst *light_lst, t_poi poi,
 
 	//Compute the diffuse component
 	if (!poi.obj->material.has_texture)
-	{
 		dif_color = compute_diffuse_color(obj_lst, light_lst, poi,
 										  poi.obj->material.color);
-	}
 	else
-	{
 		dif_color = compute_diffuse_color(obj_lst, light_lst, poi,
 										  poi.obj->material.texture.colorfct(
 												  poi.obj->material.texture,
 												  poi.u, poi.v));
-	}
 
 	//Compute the reflection color
 	if (mat.reflec)
@@ -59,65 +55,4 @@ t_vec	spl_compute_color(t_obj_lst *obj_lst, t_light_lst *light_lst, t_poi poi,
 	mat_color = vec_add(mat_color, spec_color);
 
 	return (mat_color);
-}
-
-static t_vec	compute_spec_color(t_obj_lst *obj_lst, t_light_lst *light_lst,
-							t_poi poi, t_ray cam_ray, t_material mat)
-{
-	t_vec	spc_color = vec_create(0.0, 0.0, 0.0);
-	t_vec	rgb = vec_create(0.0, 0.0, 0.0);
-	while (light_lst != NULL)
-	{
-		//Check for intersect with all objects in the scene
-		double	intensity = 0.0;
-
-		//Construct a vector pointing from the poi to the light
-		t_vec	light_dir;
-		light_dir = vec_sub(light_lst->light.pos, poi.point);
-		vec_normalize(&light_dir);
-
-		//Compute a start point
-		t_vec	start_point;
-		start_point = vec_add(poi.point, vec_mult(light_dir, 0.001));
-
-		//Construct a ray from the poi to the light
-		t_ray	light_ray;
-		light_ray = ray_create(start_point, vec_add(start_point, light_dir));
-
-		//Loop trough all objects to see if any obstruct
-		t_poi	ob_poi;
-		bool	valid_int = false;
-
-		while (obj_lst != NULL)
-		{
-			valid_int = obj_lst->intfct(light_ray, &ob_poi, obj_lst);
-			if (valid_int)
-			{
-				break;
-			}
-			obj_lst = obj_lst->next;
-		}
-		if (!valid_int)
-		{
-			//Compute the reflection vector
-			t_vec	d = light_ray.ab;
-			t_vec	r = vec_sub(d, vec_mult(poi.normal, 2 * vec_dot(d, poi.normal)));
-			vec_normalize(&r);
-
-			//Compute the dot product
-			t_vec	v = cam_ray.ab;
-			vec_normalize(&v);
-			double	dot = vec_dot(r, v);
-
-			//Only proceed if the dot product is positive
-			if (dot > 0.0)
-			{
-				intensity = mat.reflec * pow(dot, mat.shiny);
-			}
-		}
-		rgb = vec_add(rgb, vec_mult(light_lst->light.color, intensity));
-		light_lst = light_lst->next;
-	}
-	spc_color = rgb;
-	return (spc_color);
 }
