@@ -12,11 +12,13 @@ typedef struct s_gtfm
 {
 	t_mtx4	tfm_mtx;
 	t_mtx4	revtfm_mtx;
+	t_mtx3	lin_tfm_mtx;
 }t_gtfm;
 
 void	init_gtfm(t_gtfm *gtfm);
 t_ray	gtfm_ray_apply(t_gtfm gtfm,t_ray ray, int tfm);
 t_vec	gtfm_vec_apply(t_gtfm gtfm, t_vec vec, int tfm);
+t_vec	apply_lin_tfm(t_gtfm gtfm, t_vec vec);
 void	gtfm_set_transform(t_vec trans, t_vec rot, t_vec scale, t_gtfm *gtfm);
 
 #endif

@@ -35,11 +35,14 @@ t_vec4	mtx_vec_mult(t_vec4 vec, t_mtx4 m);
 
 bool	mtx3_invert(t_mtx3 *mtx);
 t_mtx3	mtx3_mult(t_mtx3 mtx1, t_mtx3 mtx2);
-void	mtx_3identity(t_mtx3 *mtx);
+void	mtx3_identity(t_mtx3 *mtx);
 t_vec	mtx3_vec_mult(t_vec vec, t_mtx3 m);
+t_mtx3	mtx3_transpose(t_mtx3 mtx);
+t_mtx3	mtx3_extract_linear(t_mtx4 mtx);
 
 bool	close_enough(double val1, double val2);
 
 void	print_mtx4(t_mtx4 mtx);
+void	print_mtx3(t_mtx3 mtx);
 
 #endif

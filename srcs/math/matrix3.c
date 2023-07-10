@@ -90,7 +90,47 @@ t_vec	mtx3_vec_mult(t_vec vec, t_mtx3 m)
 	return (res);
 }
 
-void	mtx_3identity(t_mtx3 *mtx)
+t_mtx3	mtx3_transpose(t_mtx3 mtx)
+{
+	t_mtx3	res;
+	int		l;
+	int		c;
+
+	l = 0;
+	while (l < 3)
+	{
+		c = 0;
+		while (c < 3)
+		{
+			res.val[l][c] = mtx.val[c][l];
+			c++;
+		}
+		l++;
+	}
+	return (res);
+}
+
+t_mtx3	mtx3_extract_linear(t_mtx4 mtx)
+{
+	t_mtx3	res;
+	int		l;
+	int		c;
+
+	l = 0;
+	while (l < 3)
+	{
+		c = 0;
+		while (c < 3)
+		{
+			res.val[l][c] = mtx.val[c][l];
+			c++;
+		}
+		l++;
+	}
+	return (res);
+}
+
+void	mtx3_identity(t_mtx3 *mtx)
 {
 	int l;
 	int c;
@@ -263,7 +303,7 @@ bool	mtx3_invert(t_mtx3 *mtx)
 	t_mtx3		left;
 	t_mtx3 		right;
 
-	mtx_3identity(&id_mtx);
+	mtx3_identity(&id_mtx);
 	tmp_mtx = join_mtx(*mtx, id_mtx);
 
 	int		crow;

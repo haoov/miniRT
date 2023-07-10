@@ -90,8 +90,6 @@ static bool	compute_intersection(t_ray tfm_ray, t_poi *poi)
 bool	sphere_intersect(t_ray cam_ray, t_poi *poi, t_obj_lst *cur_obj)
 {
 	t_ray	tfm_ray;
-	t_vec	obj_origin;
-	t_vec 	obj_new_origin;
 
 	//Apply the rev gtfm to the ray
 	tfm_ray = gtfm_ray_apply(cur_obj->gtfm, cam_ray, REV);
@@ -100,14 +98,12 @@ bool	sphere_intersect(t_ray cam_ray, t_poi *poi, t_obj_lst *cur_obj)
 	if (!compute_intersection(tfm_ray, poi))
 		return (false);
 
+	//Compute the local normal
+	poi->normal = apply_lin_tfm(cur_obj->gtfm, poi->point);
+	vec_normalize(&poi->normal);
+
 	//Apply the transform to the point of intersection
 	poi->point = gtfm_vec_apply(cur_obj->gtfm, poi->point, FWD);
-
-	//Compute the local normal
-	obj_origin = vec_create(0.0, 0.0, 0.0);
-	obj_new_origin = gtfm_vec_apply(cur_obj->gtfm, obj_origin, FWD);
-	poi->normal = vec_sub(poi->point, obj_new_origin);
-	vec_normalize(&poi->normal);
 
 	poi->color = cur_obj->color;
 	poi->obj = cur_obj;

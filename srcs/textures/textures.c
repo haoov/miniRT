@@ -12,19 +12,19 @@ t_mtx3	set_transform(t_vec trans, double rot, t_vec scale)
 {
 	//Build the transform matrix
 	t_mtx3	mtx_rot;
-	mtx_3identity(&mtx_rot);
+	mtx3_identity(&mtx_rot);
 	mtx_rot.val[0][0] = cos(rot);
 	mtx_rot.val[0][1] = -sin(rot);
 	mtx_rot.val[1][0] = sin(rot);
 	mtx_rot.val[1][1] = cos(rot);
 
 	t_mtx3	mtx_scale;
-	mtx_3identity(&mtx_scale);
+	mtx3_identity(&mtx_scale);
 	mtx_scale.val[0][0] = scale.x;
 	mtx_scale.val[1][1] = scale.y;
 
 	t_mtx3	mtx_trans;
-	mtx_3identity(&mtx_trans);
+	mtx3_identity(&mtx_trans);
 	mtx_trans.val[0][2] = trans.x;
 	mtx_trans.val[1][2] = trans.y;
 

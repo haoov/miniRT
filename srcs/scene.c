@@ -13,7 +13,7 @@ int	scene_render(t_app *app, t_scene *scene, t_img *img)
 	t_material	glass_mat;
 
 	//Set up the material
-	floor_material = simple_mat_const(vec_create(1.0, 1.0, 1.0), 0.05, 0.0);
+	floor_material = simple_mat_const(vec_create(1.0, 1.0, 1.0), 0.25, 0.0);
 	blue_diffuse = simple_mat_const(vec_create(0.2, 0.2, 0.8), 0.05, 5.0);
 	yellow_diffuse = simple_mat_const(vec_create(0.8, 0.8, 0.3), 0.05, 5.0);
 	glass_mat = refractive_mat_const(vec_create(1.0, 1.0, 1.0), 0.5, 32.0, 0.8);
@@ -36,26 +36,20 @@ int	scene_render(t_app *app, t_scene *scene, t_img *img)
 	t_obj_lst	*floor;
 	t_obj_lst	*cylinder;
 	t_obj_lst	*cone;
-	t_obj_lst	*sphere;
 
 	floor = plane_create();
 	cylinder = cylinder_create();
 	cone = cone_create();
-	sphere = sphere_create();
 
 	gtfm_set_transform(vec_create(0.0, 0.0, 1.0), vec_create(0.0, 0.0, 0.0),
 					   vec_create(16.0, 16.0, 1.0), &floor->gtfm);
 	assign_material(floor, floor_material);
 
 	gtfm_set_transform(vec_create(-1.0, 0.0, 0.0), vec_create(0.0, 0.0, 0.0),
-					   vec_create(1.0, 1.0, 1.0), &sphere->gtfm);
-	assign_material(sphere, glass_mat);
-
-	gtfm_set_transform(vec_create(-1.0, 8.0, 0.0), vec_create(0.0, 0.0, 0.0),
 					   vec_create(0.5, 0.5, 1.0), &cylinder->gtfm);
 	assign_material(cylinder, blue_diffuse);
 
-	gtfm_set_transform(vec_create(1.0, 0.0, 0.0), vec_create(0.0, 0.0, 0.0),
+	gtfm_set_transform(vec_create(1.0, 0.0, 0.0), vec_create(0.0, M_PI_4, 0.0),
 					   vec_create(0.5, 0.5, 1.0), &cone->gtfm);
 	assign_material(cone, yellow_diffuse);
 
@@ -63,7 +57,6 @@ int	scene_render(t_app *app, t_scene *scene, t_img *img)
 	add_obj(&scene->obj_lst, floor);
 	add_obj(&scene->obj_lst, cylinder);
 	add_obj(&scene->obj_lst, cone);
-	add_obj(&scene->obj_lst, sphere);
 
 	//Create test lights
 	if (add_light(&scene->light_lst, POINT) == NULL)
