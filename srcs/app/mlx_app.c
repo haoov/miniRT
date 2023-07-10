@@ -25,19 +25,20 @@ int	app_init(t_app *app)
 	return (SUCCESS);
 }
 
-void	test_texture(t_img *img)
+void	test_texture(t_app *app, t_img *img)
 {
-	t_texture	checker;
-	checker = create_checker_texture();
-	checker.tfm = set_transform(vec_create(0.0, 0.0, 0.0), M_PI_4,
-								vec_create(4.0, 4.0, 0.0));
+	t_texture	img_txt;
+	img_txt = img_txt_create();
+	load_image(app, &img_txt, "./imgs/water.xpm");
+	img_txt.tfm = set_transform(vec_create(0.0, 0.0, 0.0), 0.0,
+								vec_create(1.0, 1.0, 1.0));
 	for (int x = 0; x < img->size_x; ++x)
 	{
 		for (int y = 0; y < img->size_y; ++y)
 		{
 			double	u = ((double) x / (((double) img->size_x) / 2.0)) - 1.0;
 			double	v = ((double) y / (((double) img->size_y) / 2.0)) - 1.0;
-			t_vec	color = checker.colorfct(checker, u, v);
+			t_vec	color = img_txt.colorfct(img_txt, u, v);
 			img_store_color(img, x, y, color);
 		}
 	}
@@ -49,8 +50,8 @@ int	app_execute(t_app *app)
 	{
 		return (FAILURE);
 	}
-	//test_texture(&app->img);
-	if (scene_render(&app->scene, &app->img) == FAILURE)
+	//test_texture(app, &app->img);
+	if (scene_render(app, &app->scene, &app->img) == FAILURE)
 	{
 		app_exit(app);
 		return (FAILURE);
@@ -75,11 +76,11 @@ void	app_loop(t_app *app)
 
 int	app_exit(t_app *app)
 {
+	cleanup(app);
 	img_destroy(&app->img);
 	mlx_destroy_window(app->dsp_id, app->win_id);
 	mlx_destroy_display(app->dsp_id);
 	free(app->dsp_id);
-	cleanup(app);
 	return (SUCCESS);
 }
 

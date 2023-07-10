@@ -73,6 +73,29 @@ void	img_store_color(t_img *img, int x, int y, t_vec rgb)
 		img->max_rgb = rgb.z;
 }
 
+void	img_extract_rgb(t_img img, int index, t_vec *rgb)
+{
+	uint32_t *color;
+
+	color = (uint32_t *) (img.data + index);
+	if (img.bpp != 32)
+	{
+		*color = mlx_get_color_value(img.dsp_id, (int) *color);
+	}
+	if (img.ed == 0)
+	{
+		rgb->x = (*color >> 16) / 255.0;
+		rgb->y = ((*color >> 8) & 0xFF) / 255.0;
+		rgb->z = ((*color) & 0xFF) / 255.0;
+	}
+	else
+	{
+		rgb->x = ((*color >> 8) & 0xFF) / 255.0;
+		rgb->y = ((*color >> 16) & 0xFF) / 255.0;
+		rgb->z = ((*color >> 24) & 0xFF) / 255.0;
+	}
+}
+
 void	img_display(void *win_id, t_img *img, int x, int y)
 {
 	int			i;

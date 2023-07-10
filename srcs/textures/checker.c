@@ -6,6 +6,7 @@ t_texture	create_checker_texture(void)
 {
 	t_texture	checker;
 
+	ft_memset(&checker, 0, sizeof (t_texture));
 	checker.color1 = vec4_create(1.0, 1.0, 1.0, 1.0);
 	checker.color2 = vec4_create(0.2, 0.2, 0.2, 1.0);
 	checker.colorfct = checker_get_color;

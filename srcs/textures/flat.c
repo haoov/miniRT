@@ -4,6 +4,7 @@ t_texture	create_flat_texture(void)
 {
 	t_texture	flat;
 
+	ft_memset(&flat, 0, sizeof (t_texture));
 	flat.color1 = vec4_create(1.0, 0.0, 0.0, 1.0);
 	flat.colorfct = flat_get_color;
 	return (flat);
