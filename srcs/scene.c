@@ -6,24 +6,17 @@
 int	scene_render(t_app *app, t_scene *scene, t_img *img)
 {
 	(void)app;
-	//Create some material
-	t_material	floor_material;
-	t_material	blue_diffuse;
-	t_material	yellow_diffuse;
-	t_material	glass_mat;
+//******************************************************************************
+//Create some material
+//******************************************************************************
 
-	//Set up the material
-	floor_material = simple_mat_const(vec_create(1.0, 1.0, 1.0), 0.25, 0.0);
-	blue_diffuse = simple_mat_const(vec_create(0.2, 0.2, 0.8), 0.05, 5.0);
-	yellow_diffuse = simple_mat_const(vec_create(0.8, 0.8, 0.3), 0.05, 5.0);
-	glass_mat = refractive_mat_const(vec_create(1.0, 1.0, 1.0), 0.5, 32.0, 0.8);
-	glass_mat.ior = 1.3;
+//******************************************************************************
+//Create some textures
+//******************************************************************************
 
-	//Create some textures
-
-	//Set up the texture
-
-    //Configure the camera
+//******************************************************************************
+//Configure the camera
+//******************************************************************************
     cam_init(&scene->cam);
 	scene->cam.pos = vec_create(0.0, -10.0, -2.0);
 	scene->cam.look_at = vec_create(0.0, 0.0, 0.0);
@@ -32,51 +25,32 @@ int	scene_render(t_app *app, t_scene *scene, t_img *img)
 	scene->cam.ratio = 16.0 / 9.0;
     cam_geometry(&scene->cam);
 
-	//Create some objects
-	t_obj_lst	*floor;
-	t_obj_lst	*cylinder;
-	t_obj_lst	*cone;
+//******************************************************************************
+//Create some objects
+//******************************************************************************
+	t_obj_lst	*plane;
 
-	floor = plane_create();
-	cylinder = cylinder_create();
-	cone = cone_create();
+	plane = plane_create();
+	plane->gtfm = gtfm_set(vec_create(0.0, 0.0, 0.0),
+						   vec_create(M_PI_4, 0.0, 0.0),
+						   vec_create(1.0, 1.0, 1.0));
 
-	gtfm_set_transform(vec_create(0.0, 0.0, 1.0), vec_create(0.0, 0.0, 0.0),
-					   vec_create(16.0, 16.0, 1.0), &floor->gtfm);
-	assign_material(floor, floor_material);
+//******************************************************************************
+//Add objects to the scene
+//******************************************************************************
+	add_obj(&scene->obj_lst, plane);
 
-	gtfm_set_transform(vec_create(-1.0, 0.0, 0.0), vec_create(0.0, 0.0, 0.0),
-					   vec_create(0.5, 0.5, 1.0), &cylinder->gtfm);
-	assign_material(cylinder, blue_diffuse);
-
-	gtfm_set_transform(vec_create(1.0, 0.0, 0.0), vec_create(0.0, M_PI_4, 0.0),
-					   vec_create(0.5, 0.5, 1.0), &cone->gtfm);
-	assign_material(cone, yellow_diffuse);
-
-	//Add objects to the scene
-	add_obj(&scene->obj_lst, floor);
-	add_obj(&scene->obj_lst, cylinder);
-	add_obj(&scene->obj_lst, cone);
-
-	//Create test lights
+//******************************************************************************
+//Create lights
+//******************************************************************************
 	if (add_light(&scene->light_lst, POINT) == NULL)
-	{
 		return (FAILURE);
-	}
-	scene->light_lst->light.pos = vec_create(5.0, -10.0, -5.0);
-	scene->light_lst->light.color = vec_create(0.0, 0.0, 1.0);
+	scene->light_lst->light.pos = vec_create(0.0, -10.0, -5.0);
+	scene->light_lst->light.color = vec_create(1.0, 1.0, 1.0);
 	if (add_light(&scene->light_lst, POINT) == NULL)
-	{
 		return (FAILURE);
-	}
-	light_lst_at(scene->light_lst, 1)->light.pos = vec_create(-5.0, -10.0, -5.0);
-	light_lst_at(scene->light_lst, 1)->light.color = vec_create(1.0, 0.0, 0.0);
-	if (add_light(&scene->light_lst, POINT) == NULL)
-	{
-		return (FAILURE);
-	}
-	light_lst_at(scene->light_lst, 2)->light.pos = vec_create(0.0, -10.0, -5.0);
-	light_lst_at(scene->light_lst, 2)->light.color = vec_create(0.0, 1.0, 0.0);
+	light_lst_at(scene->light_lst, 1)->light.pos = vec_create(0.0, 10.0, -5.0);
+	light_lst_at(scene->light_lst, 1)->light.color = vec_create(1.0, 1.0, 1.0);
 
     //Loop over every pixel
     t_ray   	cam_ray;

@@ -8,7 +8,7 @@ t_obj_lst	*plane_create(void)
 	plane = (t_obj_lst *) ft_calloc(1, sizeof (t_obj_lst));
 	if (plane == NULL)
 		return (NULL);
-	plane->color = vec_create(0.0, 0.0, 0.0);
+	plane->color = vec_create(1.0, 1.0, 1.0);
 	plane->intfct = plane_intersect;
 	return (plane);
 }
@@ -58,6 +58,8 @@ bool	plane_intersect(t_ray cam_ray, t_poi *poi, t_obj_lst *cur_obj)
 {
 	t_ray	tfm_ray;
 	t_vec	normal_vec;
+	t_vec	origin;
+	t_vec	new_origin;
 
 	tfm_ray = gtfm_ray_apply(cur_obj->gtfm, cam_ray, REV);
 
@@ -69,8 +71,10 @@ bool	plane_intersect(t_ray cam_ray, t_poi *poi, t_obj_lst *cur_obj)
 	poi->point = gtfm_vec_apply(cur_obj->gtfm, poi->point, FWD);
 
 	//Compute the normal
+	origin = vec_create(0.0, 0.0, 0.0);
 	normal_vec = vec_create(0.0, 0.0, -1.0);
-	poi->normal = apply_lin_tfm(cur_obj->gtfm, normal_vec);
+	new_origin = gtfm_vec_apply(cur_obj->gtfm, origin, FWD);
+	poi->normal = vec_sub(gtfm_vec_apply(cur_obj->gtfm, normal_vec, FWD), new_origin);
 	vec_normalize(&poi->normal);
 
 	//Return the base color

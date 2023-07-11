@@ -8,7 +8,7 @@ t_obj_lst	*cone_create(void)
 	cone = (t_obj_lst *) ft_calloc(1, sizeof (t_obj_lst));
 	if (cone == NULL)
 		return (NULL);
-	cone->color = vec_create(0.0, 0.0, 0.0);
+	cone->color = vec_create(1.0, 1.0, 1.0);
 	cone->intfct = cone_intersect;
 	return (cone);
 }

@@ -9,7 +9,7 @@ t_obj_lst	*sphere_create(void)
 	sphere = (t_obj_lst *) ft_calloc(1, sizeof (t_obj_lst));
 	if (sphere == NULL)
 		return (NULL);
-	sphere->color = vec_create(0.0, 0.0, 0.0);
+	sphere->color = vec_create(1.0, 1.0, 1.0);
 	sphere->intfct = sphere_intersect;
 	return (sphere);
 }

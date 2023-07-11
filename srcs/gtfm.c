@@ -11,8 +11,10 @@ void	init_gtfm(t_gtfm *gtfm)
 	mtx3_identity(&gtfm->lin_tfm_mtx);
 }
 
-void	gtfm_set_transform(t_vec trans, t_vec rot, t_vec scale, t_gtfm *gtfm)
+t_gtfm	gtfm_set(t_vec trans, t_vec rot, t_vec scale)
 {
+	t_gtfm	gtfm;
+
 	//Define a matric for each component
 	t_mtx4	trans_mtx;
 	t_mtx4	rotx_mtx;
@@ -34,7 +36,6 @@ void	gtfm_set_transform(t_vec trans, t_vec rot, t_vec scale, t_gtfm *gtfm)
 	trans_mtx.val[2][3] = trans.z;
 
 	//rotation
-	rot.x = rot.x * (M_PI / 180);
 	rotx_mtx.val[1][1] = cos(rot.x);
 	rotx_mtx.val[1][2] = -sin(rot.x);
 	rotx_mtx.val[2][1] = sin(rot.x);
@@ -56,15 +57,16 @@ void	gtfm_set_transform(t_vec trans, t_vec rot, t_vec scale, t_gtfm *gtfm)
 	scale_mtx.val[2][2] = scale.z;
 
 	//Combine to the final foward matrix
-	gtfm->tfm_mtx = mtx4_mult(trans_mtx, rotx_mtx);
-	gtfm->tfm_mtx = mtx4_mult(gtfm->tfm_mtx, roty_mtx);
-	gtfm->tfm_mtx = mtx4_mult(gtfm->tfm_mtx, rotz_mtx);
-	gtfm->tfm_mtx = mtx4_mult(gtfm->tfm_mtx, scale_mtx);
+	gtfm.tfm_mtx = mtx4_mult(trans_mtx, rotx_mtx);
+	gtfm.tfm_mtx = mtx4_mult(gtfm.tfm_mtx, roty_mtx);
+	gtfm.tfm_mtx = mtx4_mult(gtfm.tfm_mtx, rotz_mtx);
+	gtfm.tfm_mtx = mtx4_mult(gtfm.tfm_mtx, scale_mtx);
 
 	//Compute the revtfm
-	gtfm->revtfm_mtx = gtfm->tfm_mtx;
-	mtx4_invert(&gtfm->revtfm_mtx);
-	gtfm->lin_tfm_mtx = compute_lin_tfm(gtfm->tfm_mtx);
+	gtfm.revtfm_mtx = gtfm.tfm_mtx;
+	mtx4_invert(&gtfm.revtfm_mtx);
+	gtfm.lin_tfm_mtx = compute_lin_tfm(gtfm.tfm_mtx);
+	return (gtfm);
 }
 
 t_mtx3	compute_lin_tfm(t_mtx4 tfm_mtx)

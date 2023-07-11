@@ -8,7 +8,7 @@ t_obj_lst	*cylinder_create(void)
 	cylinder = (t_obj_lst *) ft_calloc(1, sizeof (t_obj_lst));
 	if (cylinder == NULL)
 		return (NULL);
-	cylinder->color = vec_create(0.0, 0.0, 0.0);
+	cylinder->color = vec_create(1.0, 1.0, 1.0);
 	cylinder->intfct = cylinder_intersect;
 	return (cylinder);
 }

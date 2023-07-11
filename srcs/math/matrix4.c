@@ -287,6 +287,7 @@ bool	mtx4_invert(t_mtx4 *mtx)
 	double	mult_fact;
 	double	correc_fact;
 	bool	complete = false;
+	double	div;
 
 	while (complete == false && count < max_count)
 	{
@@ -298,14 +299,22 @@ bool	mtx4_invert(t_mtx4 *mtx)
 			max_index = max_row(tmp_mtx, ccol, crow);
 			if (max_index != crow)
 			{
+//				printf("Sap row %d with row %d\n", crow, max_index);
 				swap_rows(&tmp_mtx, crow, max_index);
+/*				sep_mtx(tmp_mtx, &left, &right);
+				print_mtx4(left);*/
 			}
 
 			if (tmp_mtx.val[crow][ccol] != 1)
 			{
-				mult_fact = 1.0 / tmp_mtx.val[crow][ccol];
-				//printf("Mult row %d by %f\n", crow, mult_fact);
+				div = tmp_mtx.val[crow][ccol];
+				if (div == 0.0)
+					div = 1.0;
+				mult_fact = 1.0 / div;
+//				printf("Mult row %d by %f\n", crow, mult_fact);
 				row_mult(&tmp_mtx, crow, mult_fact);
+/*				sep_mtx(tmp_mtx, &left, &right);
+				print_mtx4(left);*/
 			}
 
 			row_index = crow + 1;
@@ -317,12 +326,16 @@ bool	mtx4_invert(t_mtx4 *mtx)
 
 					celem_val = tmp_mtx.val[row_index][ccol];
 					felem_val = tmp_mtx.val[row1_index][ccol];
+					if (felem_val == 0.0)
+						felem_val = 1.0;
 
 					if (!close_enough(felem_val, 0.0))
 					{
 						correc_fact = -(celem_val / felem_val);
-						//printf("col : Mult row %d by %f and add it to row %d\n", row1_index, correc_fact, row_index);
+//						printf("col : Mult row %d by %f and add it to row %d\n", row1_index, correc_fact, row_index);
 						row_mult_add(&tmp_mtx, row1_index, correc_fact, row_index);
+/*						sep_mtx(tmp_mtx, &left, &right);
+						print_mtx4(left);*/
 					}
 				}
 				row_index++;
@@ -337,12 +350,16 @@ bool	mtx4_invert(t_mtx4 *mtx)
 
 					celem_val = tmp_mtx.val[crow][col_index];
 					felem_val = tmp_mtx.val[row1_index][col_index];
+					if (felem_val == 0.0)
+						felem_val = 1.0;
 
 					if (!close_enough(felem_val, 0.0))
 					{
 						correc_fact = -(celem_val / felem_val);
-						//printf("row : Mult row %d by %f and add it to row %d\n", row1_index, correc_fact, crow);
+//						printf("row : Mult row %d by %f and add it to row %d\n", row1_index, correc_fact, crow);
 						row_mult_add(&tmp_mtx, row1_index, correc_fact, crow);
+/*						sep_mtx(tmp_mtx, &left, &right);
+						print_mtx4(left);*/
 					}
 				}
 				col_index++;
