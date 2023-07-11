@@ -35,6 +35,7 @@ t_gtfm	gtfm_set(t_vec trans, t_vec rot, t_vec scale)
 	trans_mtx.val[1][3] = trans.y;
 	trans_mtx.val[2][3] = trans.z;
 
+	rot = vec_mult(rot, M_PI / 180);
 	//rotation
 	rotx_mtx.val[1][1] = cos(rot.x);
 	rotx_mtx.val[1][2] = -sin(rot.x);

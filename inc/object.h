@@ -7,6 +7,7 @@
 # include "libft.h"
 # include "matrix.h"
 # include "texture.h"
+# include "normal_map.h"
 # include <stdbool.h>
 
 # define SPHERE		0
@@ -43,19 +44,21 @@ typedef union u_obj_type
 
 typedef struct s_material
 {
-	t_vec		color;
-	double		reflec;
-	double		shiny;
-	double		translucency;
-	double		ior;
-	int			max_ref_ray;
-	int			ref_ray_count;
-	t_texture	texture;
-	bool		has_texture;
-	t_vec		ambiant_color;
-	double		ambiant_intensity;
-	t_vec		(*colorfct)(t_obj_lst *, t_light_lst *,
-			t_poi, t_ray, struct s_material);
+	t_vec			color;
+	double			reflec;
+	double			shiny;
+	double			translucency;
+	double			ior;
+	int				max_ref_ray;
+	int				ref_ray_count;
+	t_texture		texture;
+	bool			has_texture;
+	t_vec			ambiant_color;
+	double			ambiant_intensity;
+	t_vec			(*colorfct)(t_obj_lst *, t_light_lst *,
+				t_poi, t_ray, struct s_material);
+	t_normal_map	normal_map;
+	bool			has_normal_map;
 }t_material;
 
 /*******************OBJECT**************************/

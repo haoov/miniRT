@@ -36,6 +36,7 @@ SRCS	=	$(SRCDIR)/main.c\
 			$(SRCDIR)/textures/flat.c\
 			$(SRCDIR)/textures/checker.c\
 			$(SRCDIR)/textures/img.c\
+			$(SRCDIR)/normal_map.c\
 			$(SRCDIR)/gtfm.c\
 			$(SRCDIR)/clean.c
 HD		=	$(HDDIR)/miniRT.h\

@@ -39,9 +39,9 @@ t_vec	compute_diffuse_color(t_obj_lst *obj_lst, t_light_lst *light_lst,
 	else
 	{
 		//The ambiant conditions
-		diff_color.x = poi.obj->material.ambiant_color.x * poi.obj->material.ambiant_intensity;
-		diff_color.y = poi.obj->material.ambiant_color.y * poi.obj->material.ambiant_intensity;
-		diff_color.z = poi.obj->material.ambiant_color.z * poi.obj->material.ambiant_intensity;
+		diff_color.x = poi.obj->material.ambiant_color.x * poi.obj->material.ambiant_intensity * base_color.x;
+		diff_color.y = poi.obj->material.ambiant_color.y * poi.obj->material.ambiant_intensity * base_color.y;
+		diff_color.z = poi.obj->material.ambiant_color.z * poi.obj->material.ambiant_intensity * base_color.z;
 	}
 	return (diff_color);
 }

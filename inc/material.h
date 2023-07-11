@@ -13,6 +13,7 @@ t_material	refractive_mat_const(t_vec color, double ref, double shiny,
 								   double trans);
 
 void	assign_material(t_obj_lst *obj, t_material material);
+void	assign_normal_map(t_material *mat, t_normal_map map);
 
 t_vec	spl_compute_color(t_obj_lst *obj_lst, t_light_lst *light_lst, t_poi poi,
 						   t_ray cam_ray, t_material mat);

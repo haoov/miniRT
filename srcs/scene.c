@@ -9,10 +9,31 @@ int	scene_render(t_app *app, t_scene *scene, t_img *img)
 //******************************************************************************
 //Create some material
 //******************************************************************************
+	t_material	bluediff;
+
+	bluediff = simple_mat_const(vec_create(0.2, 0.2, 0.8), 0.0, 0.0);
 
 //******************************************************************************
 //Create some textures
 //******************************************************************************
+	t_texture	water_img;
+
+	water_img = img_txt_create();
+	load_image(app, &water_img, "./imgs/Water-0341.xpm");
+	water_img.tfm =  set_transform(vec_create(0.0, 0.0, 0.0), 0.0,
+								   vec_create(20.0, 20.0, 20.0));
+	assign_texture(&bluediff, water_img);
+
+//******************************************************************************
+//Create normal map
+//******************************************************************************
+	t_normal_map	water_map;
+
+	water_map = normal_map_create();
+	nmap_load_image(app, &water_map, "./normal_maps/Water-0341normal.xpm");
+	water_map.tfm = set_transform(vec_create(0.0, 0.0, 0.0), 0.0,
+								  vec_create(20.0, 20.0, 20.0));
+	assign_normal_map(&bluediff, water_map);
 
 //******************************************************************************
 //Configure the camera
@@ -32,8 +53,9 @@ int	scene_render(t_app *app, t_scene *scene, t_img *img)
 
 	plane = plane_create();
 	plane->gtfm = gtfm_set(vec_create(0.0, 0.0, 0.0),
-						   vec_create(M_PI_4, 0.0, 0.0),
-						   vec_create(1.0, 1.0, 1.0));
+						   vec_create(0.0, 0.0, 0.0),
+						   vec_create(20.0, 20.0, 20.0));
+	assign_material(plane, bluediff);
 
 //******************************************************************************
 //Add objects to the scene
@@ -45,12 +67,8 @@ int	scene_render(t_app *app, t_scene *scene, t_img *img)
 //******************************************************************************
 	if (add_light(&scene->light_lst, POINT) == NULL)
 		return (FAILURE);
-	scene->light_lst->light.pos = vec_create(0.0, -10.0, -5.0);
+	scene->light_lst->light.pos = vec_create(0.0, 0.0, 5.0);
 	scene->light_lst->light.color = vec_create(1.0, 1.0, 1.0);
-	if (add_light(&scene->light_lst, POINT) == NULL)
-		return (FAILURE);
-	light_lst_at(scene->light_lst, 1)->light.pos = vec_create(0.0, 10.0, -5.0);
-	light_lst_at(scene->light_lst, 1)->light.color = vec_create(1.0, 1.0, 1.0);
 
     //Loop over every pixel
     t_ray   	cam_ray;

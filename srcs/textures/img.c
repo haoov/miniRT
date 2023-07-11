@@ -21,6 +21,7 @@ t_vec	img_get_color(t_texture texture, double u, double v)
 
 	uv_coords.x = u;
 	uv_coords.y = -v;
+	uv_coords.z = 0.0;
 	new_loc = apply_transform(texture.tfm, uv_coords);
 
 	double	new_u = new_loc.x;

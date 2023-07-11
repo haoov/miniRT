@@ -75,6 +75,7 @@ bool	plane_intersect(t_ray cam_ray, t_poi *poi, t_obj_lst *cur_obj)
 	normal_vec = vec_create(0.0, 0.0, -1.0);
 	new_origin = gtfm_vec_apply(cur_obj->gtfm, origin, FWD);
 	poi->normal = vec_sub(gtfm_vec_apply(cur_obj->gtfm, normal_vec, FWD), new_origin);
+	//poi->normal = apply_lin_tfm(cur_obj->gtfm, normal_vec);
 	vec_normalize(&poi->normal);
 
 	//Return the base color
