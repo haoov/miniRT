@@ -76,13 +76,15 @@ static bool	compute_intersection(t_ray tfm_ray, t_poi *poi)
 					return (false);
 			}
 		}
-		poi->u = atan2(sqrt(pow(poi->point.x, 2.0)
+/*		poi->u = atan2(sqrt(pow(poi->point.x, 2.0)
 				+ pow(poi->point.y, 2.0)), poi->point.z);
 		poi->v = atan2(poi->point.y, poi->point.x);
-		if (poi->point.x < 0)
-			poi->v += M_PI;
 		poi->u /= M_PI;
-		poi->v /= M_PI;
+		poi->v /= M_PI;*/
+
+		poi->u = atan2(poi->point.y, poi->point.x) / M_PI;
+		poi->v = 2.0 * (atan2(sqrt(pow(poi->point.x, 2.0)
+				+ pow(poi->point.y, 2.0)), poi->point.z) / M_PI) - 1.0;
 	}
 	return (true);
 }
@@ -90,6 +92,8 @@ static bool	compute_intersection(t_ray tfm_ray, t_poi *poi)
 bool	sphere_intersect(t_ray cam_ray, t_poi *poi, t_obj_lst *cur_obj)
 {
 	t_ray	tfm_ray;
+	t_vec	origin;
+	t_vec	new_origin;
 
 	//Apply the rev gtfm to the ray
 	tfm_ray = gtfm_ray_apply(cur_obj->gtfm, cam_ray, REV);
@@ -98,12 +102,14 @@ bool	sphere_intersect(t_ray cam_ray, t_poi *poi, t_obj_lst *cur_obj)
 	if (!compute_intersection(tfm_ray, poi))
 		return (false);
 
-	//Compute the local normal
-	poi->normal = apply_lin_tfm(cur_obj->gtfm, poi->point);
-	vec_normalize(&poi->normal);
-
 	//Apply the transform to the point of intersection
 	poi->point = gtfm_vec_apply(cur_obj->gtfm, poi->point, FWD);
+
+	//Compute the local normal
+	origin = vec_create(0.0, 0.0, 0.0);
+	new_origin = gtfm_vec_apply(cur_obj->gtfm, origin, FWD);
+	poi->normal = vec_sub(poi->point, new_origin);
+	vec_normalize(&poi->normal);
 
 	poi->color = cur_obj->color;
 	poi->obj = cur_obj;

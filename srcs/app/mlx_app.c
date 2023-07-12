@@ -29,7 +29,7 @@ void	test_texture(t_app *app, t_img *img)
 {
 	t_texture	img_txt;
 	img_txt = img_txt_create();
-	load_image(app, &img_txt, "./imgs/water.xpm");
+	load_image(app, &img_txt, "./imgs/earth.xpm");
 	img_txt.tfm = set_transform(vec_create(0.0, 0.0, 0.0), 0.0,
 								vec_create(1.0, 1.0, 1.0));
 	for (int x = 0; x < img->size_x; ++x)
