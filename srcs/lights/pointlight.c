@@ -29,6 +29,8 @@ bool	point_illum(t_vec *point, t_vec *norm, t_vec *color, double *intensity,
 		if (obj_lst != cur_obj)
 		{
 			valid_int = obj_lst->intfct(light_ray, &poi, obj_lst);
+			if (valid_int && poi.obj->material.translucency)
+				valid_int = false;
 			if (valid_int)
 			{
 				double	light_dist = vec_norm(vec_sub(light.pos, poi.point));

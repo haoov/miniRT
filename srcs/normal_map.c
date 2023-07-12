@@ -30,18 +30,18 @@ t_vec	nmap_compute_perturb(t_normal_map map,t_vec normal, double u, double v)
 	uv_coord.z = 0.0;
 	new_loc = apply_transform(map.tfm, uv_coord);
 
-	double	newu;
-	double	newv;
+	double	new_u;
+	double	new_v;
 
-	newu = new_loc.x;
-	newv = new_loc.y;
-	newu = fmod(newu, 1.0);
-	newv = fmod(newv, 1.0);
+	new_u = new_loc.x;
+	new_v = new_loc.y;
+/*	new_u = fmod(new_u, 1.0);
+	new_v = fmod(new_v, 1.0);
 
 	double	xsd = (double) map.img.size_x;
 	double	ysd = (double) map.img.size_y;
-	double	xF = ((u + 1.0) / 2.0) * xsd;
-	double	yF = ysd - (((v + 1.0) / 2.0) * ysd);
+	double	xF = ((new_u + 1.0) / 2.0) * xsd;
+	double	yF = ysd - (((new_v + 1.0) / 2.0) * ysd);
 	int		x = (int) round(xF);
 	int		y = (int) round(yF);
 	(void)x;
@@ -55,27 +55,40 @@ t_vec	nmap_compute_perturb(t_normal_map map,t_vec normal, double u, double v)
 	t_vec	rgb0;
 	t_vec	rgb1;
 	t_vec	rgb2;
-	t_vec	rgb3;
+	t_vec	rgb3;*/
 
-	rgb0 = nmap_extract_rgb(map.img, xmin, ymin);
+	int	x;
+	int	y;
+	x = (int) (round(((new_u + 1.0) / 2.0) * (double) map.img.size_x));
+	y = map.img.size_y - ((int) (round(((new_v + 1.0) / 2.0) * (double) map.img.size_y)));
+
+	x = ((x % map.img.size_x) + map.img.size_x) % map.img.size_x;
+	y = ((y % map.img.size_y) + map.img.size_y) % map.img.size_y;
+
+/*	rgb0 = nmap_extract_rgb(map.img, xmin, ymin);
 	rgb1 = nmap_extract_rgb(map.img, xmax, ymin);
 	rgb2 = nmap_extract_rgb(map.img, xmin, ymax);
-	rgb3 = nmap_extract_rgb(map.img, xmax, ymax);
+	rgb3 = nmap_extract_rgb(map.img, xmax, ymax);*/
 
-	double	interpr;
+/*	double	interpr;
 	double	interpg;
-	double	interpb;
+	double	interpb;*/
 
-	interpr = bilinear_interp(xmin, ymin, rgb0.x, xmax, ymin, rgb1.x,
+
+/*	interpr = bilinear_interp(xmin, ymin, rgb0.x, xmax, ymin, rgb1.x,
 							  xmin, ymax, rgb2.x, xmax, ymax, rgb3.x, xF, yF);
 	interpg = bilinear_interp(xmin, ymin, rgb0.y, xmax, ymin, rgb1.y,
 							  xmin, ymax, rgb2.y, xmax, ymax, rgb3.y, xF, yF);
 	interpb = bilinear_interp(xmin, ymin, rgb0.z, xmax, ymin, rgb1.z,
-							  xmin, ymax, rgb2.z, xmax, ymax, rgb3.z, xF, yF);
+							  xmin, ymax, rgb2.z, xmax, ymax, rgb3.z, xF, yF);*/
 
-	t_vec	perturbation = vec_create(interpr, interpg, interpb);
+/*	t_vec	perturbation = vec_create(interpr, interpg, interpb);*/
+	int		pixel_index = y * map.img.bpl + x * (map.img.bpp / 8);
+	t_vec	rgb;
 
-	return (perturb_normal(normal, perturbation));
+	rgb = nmap_extract_rgb(map.img, pixel_index);
+
+	return (perturb_normal(normal, rgb));
 }
 
 int	nmap_load_image(t_app *app, t_normal_map *map, char *file_name)
@@ -97,33 +110,33 @@ int	nmap_load_image(t_app *app, t_normal_map *map, char *file_name)
 	return (SUCCESS);
 }
 
-t_vec	nmap_extract_rgb(t_img img, int x, int y)
+t_vec	nmap_extract_rgb(t_img img, int pixel_index)
 {
 	t_vec	rgb;
 
 	uint32_t *color;
 
-	color = (uint32_t *) (img.data + (y * img.bpl) + (x * (img.bpp / 8)));
+	color = (uint32_t *) (img.data + pixel_index);
 	if (img.bpp != 32)
 	{
 		*color = mlx_get_color_value(img.dsp_id, (int) *color);
 	}
 	if (img.ed == 0)
 	{
-		rgb.x = ((*color >> 16) - 128) / 128.0;
-		rgb.y = (((*color >> 8) & 0xFF) - 128) / 128.0;
-		rgb.z = ((*color) & 0xFF) / 255.0;
+		rgb.x = ((double) (*color >> 16) - 128.0) / 128.0;
+		rgb.y = ((double) ((*color >> 8) & 0xFF) - 128.0) / 128.0;
+		rgb.z = (double) ((*color) & 0xFF) / 255.0;
 	}
 	else
 	{
-		rgb.x = (((*color >> 8) & 0xFF) - 128) / 128.0;
-		rgb.y = (((*color >> 16) & 0xFF) - 128) / 128.0;
-		rgb.z = ((*color >> 24) & 0xFF) / 255.0;
+		rgb.x = (double) ((*color >> 8) & 0xFF);
+		rgb.y = (double) ((*color >> 16) & 0xFF);
+		rgb.z = (double) ((*color >> 24) & 0xFF);
 	}
 	return (rgb);
 }
 
-double	linear_interp(double x0, double y0, double x1, double y1, double x)
+/*double	linear_interp(double x0, double y0, double x1, double y1, double x)
 {
 	double	res;
 
@@ -150,7 +163,7 @@ double	bilinear_interp(double x0, double y0, double v0,
 	p2 = linear_interp(x2, v2, x3, v3, x);
 	p3 = linear_interp(y0, p1, y2, p2, y);
 	return (p3);
-}
+}*/
 
 t_vec	perturb_normal(t_vec normal, t_vec perturbation)
 {

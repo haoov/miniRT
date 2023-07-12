@@ -13,7 +13,7 @@ t_material	simple_mat_const(t_vec color, double ref, double shiny)
 	mat.has_normal_map = false;
 	mat.colorfct = spl_compute_color;
 	mat.ambiant_color = vec_create(1.0, 1.0, 1.0);
-	mat.ambiant_intensity = 0.2;
+	mat.ambiant_intensity = 0.0;
 	return (mat);
 }
 
@@ -35,8 +35,10 @@ t_vec	spl_compute_color(t_obj_lst *obj_lst, t_light_lst *light_lst, t_poi poi,
 
 	//Compute the diffuse component
 	if (!poi.obj->material.has_texture)
+	{
 		dif_color = compute_diffuse_color(obj_lst, light_lst, poi,
 										  poi.obj->material.color);
+	}
 	else
 	{
 		dif_color = compute_diffuse_color(obj_lst, light_lst, poi,
@@ -53,6 +55,7 @@ t_vec	spl_compute_color(t_obj_lst *obj_lst, t_light_lst *light_lst, t_poi poi,
 
 	//Combine reflection and diffuse component
 	mat_color = vec_add(vec_mult(ref_color, mat.reflec), vec_mult(dif_color, 1.0 - mat.reflec));
+
 
 	//Compute the specular component
 	if (mat.shiny > 0.0)

@@ -9,7 +9,7 @@ typedef struct s_normal_map
 	t_mtx3	tfm;
 }t_normal_map;
 
-t_vec	nmap_extract_rgb(t_img img, int x, int y);
+t_vec	nmap_extract_rgb(t_img img, int pixel_index);
 double	bilinear_interp(double x0, double y0, double v0,
 						  double x1, double y1, double v1,
 						  double x2, double y2, double v2,
