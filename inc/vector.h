@@ -27,6 +27,7 @@ t_vec	vec_cross(t_vec vec1, t_vec vec2);
 double	vec_norm(t_vec vec);
 double	vec_dot(t_vec vec1, t_vec vec2);
 void	vec_normalize(t_vec *vec);
+t_vec	vec_normalized(t_vec vec);
 
 void	vec_print(t_vec vec);
 

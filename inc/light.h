@@ -20,9 +20,7 @@ typedef	struct s_light
 }t_light;
 
 t_light	*new_light(void);
-bool	point_illum(t_vec *point, t_vec *norm, t_vec *color, double *intensity,
-					t_light *light, t_obj *obj_lst, t_obj *cur_obj);
-
 t_light	*add_light(t_light **light_lst, t_light *new);
+bool	point_illum(t_scene scene, t_poi *poi, t_light light);
 
 #endif

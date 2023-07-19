@@ -6,7 +6,8 @@
 int	scene_render(t_app *app, t_scene *scene, t_img *img)
 {
 	(void)app;
-	scene->amb_int = 0.0;
+	scene->amb_color = vec_create(1.0, 1.0, 1.0);
+	scene->amb_int = 0.2;
 //******************************************************************************
 //Create some mat
 //******************************************************************************
@@ -51,7 +52,7 @@ int	scene_render(t_app *app, t_scene *scene, t_img *img)
 	sphere->gtfm = gtfm_set(vec_create(0.0, 0.0, 0.0),
 							vec_create(0.0, 0.0, 0.0),
 							vec_create(1.0, 1.0, 1.0));
-	assign_material(sphere, mat);
+	assign_mat(sphere, mat);
 
 //******************************************************************************
 //Add objects to the scene
@@ -65,7 +66,7 @@ int	scene_render(t_app *app, t_scene *scene, t_img *img)
 	t_light	*light;
 
 	light = new_light();
-	light->pos = vec_create(5.0, -10.0, -5.0);
+	light->pos = vec_create(10.0, -5.0, -5.0);
 	add_light(&scene->light_lst, light);
 
     //Loop over every pixel
@@ -110,7 +111,7 @@ int	scene_render(t_app *app, t_scene *scene, t_img *img)
 				}
 				else
 				{
-					rgb = compute_diffuse_color(*scene, poi, poi.obj->color);
+					rgb = diff_color(*scene, poi, poi.obj->color);
 				}
 				img_store_color(img, x, y, rgb);
 			}

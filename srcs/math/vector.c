@@ -95,3 +95,13 @@ void	vec_normalize(t_vec *vec)
 	norm = vec_norm(*vec);
 	*vec = vec_mult(*vec, 1 / norm);
 }
+
+t_vec	vec_normalized(t_vec vec)
+{
+	double	norm;
+	t_vec	res;
+
+	norm = vec_norm(vec);
+	res = vec_mult(vec, 1 / norm);
+	return (res);
+}

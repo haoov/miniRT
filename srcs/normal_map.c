@@ -13,7 +13,7 @@ t_normal_map	normal_map_create()
 	return (map);
 }
 
-void	assign_normal_map(t_material *mat, t_normal_map map)
+void	assign_nmap(t_material *mat, t_normal_map map)
 {
 	mat->nmap = map;
 	mat->has_nmap = true;

@@ -3,52 +3,37 @@
 
 #include "stdio.h"
 
-void	assign_material(t_obj *obj, t_material material)
+void	assign_mat(t_obj *obj, t_material material)
 {
 	obj->mat = material;
 	obj->has_mat = true;
 }
 
-t_vec	compute_diffuse_color(t_scene scene, t_poi poi, t_vec b_color)
+t_vec	diff_color(t_scene scene, t_poi poi, t_vec b_color)
 {
-	t_vec	diff_color;
-	t_vec	color;
+	t_vec	d_color;
 	t_vec	rgb;
-	double	intensity;
 	bool	valid_illum = false;
-	bool	illum_found = false;
 
 	//Compute the color due to diffuse illum
-	diff_color = vec_create(0.0, 0.0, 0.0);
-	rgb = vec_create(0.0, 0.0, 0.0);
+	d_color = vec_create(0.0, 0.0, 0.0);
+	rgb = vec_mult(scene.amb_color, scene.amb_int);
 	while (scene.light_lst != NULL)
 	{
-		valid_illum = point_illum(&poi.point, &poi.normal, &color, &intensity,
-								  scene.light_lst, scene.obj_lst, poi.obj);
+		valid_illum = point_illum(scene, &poi, *scene.light_lst);
 		if (valid_illum)
 		{
-			illum_found = true;
-			rgb = vec_add(rgb, vec_mult(color, intensity));
+			rgb = vec_add(rgb, vec_mult(poi.color, poi.intensity));
 		}
 		scene.light_lst = scene.light_lst->next;
 	}
-	if (illum_found)
-	{
-		diff_color.x = rgb.x * b_color.x;
-		diff_color.y = rgb.y * b_color.y;
-		diff_color.z = rgb.z * b_color.z;
-	}
-	else
-	{
-		//The ambiant conditions
-		diff_color.x = scene.amb_color.x * scene.amb_int * b_color.x;
-		diff_color.y = scene.amb_color.y * scene.amb_int * b_color.y;
-		diff_color.z = scene.amb_color.z * scene.amb_int * b_color.z;
-	}
-	return (diff_color);
+	d_color.x = rgb.x * b_color.x;
+	d_color.y = rgb.y * b_color.y;
+	d_color.z = rgb.z * b_color.z;
+	return (d_color);
 }
 
-/*t_vec	compute_diffuse_color(t_obj *obj_lst, t_light *light_lst,
+/*t_vec	diff_color(t_obj *obj_lst, t_light *light_lst,
 							   t_poi poi, t_vec base_color)
 {
 	t_vec	diff_color;
@@ -88,7 +73,7 @@ t_vec	compute_diffuse_color(t_scene scene, t_poi poi, t_vec b_color)
 	return (diff_color);
 }*/
 
-t_vec	compute_ref_color(t_scene scene, t_ray in_ray, t_poi poi)
+t_vec	ref_color(t_scene scene, t_ray in_ray, t_poi poi)
 {
 	t_vec	ref_color = vec_create(0.0, 0.0, 0.0);
 
@@ -118,15 +103,15 @@ t_vec	compute_ref_color(t_scene scene, t_ray in_ray, t_poi poi)
 		}
 		else
 		{
-			mat_color = compute_diffuse_color(scene, closest_poi,
-											  closest_poi.obj->color);
+			mat_color = diff_color(scene, closest_poi,
+								   closest_poi.obj->color);
 		}
 	}
 	ref_color = mat_color;
 	return (ref_color);
 }
 
-/*t_vec	compute_ref_color(t_obj *obj_lst, t_light *light_lst,
+/*t_vec	ref_color(t_obj *obj_lst, t_light *light_lst,
 						   t_poi poi, t_ray incident_ray, t_material mat)
 {
 	t_vec	ref_color = vec_create(0.0, 0.0, 0.0);
@@ -158,7 +143,7 @@ t_vec	compute_ref_color(t_scene scene, t_ray in_ray, t_poi poi)
 		}
 		else
 		{
-			mat_color = compute_diffuse_color(obj_lst, light_lst, closest_poi,
+			mat_color = diff_color(obj_lst, light_lst, closest_poi,
 											  closest_poi.obj->color);
 		}
 	}
@@ -166,7 +151,7 @@ t_vec	compute_ref_color(t_scene scene, t_ray in_ray, t_poi poi)
 	return (ref_color);
 }*/
 
-t_vec	compute_spec_color(t_scene scene, t_ray in_ray, t_poi poi)
+t_vec	spec_color(t_scene scene, t_ray in_ray, t_poi poi)
 {
 	t_vec	spc_color = vec_create(0.0, 0.0, 0.0);
 	t_vec	rgb = vec_create(0.0, 0.0, 0.0);
@@ -226,7 +211,7 @@ t_vec	compute_spec_color(t_scene scene, t_ray in_ray, t_poi poi)
 	return (spc_color);
 }
 
-/*t_vec	compute_spec_color(t_obj *obj_lst, t_light *light_lst,
+/*t_vec	spec_color(t_obj *obj_lst, t_light *light_lst,
 							t_poi poi, t_ray cam_ray, t_material mat)
 {
 	t_vec	spc_color = vec_create(0.0, 0.0, 0.0);

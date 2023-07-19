@@ -76,12 +76,6 @@ static bool	compute_intersection(t_ray tfm_ray, t_poi *poi)
 					return (false);
 			}
 		}
-/*		poi->u = atan2(sqrt(pow(poi->point.x, 2.0)
-				+ pow(poi->point.y, 2.0)), poi->point.z);
-		poi->v = atan2(poi->point.y, poi->point.x);
-		poi->u /= M_PI;
-		poi->v /= M_PI;*/
-
 		poi->u = atan2(poi->point.y, poi->point.x) / M_PI;
 		poi->v = 2.0 * (atan2(sqrt(pow(poi->point.x, 2.0)
 				+ pow(poi->point.y, 2.0)), poi->point.z) / M_PI) - 1.0;
