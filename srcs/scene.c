@@ -6,12 +6,14 @@
 int	scene_render(t_app *app, t_scene *scene, t_img *img)
 {
 	(void)app;
+	scene->amb_int = 0.0;
 //******************************************************************************
-//Create some material
+//Create some mat
 //******************************************************************************
 	t_material	mat;
 
-	mat = simple_mat_const(vec_create(0.0, 0.0, 1.0), 0.5, 0.0);
+	mat = simple_mat_const(vec_create(0.0, 0.0, 1.0), 0.5, 5.0);
+	(void)mat;
 
 //******************************************************************************
 //Create some textures
@@ -37,10 +39,11 @@ int	scene_render(t_app *app, t_scene *scene, t_img *img)
 //******************************************************************************
 //Create some objects
 //******************************************************************************
-	t_obj_lst	*plan;
-	t_obj_lst	*sphere;
+	t_obj	*plan;
+	t_obj	*sphere;
 
 	plan = plane_create();
+	plan->color = vec_create(1.0, 0.0, 0.0);
 	plan->gtfm = gtfm_set(vec_create(0.0, 0.0, 1.0),
 						  vec_create(0.0, 0.0, 0.0),
 						  vec_create(4.0, 4.0, 1.0));
@@ -59,10 +62,11 @@ int	scene_render(t_app *app, t_scene *scene, t_img *img)
 //******************************************************************************
 //Create lights
 //******************************************************************************
-	if (add_light(&scene->light_lst, POINT) == NULL)
-		return (FAILURE);
-	scene->light_lst->light.pos = vec_create(5.0, -10.0, -5.0);
-	scene->light_lst->light.color = vec_create(1.0, 1.0, 1.0);
+	t_light	*light;
+
+	light = new_light();
+	light->pos = vec_create(5.0, -10.0, -5.0);
+	add_light(&scene->light_lst, light);
 
     //Loop over every pixel
     t_ray   	cam_ray;
@@ -87,29 +91,26 @@ int	scene_render(t_app *app, t_scene *scene, t_img *img)
             cam_ray = cam_generate_ray(&scene->cam, (float) xnorm, (float) ynorm);
 
 			//Loop on every object in the scene
-			t_poi	closest_poi;
+			t_poi	poi;
 			bool	intersection;
 
-			intersection = s_cast_ray(cam_ray, &closest_poi, scene->obj_lst);
+			intersection = s_cast_ray(cam_ray, &poi, scene->obj_lst);
 
 			//Compute the illumination for the closest object
 			if (intersection)
 			{
 				t_vec rgb;
 
-				//Check if the object has material
-				if (closest_poi.obj->has_material)
+				//Check if the object has mat
+				if (poi.obj->has_mat)
 				{
-					//Use the material to compute the color
-					closest_poi.obj->material.ref_ray_count = 0;
-					rgb = closest_poi.obj->material.colorfct(scene->obj_lst, scene->light_lst,
-										closest_poi, cam_ray, closest_poi.obj->material);
+					//Use the mat to compute the color
+					poi.obj->mat.ref_ray_count = 0;
+					rgb = poi.obj->mat.colorfct(*scene, cam_ray, poi);
 				}
 				else
 				{
-					rgb = compute_diffuse_color(scene->obj_lst,
-												scene->light_lst, closest_poi,
-												closest_poi.obj->color);
+					rgb = compute_diffuse_color(*scene, poi, poi.obj->color);
 				}
 				img_store_color(img, x, y, rgb);
 			}
@@ -118,7 +119,7 @@ int	scene_render(t_app *app, t_scene *scene, t_img *img)
 	return (SUCCESS);
 }
 
-bool	s_cast_ray(t_ray cam_ray, t_poi *closest_poi, t_obj_lst *obj_cur)
+bool	s_cast_ray(t_ray cam_ray, t_poi *closest_poi, t_obj *obj_cur)
 {
 	t_poi	poi;
 	bool	intersection;

@@ -1,11 +1,11 @@
 #include "object.h"
 #include <math.h>
 
-t_obj_lst	*cylinder_create(void)
+t_obj	*cylinder_create(void)
 {
-	t_obj_lst	*cylinder;
+	t_obj	*cylinder;
 
-	cylinder = (t_obj_lst *) ft_calloc(1, sizeof (t_obj_lst));
+	cylinder = (t_obj *) ft_calloc(1, sizeof (t_obj));
 	if (cylinder == NULL)
 		return (NULL);
 	cylinder->color = vec_create(1.0, 1.0, 1.0);
@@ -13,7 +13,7 @@ t_obj_lst	*cylinder_create(void)
 	return (cylinder);
 }
 
-bool	cylinder_intersect(t_ray cast_ray, t_poi *poi, t_obj_lst *obj_cur)
+bool	cylinder_intersect(t_ray cast_ray, t_poi *poi, t_obj *obj_cur)
 {
 	t_ray 	tfm_ray;
 

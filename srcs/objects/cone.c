@@ -1,11 +1,11 @@
 #include "object.h"
 #include <math.h>
 
-t_obj_lst	*cone_create(void)
+t_obj	*cone_create(void)
 {
-	t_obj_lst	*cone;
+	t_obj	*cone;
 
-	cone = (t_obj_lst *) ft_calloc(1, sizeof (t_obj_lst));
+	cone = (t_obj *) ft_calloc(1, sizeof (t_obj));
 	if (cone == NULL)
 		return (NULL);
 	cone->color = vec_create(1.0, 1.0, 1.0);
@@ -13,7 +13,7 @@ t_obj_lst	*cone_create(void)
 	return (cone);
 }
 
-bool	cone_intersect(t_ray cast_ray, t_poi *poi, t_obj_lst *obj_cur)
+bool	cone_intersect(t_ray cast_ray, t_poi *poi, t_obj *obj_cur)
 {
 	t_ray 	tfm_ray;
 

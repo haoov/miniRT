@@ -1,24 +1,25 @@
 #include "material.h"
+#include "scene.h"
 
 t_material	simple_mat_const(t_vec color, double ref, double shiny)
 {
 	t_material	mat;
 
+	ft_memset(&mat, 0, sizeof (t_material));
 	mat.color = color;
 	mat.reflec = ref;
 	mat.shiny = shiny;
 	mat.max_ref_ray = 3;
 	mat.ref_ray_count = 0;
 	mat.has_texture = false;
-	mat.has_normal_map = false;
+	mat.has_nmap = false;
 	mat.colorfct = spl_compute_color;
-	mat.ambiant_color = vec_create(1.0, 1.0, 1.0);
-	mat.ambiant_intensity = 0.0;
+	mat.amb_color = vec_create(1.0, 1.0, 1.0);
+	mat.amb_int = 0.0;
 	return (mat);
 }
 
-t_vec	spl_compute_color(t_obj_lst *obj_lst, t_light_lst *light_lst, t_poi poi,
-					   t_ray cam_ray, t_material mat)
+t_vec	spl_compute_color(t_scene scene, t_ray in_ray, t_poi poi)
 {
 	//Define the initials materials colors
 	t_vec	mat_color = vec_create(0.0, 0.0, 0.0);
@@ -28,29 +29,78 @@ t_vec	spl_compute_color(t_obj_lst *obj_lst, t_light_lst *light_lst, t_poi poi,
 	(void)ref_color;
 
 	//Apply any normal maps
-	if (poi.obj->material.has_normal_map)
+	if (poi.obj->mat.has_nmap)
 	{
-		poi.normal = nmap_compute_perturb(poi.obj->material.normal_map, poi.normal, poi.u, poi.v);
+		poi.normal = nmap_compute_perturb(poi.obj->mat.nmap, poi.normal, poi.u, poi.v);
 	}
 
 	//Compute the diffuse component
-	if (!poi.obj->material.has_texture)
+	if (!poi.obj->mat.has_texture)
+		dif_color = compute_diffuse_color(scene, poi, poi.obj->mat.color);
+	else
+	{
+		dif_color = compute_diffuse_color(scene, poi,
+										  poi.obj->mat.texture.colorfct(
+												  poi.obj->mat.texture,
+												  poi.u, poi.v));
+	}
+
+	//Compute the reflection color
+	if (poi.obj->mat.reflec > 0.0)
+	{
+		ref_color = compute_ref_color(scene, in_ray, poi);
+	}
+
+	//Combine reflection and diffuse component
+	mat_color = vec_add(vec_mult(ref_color, poi.obj->mat.reflec), vec_mult(dif_color, 1.0 - poi.obj->mat.reflec));
+
+
+	//Compute the specular component
+	if (poi.obj->mat.shiny > 1.0)
+	{
+		spec_color = compute_spec_color(scene, in_ray, poi);
+	}
+
+	//Add the spec to the final color
+	mat_color = vec_add(mat_color, spec_color);
+
+	return (mat_color);
+}
+
+/*t_vec	spl_compute_color(t_obj *obj_lst, t_light *light_lst, t_poi poi,
+						   t_ray cam_ray, t_material mat)
+{
+	//Define the initials materials colors
+	t_vec	mat_color = vec_create(0.0, 0.0, 0.0);
+	t_vec	ref_color = vec_create(0.0, 0.0, 0.0);
+	t_vec	dif_color = vec_create(0.0, 0.0, 0.0);
+	t_vec	spec_color = vec_create(0.0, 0.0, 0.0);
+	(void)ref_color;
+
+	//Apply any normal maps
+	if (poi.obj->mat.has_nmap)
+	{
+		poi.normal = nmap_compute_perturb(poi.obj->mat.nmap, poi.normal, poi.u, poi.v);
+	}
+
+	//Compute the diffuse component
+	if (!poi.obj->mat.has_texture)
 	{
 		dif_color = compute_diffuse_color(obj_lst, light_lst, poi,
-										  poi.obj->material.color);
+										  poi.obj->mat.color);
 	}
 	else
 	{
 		dif_color = compute_diffuse_color(obj_lst, light_lst, poi,
-										  poi.obj->material.texture.colorfct(
-												  poi.obj->material.texture,
+										  poi.obj->mat.texture.colorfct(
+												  poi.obj->mat.texture,
 												  poi.u, poi.v));
 	}
 
 	//Compute the reflection color
 	if (mat.reflec > 0.0)
 	{
-		ref_color = compute_ref_color(obj_lst, light_lst, poi, cam_ray, poi.obj->material);
+		ref_color = compute_ref_color(obj_lst, light_lst, poi, cam_ray, poi.obj->mat);
 	}
 
 	//Combine reflection and diffuse component
@@ -60,11 +110,11 @@ t_vec	spl_compute_color(t_obj_lst *obj_lst, t_light_lst *light_lst, t_poi poi,
 	//Compute the specular component
 	if (mat.shiny > 0.0)
 	{
-		spec_color = compute_spec_color(obj_lst, light_lst, poi, cam_ray, poi.obj->material);
+		spec_color = compute_spec_color(obj_lst, light_lst, poi, cam_ray, poi.obj->mat);
 	}
 
 	//Add the spec to the final color
 	mat_color = vec_add(mat_color, spec_color);
 
 	return (mat_color);
-}
+}*/

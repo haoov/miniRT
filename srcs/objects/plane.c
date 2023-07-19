@@ -1,11 +1,11 @@
 #include "object.h"
 #include <math.h>
 
-t_obj_lst	*plane_create(void)
+t_obj	*plane_create(void)
 {
-	t_obj_lst	*plane;
+	t_obj	*plane;
 
-	plane = (t_obj_lst *) ft_calloc(1, sizeof (t_obj_lst));
+	plane = (t_obj *) ft_calloc(1, sizeof (t_obj));
 	if (plane == NULL)
 		return (NULL);
 	plane->color = vec_create(1.0, 1.0, 1.0);
@@ -54,7 +54,7 @@ static bool	compute_intersection(t_ray tfm_ray, t_poi *poi)
 	return (true);
 }
 
-bool	plane_intersect(t_ray cam_ray, t_poi *poi, t_obj_lst *cur_obj)
+bool	plane_intersect(t_ray cam_ray, t_poi *poi, t_obj *cur_obj)
 {
 	t_ray	tfm_ray;
 	t_vec	normal_vec;

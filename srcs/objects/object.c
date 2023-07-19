@@ -2,12 +2,12 @@
 
 #define EPSILON 1e-21F
 
-void	set_gtfm(t_obj_lst *obj,t_gtfm gtfm)
+void	set_gtfm(t_obj *obj, t_gtfm gtfm)
 {
 	obj->gtfm = gtfm;
 }
 
-t_obj_lst	*obj_lst_at(t_obj_lst *obj_lst, int index)
+t_obj	*obj_lst_at(t_obj *obj_lst, int index)
 {
 	if (obj_lst == NULL)
 	{
@@ -23,9 +23,9 @@ t_obj_lst	*obj_lst_at(t_obj_lst *obj_lst, int index)
 	return (obj_lst);
 }
 
-t_obj_lst	*add_obj(t_obj_lst **obj_lst, t_obj_lst *new)
+t_obj	*add_obj(t_obj **obj_lst, t_obj *new)
 {
-	t_obj_lst	*elem;
+	t_obj	*elem;
 
 	if (new == NULL)
 		return (NULL);

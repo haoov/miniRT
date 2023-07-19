@@ -2,11 +2,11 @@
 
 #include <stdio.h>
 
-t_obj_lst	*sphere_create(void)
+t_obj	*sphere_create(void)
 {
-	t_obj_lst	*sphere;
+	t_obj	*sphere;
 
-	sphere = (t_obj_lst *) ft_calloc(1, sizeof (t_obj_lst));
+	sphere = (t_obj *) ft_calloc(1, sizeof (t_obj));
 	if (sphere == NULL)
 		return (NULL);
 	sphere->color = vec_create(1.0, 1.0, 1.0);
@@ -89,7 +89,7 @@ static bool	compute_intersection(t_ray tfm_ray, t_poi *poi)
 	return (true);
 }
 
-bool	sphere_intersect(t_ray cam_ray, t_poi *poi, t_obj_lst *cur_obj)
+bool	sphere_intersect(t_ray cam_ray, t_poi *poi, t_obj *cur_obj)
 {
 	t_ray	tfm_ray;
 	t_vec	origin;

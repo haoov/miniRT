@@ -15,9 +15,10 @@
 # define CYLINDER	2
 # define CONE		3
 
-typedef struct s_poi		t_poi;
-typedef struct s_obj_lst	t_obj_lst;
-typedef struct s_light_lst	t_light_lst;
+typedef struct s_poi	t_poi;
+typedef struct s_obj	t_obj;
+typedef struct s_light	t_light;
+typedef struct s_scene	t_scene;
 
 /*********************OBJECT TYPES********************/
 
@@ -47,32 +48,31 @@ typedef struct s_material
 	t_vec			color;
 	double			reflec;
 	double			shiny;
-	double			translucency;
+	double			trans;
 	double			ior;
 	int				max_ref_ray;
 	int				ref_ray_count;
 	t_texture		texture;
 	bool			has_texture;
-	t_vec			ambiant_color;
-	double			ambiant_intensity;
-	t_vec			(*colorfct)(t_obj_lst *, t_light_lst *,
-				t_poi, t_ray, struct s_material);
-	t_normal_map	normal_map;
-	bool			has_normal_map;
+	t_vec			amb_color;
+	double			amb_int;
+	t_vec			(*colorfct)(t_scene, t_ray, t_poi);
+	t_normal_map	nmap;
+	bool			has_nmap;
 }t_material;
 
 /*******************OBJECT**************************/
 
 //Chained list of objects
-typedef struct s_obj_lst
+typedef struct s_obj
 {
-	t_vec				color;
-	t_material			material;
-	bool				has_material;
-	bool				(*intfct)(t_ray, t_poi *poi, t_obj_lst *obj);
-	t_gtfm				gtfm;
-	struct s_obj_lst	*next;
-}t_obj_lst;
+	t_vec			color;
+	t_material		mat;
+	bool			has_mat;
+	bool			(*intfct)(t_ray, t_poi *poi, t_obj *obj);
+	t_gtfm			gtfm;
+	struct s_obj	*next;
+}t_obj;
 
 //Struct to hold the intersection point data
 typedef struct s_poi
@@ -82,30 +82,31 @@ typedef struct s_poi
 	double		v;
 	t_vec		normal;
 	t_vec		color;
-	t_obj_lst	*obj;
+	double		intensity;
+	t_obj	*obj;
 }t_poi;
 
 //Struct to hold the intersection function of each objects
 typedef struct s_intfct
 {
-	bool	(*fct)(t_ray, t_poi *poi, t_obj_lst *obj);
+	bool	(*fct)(t_ray, t_poi *poi, t_obj *obj);
 }t_intfct;
 
 /********************FUNCTION DECLARATION***************/
 
-t_obj_lst	*add_obj(t_obj_lst **obj_lst, t_obj_lst *new);
-t_obj_lst	*obj_lst_at(t_obj_lst *obj_lst, int index);
+t_obj	*add_obj(t_obj **obj_lst, t_obj *new);
+t_obj	*obj_lst_at(t_obj *obj_lst, int index);
 
-void		assign_texture(t_material *material, t_texture texture);
+void	assign_texture(t_material *material, t_texture texture);
 
-bool		sphere_intersect(t_ray cam_ray, t_poi *poi, t_obj_lst *cur_obj);
-bool		plane_intersect(t_ray cam_ray, t_poi *poi, t_obj_lst *cur_obj);
-bool		cylinder_intersect(t_ray cast_ray, t_poi *poi, t_obj_lst *obj_cur);
-bool		cone_intersect(t_ray cast_ray, t_poi *poi, t_obj_lst *obj_cur);
+bool	sphere_intersect(t_ray cam_ray, t_poi *poi, t_obj *cur_obj);
+bool	plane_intersect(t_ray cam_ray, t_poi *poi, t_obj *cur_obj);
+bool	cylinder_intersect(t_ray cast_ray, t_poi *poi, t_obj *obj_cur);
+bool	cone_intersect(t_ray cast_ray, t_poi *poi, t_obj *obj_cur);
 
-t_obj_lst	*sphere_create(void);
-t_obj_lst	*plane_create(void);
-t_obj_lst	*cylinder_create(void);
-t_obj_lst	*cone_create(void);
+t_obj	*sphere_create(void);
+t_obj	*plane_create(void);
+t_obj	*cylinder_create(void);
+t_obj	*cone_create(void);
 
 #endif //OBJECT_H

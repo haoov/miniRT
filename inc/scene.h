@@ -9,12 +9,14 @@
 
 typedef struct s_scene
 {
-    t_cam   	cam;
-    t_obj_lst   *obj_lst;
-	t_light_lst	*light_lst;
+    t_cam   cam;
+    t_obj   *obj_lst;
+	t_light	*light_lst;
+	t_vec	amb_color;
+	double	amb_int;
 }t_scene;
 
 int	scene_render(t_app *app, t_scene *scene, t_img *img);
-bool	s_cast_ray(t_ray cam_ray, t_poi *closest_poi, t_obj_lst *obj_cur);
+bool	s_cast_ray(t_ray cam_ray, t_poi *closest_poi, t_obj *obj_cur);
 
 #endif //SCENE_H

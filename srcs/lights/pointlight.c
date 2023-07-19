@@ -4,12 +4,12 @@
 #include <stdio.h>
 
 bool	point_illum(t_vec *point, t_vec *norm, t_vec *color, double *intensity,
-					t_light light, t_obj_lst *obj_lst, t_obj_lst *cur_obj)
+					t_light *light, t_obj *obj_lst, t_obj *cur_obj)
 {
 	t_vec	lightdir; //Vector from the point to the light
 	double	angle; //angle between the normal and the light ray
 
-	lightdir = vec_sub(light.pos, *point);
+	lightdir = vec_sub(light->pos, *point);
 	vec_normalize(&lightdir);
 
 	//Compute a starting point
@@ -29,11 +29,11 @@ bool	point_illum(t_vec *point, t_vec *norm, t_vec *color, double *intensity,
 		if (obj_lst != cur_obj)
 		{
 			valid_int = obj_lst->intfct(light_ray, &poi, obj_lst);
-			if (valid_int && poi.obj->material.translucency)
+			if (valid_int && poi.obj->mat.trans)
 				valid_int = false;
 			if (valid_int)
 			{
-				double	light_dist = vec_norm(vec_sub(light.pos, poi.point));
+				double	light_dist = vec_norm(vec_sub(light->pos, poi.point));
 				double	dist = vec_norm(vec_sub(poi.point, start_point));
 				if (dist > light_dist)
 					valid_int = false;
@@ -59,22 +59,22 @@ bool	point_illum(t_vec *point, t_vec *norm, t_vec *color, double *intensity,
 		if (angle > M_PI_2)
 		{
 			//No illum
-			*color = light.color;
+			*color = light->color;
 			*intensity = 0.0;
 			return (false);
 		}
 		else
 		{
 			//Illum
-			*color = light.color;
-			*intensity = light.intensity * (1.0 - (angle / M_PI_2));
+			*color = light->color;
+			*intensity = light->intensity * (1.0 - (angle / M_PI_2));
 			return (true);
 		}
 	}
 	else
 	{
 		//Shadow
-		*color = light.color;
+		*color = light->color;
 		*intensity = 0.0;
 		return (false);
 	}

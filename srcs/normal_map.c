@@ -15,8 +15,8 @@ t_normal_map	normal_map_create()
 
 void	assign_normal_map(t_material *mat, t_normal_map map)
 {
-	mat->normal_map = map;
-	mat->has_normal_map = true;
+	mat->nmap = map;
+	mat->has_nmap = true;
 }
 
 t_vec	nmap_compute_perturb(t_normal_map map,t_vec normal, double u, double v)

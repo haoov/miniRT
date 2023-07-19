@@ -5,7 +5,7 @@
 
 void	cam_init(t_cam *cam)
 {
-	cam->pos = vec_create(0.0, 0.0, -10.0);
+	cam->pos = vec_create(0.0, -5.0, 0.0);
 	cam->up = vec_create(0.0, 1.0, 0.0);
 	cam->dist = 1;
 	cam->size = 1;
