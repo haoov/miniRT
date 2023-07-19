@@ -14,8 +14,6 @@ typedef	struct s_light
 	t_vec	color;
 	t_vec	pos;
 	double	intensity;
-	bool	(*illumfct)(t_vec *, t_vec *, t_vec *, double *, struct s_light *,
-						t_obj *, t_obj *);
 	struct s_light	*next;
 }t_light;
 

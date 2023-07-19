@@ -62,23 +62,15 @@ bool	plane_intersect(t_ray cam_ray, t_poi *poi, t_obj *cur_obj)
 	t_vec	new_origin;
 
 	tfm_ray = gtfm_ray_apply(cur_obj->gtfm, cam_ray, REV);
-
-	//Compute intersection point
 	if (!compute_intersection(tfm_ray, poi))
 		return (false);
-
-	//Transform the poi back to the world coordinates
 	poi->point = gtfm_vec_apply(cur_obj->gtfm, poi->point, FWD);
-
-	//Compute the normal
 	origin = vec_create(0.0, 0.0, 0.0);
 	normal_vec = vec_create(0.0, 0.0, -1.0);
 	new_origin = gtfm_vec_apply(cur_obj->gtfm, origin, FWD);
-	poi->normal = vec_sub(gtfm_vec_apply(cur_obj->gtfm, normal_vec, FWD), new_origin);
-	//poi->normal = apply_lin_tfm(cur_obj->gtfm, normal_vec);
+	poi->normal = vec_sub(gtfm_vec_apply(cur_obj->gtfm, normal_vec, FWD),
+						  new_origin);
 	vec_normalize(&poi->normal);
-
-	//Return the base color
 	poi->color = cur_obj->color;
 	poi->obj = cur_obj;
 	return (true);

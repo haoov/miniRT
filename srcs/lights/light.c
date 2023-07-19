@@ -9,7 +9,6 @@ t_light	*new_light(void)
 		return (NULL);
 	new->pos = vec_create(0.0, -5.0, -5.0);
 	new->color = vec_create(1.0, 1.0, 1.0);
-	new->illumfct = point_illum;
 	new->intensity = 1.0;
 	return (new);
 }

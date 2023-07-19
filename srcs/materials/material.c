@@ -15,7 +15,6 @@ t_vec	diff_color(t_scene scene, t_poi poi, t_vec b_color)
 	t_vec	rgb;
 	bool	valid_illum = false;
 
-	//Compute the color due to diffuse illum
 	d_color = vec_create(0.0, 0.0, 0.0);
 	rgb = vec_mult(scene.amb_color, scene.amb_int);
 	while (scene.light_lst != NULL)
@@ -272,36 +271,25 @@ t_vec	spec_color(t_scene scene, t_ray in_ray, t_poi poi)
 	return (spc_color);
 }*/
 
-bool	cast_ray(t_ray cast_ray, t_poi *closest_poi, t_obj *obj_lst, t_obj *obj_cur)
+bool	cast_ray(t_ray cast_ray, t_poi *poi, t_obj *obj_lst, t_obj *obj_cur)
 {
-	t_poi	poi;
-	bool	intersection;
+	t_poi	test;
 	bool	int_found;
 	double	dist;
 	double	min_dist;
 
 	min_dist = 1e6;
 	int_found = false;
-	intersection = false;
 	while (obj_lst != NULL)
 	{
-		//Test intersection
-		if (obj_lst != obj_cur)
-		{
-			intersection = obj_lst->intfct(cast_ray, &poi, obj_lst);
-		}
-
-		if (intersection)
+		if (obj_lst != obj_cur && obj_lst->intfct(cast_ray, &test, obj_lst))
 		{
 			int_found = true;
-			//Compute the distance between the camera and the poi
-			dist = vec_norm(vec_sub(poi.point, cast_ray.pa));
-
-			//If this object is closer to the cam than the others
+			dist = vec_norm(vec_sub(test.point, cast_ray.pa));
 			if (dist < min_dist)
 			{
 				min_dist = dist;
-				*closest_poi = poi;
+				*poi = test;
 			}
 		}
 		obj_lst = obj_lst->next;
