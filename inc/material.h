@@ -21,6 +21,7 @@ t_vec	ref_compute_color(t_scene scene, t_ray in_ray, t_poi poi);
 t_vec	diff_color(t_scene scene, t_poi poi, t_vec b_color);
 t_vec	ref_color(t_scene scene, t_ray in_ray, t_poi poi);
 t_vec	spec_color(t_scene scene, t_ray in_ray, t_poi poi);
+t_vec	compute_ref_diff(t_scene scene, t_ray in_ray, t_poi poi);
 
 bool	cast_ray(t_ray cast_ray, t_poi *poi, t_obj *obj_lst,
 				 t_obj *obj_cur);
