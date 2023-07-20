@@ -89,11 +89,11 @@ t_vec	gtfm_vec_apply(t_gtfm gtfm, t_vec vec, int tfm)
 	vec4 = vec4_create(vec.x, vec.y, vec.z, 1.0);
 	if (tfm == FWD)
 	{
-		tmp_res = mtx_vec_mult(vec4, gtfm.tfm_mtx);
+		tmp_res = mtx4_vec_mult(vec4, gtfm.tfm_mtx);
 	}
 	else
 	{
-		tmp_res = mtx_vec_mult(vec4, gtfm.revtfm_mtx);
+		tmp_res = mtx4_vec_mult(vec4, gtfm.revtfm_mtx);
 	}
 	res = vec_create(tmp_res.x, tmp_res.y, tmp_res.z);
 	return (res);

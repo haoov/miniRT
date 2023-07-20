@@ -45,7 +45,7 @@ int	scene_render(t_app *app, t_scene *scene, t_img *img)
 
 	plan = plane_create();
 	plan->gtfm = gtfm_set(vec_create(0.0, 0.0, 1.0),
-						  vec_create(0.0, 0.0, 0.0),
+						  vec_create(-45.0, 0.0, 0.0),
 						  vec_create(4.0, 4.0, 1.0));
 	sphere = sphere_create();
 	sphere->gtfm = gtfm_set(vec_create(0.0, 0.0, 0.0),

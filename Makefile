@@ -21,8 +21,15 @@ SRCS	=	$(SRCDIR)/main.c\
 			$(SRCDIR)/ray.c\
 			$(SRCDIR)/camera.c\
 			$(SRCDIR)/math/vector.c\
-			$(SRCDIR)/math/matrix4.c\
-			$(SRCDIR)/math/matrix3.c\
+			$(SRCDIR)/math/vector2.c\
+			$(SRCDIR)/math/matrix4_utils.c\
+			$(SRCDIR)/math/matrix4_invert.c\
+			$(SRCDIR)/math/matrix4_utils2.c\
+			$(SRCDIR)/math/matrix4_utils3.c\
+			$(SRCDIR)/math/matrix3_utils.c\
+			$(SRCDIR)/math/matrix3_utils2.c\
+			$(SRCDIR)/math/matrix3_utils3.c\
+			$(SRCDIR)/math/matrix3_invert.c\
 			$(SRCDIR)/objects/object.c\
 			$(SRCDIR)/objects/sphere.c\
 			$(SRCDIR)/objects/plane.c\

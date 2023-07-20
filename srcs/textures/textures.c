@@ -35,15 +35,6 @@ t_mtx3	set_transform(t_vec trans, double rot, t_vec scale)
 	return (mtx_final);
 }
 
-t_vec	blend_colors(t_vec4 input_color)
-{
-	t_vec	output_color;
-
-	(void)input_color;
-	output_color = vec_create(0.0, 0.0, 0.0);
-	return (output_color);
-}
-
 t_vec	apply_transform(t_mtx3 tfm_mtx, t_vec input_vec)
 {
 	t_vec	new_input;
