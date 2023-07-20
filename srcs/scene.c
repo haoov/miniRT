@@ -42,28 +42,41 @@ int	scene_render(t_app *app, t_scene *scene, t_img *img)
 //******************************************************************************
 	t_obj	*plan;
 	t_obj	*sphere;
+	t_obj	*cone;
+	t_obj	*cylinder;
 
 	plan = plane_create();
 	plan->gtfm = gtfm_set(vec_create(0.0, 0.0, 1.0),
-						  vec_create(-45.0, 0.0, 0.0),
+						  vec_create(0.0, 0.0, 0.0),
 						  vec_create(4.0, 4.0, 1.0));
 	sphere = sphere_create();
-	sphere->gtfm = gtfm_set(vec_create(0.0, 0.0, 0.0),
+	sphere->gtfm = gtfm_set(vec_create(-2.0, 0.0, 0.0),
 							vec_create(0.0, 0.0, 0.0),
 							vec_create(1.0, 1.0, 1.0));
 	assign_mat(sphere, mat);
+	cone = cone_create();
+	cone->gtfm = gtfm_set(vec_create(2.0, 0.0, 0.0),
+						  vec_create(180.0, 0.0, 0.0),
+						  vec_create(0.5, 0.5, 1.0));
+	cylinder = cylinder_create();
+	cylinder->gtfm = gtfm_set(vec_create(0.0, 0.0, 0.0),
+							  vec_create(0.0, 45.0, 0.0),
+							  vec_create(0.5, 0.5, 1.0));
 
 //******************************************************************************
 //Add objects to the scene
 //******************************************************************************
 	add_obj(&scene->obj_lst, plan);
 	add_obj(&scene->obj_lst, sphere);
+	add_obj(&scene->obj_lst, cone);
+	add_obj(&scene->obj_lst, cylinder);
 
 //******************************************************************************
 //Create lights
 //******************************************************************************
 	t_light	*light;
 	t_light	*light2;
+	t_light	*light3;
 
 	light = new_light();
 	light->pos = vec_create(10.0, -5.0, -5.0);
@@ -73,6 +86,10 @@ int	scene_render(t_app *app, t_scene *scene, t_img *img)
 	light2->pos = vec_create(-10.0, -5.0, -5.0);
 	light2->color = vec_create(0.0, 1.0, 0.0);
 	add_light(&scene->light_lst, light2);
+	light3 = new_light();
+	light3->pos = vec_create(0.0, -5.0, -5.0);
+	light3->color = vec_create(0.0, 0.0, 1.0);
+	add_light(&scene->light_lst, light3);
 
     //Loop over every pixel
     t_ray   	cam_ray;

@@ -1,5 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cylinder.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: raph <raph@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/20 17:49:00 by raph              #+#    #+#             */
+/*   Updated: 2023/07/20 17:49:26 by raph             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "object.h"
 #include <math.h>
+
+bool	solve_equation(t_ray tfm_r, t_vec v, double t[4]);
+bool	check_valid_int(t_ray tfm_ray, t_vec v, double t[4], t_vec intp[4]);
+int		closest_point(const double t[4]);
 
 t_obj	*cylinder_create(void)
 {
@@ -13,7 +29,78 @@ t_obj	*cylinder_create(void)
 	return (cylinder);
 }
 
+static int	compute_intersection(t_ray tfm_ray, t_poi *poi)
+{
+	double	t[4];
+	t_vec	intp[4];
+	t_vec	v;
+	int		i;
+
+	i = -1;
+	while (++i < 4)
+		t[i] = 100e6;
+	v = vec_normalized(tfm_ray.ab);
+	if (!solve_equation(tfm_ray, v, t))
+		return (-1);
+	if (!check_valid_int(tfm_ray, v, t, intp))
+		return (-1);
+	i = closest_point(t);
+	poi->point = intp[i];
+	return (i);
+}
+
+void	compute_cylinder_normal(t_poi *poi, t_obj *obj_cur)
+{
+	t_vec	org_normal;
+	t_vec	origin;
+	t_vec	new_origin;
+
+	origin = vec_create(0.0, 0.0, 0.0);
+	org_normal = vec_create(poi->point.x, poi->point.y, 0.0);
+	new_origin = gtfm_vec_apply(obj_cur->gtfm, origin, FWD);
+	poi->normal = vec_sub(gtfm_vec_apply(obj_cur->gtfm, org_normal, FWD),
+			new_origin);
+	vec_normalize(&poi->normal);
+	poi->u = atan2(poi->point.y, poi->point.x) / M_PI;
+	poi->v = poi->point.z;
+}
+
+void	compute_circle_normal(t_poi *poi, t_obj *obj_cur)
+{
+	t_vec	origin;
+	t_vec	new_origin;
+	t_vec	normal_vec;
+
+	normal_vec = vec_create(0.0, 0.0, 0.0 + poi->point.z);
+	origin = vec_create(0.0, 0.0, 0.0);
+	new_origin = gtfm_vec_apply(obj_cur->gtfm, origin, FWD);
+	poi->normal = vec_sub(gtfm_vec_apply(obj_cur->gtfm, normal_vec, FWD),
+			new_origin);
+	vec_normalize(&poi->normal);
+	poi->u = poi->point.x;
+	poi->v = poi->point.y;
+}
+
 bool	cylinder_intersect(t_ray cast_ray, t_poi *poi, t_obj *obj_cur)
+{
+	t_ray	tfm_ray;
+	int		index;
+
+	tfm_ray = gtfm_ray_apply(obj_cur->gtfm, cast_ray, REV);
+	index = compute_intersection(tfm_ray, poi);
+	if (index == -1)
+		return (false);
+	if (index < 2)
+		compute_cylinder_normal(poi, obj_cur);
+	else
+		compute_circle_normal(poi, obj_cur);
+	poi->color = obj_cur->color;
+	poi->obj = obj_cur;
+	poi->point = gtfm_vec_apply(obj_cur->gtfm, poi->point, FWD);
+	return (true);
+}
+
+/*bool	cylinder_intersect(t_ray cast_ray, t_poi *poi, t_obj *obj_cur)
 {
 	t_ray 	tfm_ray;
 
@@ -213,31 +300,4 @@ bool	cylinder_intersect(t_ray cast_ray, t_poi *poi, t_obj *obj_cur)
 			return (false);
 		}
 	}
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}*/

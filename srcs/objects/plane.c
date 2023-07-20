@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   plane.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: raph <raph@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/20 16:08:15 by raph              #+#    #+#             */
+/*   Updated: 2023/07/20 16:08:40 by raph             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "object.h"
 #include <math.h>
 
@@ -69,10 +81,9 @@ bool	plane_intersect(t_ray cam_ray, t_poi *poi, t_obj *cur_obj)
 	normal_vec = vec_create(0.0, 0.0, -1.0);
 	new_origin = gtfm_vec_apply(cur_obj->gtfm, origin, FWD);
 	poi->normal = vec_sub(gtfm_vec_apply(cur_obj->gtfm, normal_vec, FWD),
-						  new_origin);
+			new_origin);
 	vec_normalize(&poi->normal);
 	poi->color = cur_obj->color;
 	poi->obj = cur_obj;
 	return (true);
 }
-

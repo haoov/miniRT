@@ -34,7 +34,9 @@ SRCS	=	$(SRCDIR)/main.c\
 			$(SRCDIR)/objects/sphere.c\
 			$(SRCDIR)/objects/plane.c\
 			$(SRCDIR)/objects/cylinder.c\
+			$(SRCDIR)/objects/cylinder_utils.c\
 			$(SRCDIR)/objects/cone.c\
+			$(SRCDIR)/objects/cone_utils.c\
 			$(SRCDIR)/lights/light.c\
 			$(SRCDIR)/lights/illumination.c\
 			$(SRCDIR)/materials/material.c\
