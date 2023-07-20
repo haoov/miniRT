@@ -16,7 +16,9 @@ typedef struct s_scene
 	double	amb_int;
 }t_scene;
 
-int	scene_render(t_app *app, t_scene *scene, t_img *img);
+int		scene_render(t_app *app, t_scene *scene, t_img *img);
 bool	s_cast_ray(t_ray cam_ray, t_poi *closest_poi, t_obj *obj_cur);
+t_ray	generate_light_ray(t_poi poi, t_light light);
+bool	obstruction(t_scene scene, t_poi *poi, t_light light);
 
 #endif //SCENE_H

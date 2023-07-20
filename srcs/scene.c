@@ -44,7 +44,6 @@ int	scene_render(t_app *app, t_scene *scene, t_img *img)
 	t_obj	*sphere;
 
 	plan = plane_create();
-	plan->color = vec_create(1.0, 0.0, 0.0);
 	plan->gtfm = gtfm_set(vec_create(0.0, 0.0, 1.0),
 						  vec_create(0.0, 0.0, 0.0),
 						  vec_create(4.0, 4.0, 1.0));
@@ -64,10 +63,16 @@ int	scene_render(t_app *app, t_scene *scene, t_img *img)
 //Create lights
 //******************************************************************************
 	t_light	*light;
+	t_light	*light2;
 
 	light = new_light();
 	light->pos = vec_create(10.0, -5.0, -5.0);
+	light->color = vec_create(1.0, 0.0, 0.0);
 	add_light(&scene->light_lst, light);
+	light2 = new_light();
+	light2->pos = vec_create(-10.0, -5.0, -5.0);
+	light2->color = vec_create(0.0, 1.0, 0.0);
+	add_light(&scene->light_lst, light2);
 
     //Loop over every pixel
     t_ray   	cam_ray;
@@ -149,6 +154,32 @@ bool	s_cast_ray(t_ray cam_ray, t_poi *closest_poi, t_obj *obj_cur)
 			}
 		}
 		obj_cur = obj_cur->next;
+	}
+	return (int_found);
+}
+
+bool	cast_ray(t_ray cast_ray, t_poi *poi, t_obj *obj_lst, t_obj *obj_cur)
+{
+	t_poi	test;
+	bool	int_found;
+	double	dist;
+	double	min_dist;
+
+	min_dist = 1e6;
+	int_found = false;
+	while (obj_lst != NULL)
+	{
+		if (obj_lst != obj_cur && obj_lst->intfct(cast_ray, &test, obj_lst))
+		{
+			int_found = true;
+			dist = vec_norm(vec_sub(test.point, cast_ray.pa));
+			if (dist < min_dist)
+			{
+				min_dist = dist;
+				*poi = test;
+			}
+		}
+		obj_lst = obj_lst->next;
 	}
 	return (int_found);
 }
