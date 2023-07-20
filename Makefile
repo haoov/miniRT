@@ -16,6 +16,7 @@ SRCS	=	$(SRCDIR)/main.c\
 			$(SRCDIR)/app/mlx_app.c\
 			$(SRCDIR)/app/app_key_action.c\
 			$(SRCDIR)/app/mlx_image.c\
+			$(SRCDIR)/app/mlx_colors.c\
 			$(SRCDIR)/scene.c\
 			$(SRCDIR)/ray.c\
 			$(SRCDIR)/camera.c\
@@ -28,7 +29,7 @@ SRCS	=	$(SRCDIR)/main.c\
 			$(SRCDIR)/objects/cylinder.c\
 			$(SRCDIR)/objects/cone.c\
 			$(SRCDIR)/lights/light.c\
-			$(SRCDIR)/lights/pointlight.c\
+			$(SRCDIR)/lights/illumination.c\
 			$(SRCDIR)/materials/material.c\
 			$(SRCDIR)/materials/simple_mat.c\
 			$(SRCDIR)/materials/refractive_mat.c\

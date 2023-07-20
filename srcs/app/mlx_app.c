@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mlx_app.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: raph <raph@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/20 09:36:51 by raph              #+#    #+#             */
+/*   Updated: 2023/07/20 09:37:08 by raph             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "mlx_app.h"
 #include "miniRT.h"
 
@@ -25,32 +37,12 @@ int	app_init(t_app *app)
 	return (SUCCESS);
 }
 
-void	test_texture(t_app *app, t_img *img)
-{
-	t_texture	img_txt;
-	img_txt = img_txt_create();
-	load_image(app, &img_txt, "./imgs/earth.xpm");
-	img_txt.tfm = set_transform(vec_create(0.0, 0.0, 0.0), 0.0,
-								vec_create(1.0, 1.0, 1.0));
-	for (int x = 0; x < img->size_x; ++x)
-	{
-		for (int y = 0; y < img->size_y; ++y)
-		{
-			double	u = ((double) x / (((double) img->size_x) / 2.0)) - 1.0;
-			double	v = ((double) y / (((double) img->size_y) / 2.0)) - 1.0;
-			t_vec	color = img_txt.colorfct(img_txt, u, v);
-			img_store_color(img, x, y, color);
-		}
-	}
-}
-
 int	app_execute(t_app *app)
 {
 	if (app_init(app) == FAILURE)
 	{
 		return (FAILURE);
 	}
-	//test_texture(app, &app->img);
 	if (scene_render(app, &app->scene, &app->img) == FAILURE)
 	{
 		app_exit(app);
@@ -82,13 +74,4 @@ int	app_exit(t_app *app)
 	mlx_destroy_display(app->dsp_id);
 	free(app->dsp_id);
 	return (SUCCESS);
-}
-
-//DEBUG FCT
-#include <stdio.h>
-void	print_vector(t_vec vec)
-{
-	printf("x = %f\n", vec.x);
-	printf("y = %f\n", vec.y);
-	printf("z = %f\n", vec.z);
 }

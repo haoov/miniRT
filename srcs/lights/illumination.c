@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   illumination.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: raph <raph@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/19 21:19:57 by raph              #+#    #+#             */
+/*   Updated: 2023/07/20 09:34:12 by raph             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "light.h"
 #include "scene.h"
 #include <math.h>
@@ -34,7 +46,8 @@ bool	obstruction(t_scene scene, t_poi *poi, t_light light)
 		{
 			obs = scene.obj_lst->intfct(light_ray, &obsp, scene.obj_lst);
 			if (obs && (poi->obj->mat.trans > 0.0
-				|| dist(poi->point, obsp.point) > dist(obsp.point, light.pos)))
+					|| dist(poi->point, obsp.point)
+					> dist(obsp.point, light.pos)))
 				obs = false;
 		}
 		if (obs)
@@ -44,7 +57,7 @@ bool	obstruction(t_scene scene, t_poi *poi, t_light light)
 	return (obs);
 }
 
-bool	point_illum(t_scene scene, t_poi *poi, t_light light)
+bool	illum(t_scene scene, t_poi *poi, t_light light)
 {
 	double	angle;
 	t_vec	light_dir;
@@ -66,7 +79,7 @@ bool	point_illum(t_scene scene, t_poi *poi, t_light light)
 	}
 }
 
-/*bool	point_illum(t_scene scene, t_poi *poi, t_light light)
+/*bool	illum(t_scene scene, t_poi *poi, t_light light)
 {
 	t_vec	lightdir; //Vector from the point to the light
 	double	angle; //angle between the normal and the light ray

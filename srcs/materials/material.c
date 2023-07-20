@@ -19,7 +19,7 @@ t_vec	diff_color(t_scene scene, t_poi poi, t_vec b_color)
 	rgb = vec_mult(scene.amb_color, scene.amb_int);
 	while (scene.light_lst != NULL)
 	{
-		valid_illum = point_illum(scene, &poi, *scene.light_lst);
+		valid_illum = illum(scene, &poi, *scene.light_lst);
 		if (valid_illum)
 		{
 			rgb = vec_add(rgb, vec_mult(poi.color, poi.intensity));
@@ -47,7 +47,7 @@ t_vec	diff_color(t_scene scene, t_poi poi, t_vec b_color)
 	rgb = vec_create(0.0, 0.0, 0.0);
 	while (light_lst != NULL)
 	{
-		valid_illum = point_illum(&poi.point, &poi.normal, &color, &intensity,
+		valid_illum = illum(&poi.point, &poi.normal, &color, &intensity,
 								  light_lst, obj_lst, poi.obj);
 		if (valid_illum)
 		{
