@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   clean.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: raph <raph@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/20 17:57:24 by raph              #+#    #+#             */
+/*   Updated: 2023/07/20 17:57:32 by raph             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "mlx_app.h"
 #include "miniRT.h"
 
@@ -12,7 +24,7 @@ void	cleanup(t_app *app)
 		if (app->scene.obj_lst->has_mat
 			&& app->scene.obj_lst->mat.has_texture)
 		{
-				img_destroy(&app->scene.obj_lst->mat.texture.img);
+			img_destroy(&app->scene.obj_lst->mat.texture.img);
 		}
 		free(app->scene.obj_lst);
 		app->scene.obj_lst = elem;
@@ -24,4 +36,3 @@ void	cleanup(t_app *app)
 		app->scene.light_lst = lelem;
 	}
 }
-

@@ -1,4 +1,4 @@
-# include "material.h"
+#include "material.h"
 #include "object.h"
 #include "mlx.h"
 #include "miniRT.h"

@@ -154,16 +154,11 @@ bool	s_cast_ray(t_ray cam_ray, t_poi *closest_poi, t_obj *obj_cur)
 	int_found = false;
 	while (obj_cur != NULL)
 	{
-		//Test intersection
 		intersection = obj_cur->intfct(cam_ray, &poi, obj_cur);
-
 		if (intersection)
 		{
 			int_found = true;
-			//Compute the distance between the camera and the poi
 			dist = vec_norm(vec_sub(poi.point, cam_ray.pa));
-
-			//If this object is closer to the cam than the others
 			if (dist < min_dist)
 			{
 				min_dist = dist;
