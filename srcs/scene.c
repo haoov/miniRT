@@ -27,7 +27,7 @@ int	scene_render(t_app *app, t_scene *scene, t_img *img)
 
 	checker = create_checker_texture();
 	checker.tfm = set_transform(vec_create(0.0, 0.0, 0.0), 0.0,
-								vec_create(8.0, 8.0, 1.0));
+								vec_create(4.0, 4.0, 0.0));
 	assign_texture(&simple, checker);
 
 //******************************************************************************

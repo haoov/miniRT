@@ -21,7 +21,7 @@ t_mtx3	mtx3_mult(t_mtx3 mtx1, t_mtx3 mtx2)
 	int		c;
 	int		i;
 
-	ft_memset(&res, 0, sizeof (t_mtx4));
+	ft_memset(&res, 0, sizeof (t_mtx3));
 	l = 0;
 	while (l < 3)
 	{

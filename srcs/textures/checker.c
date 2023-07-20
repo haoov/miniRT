@@ -6,7 +6,7 @@
 /*   By: raph <raph@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 17:59:57 by raph              #+#    #+#             */
-/*   Updated: 2023/07/20 18:00:03 by raph             ###   ########.fr       */
+/*   Updated: 2023/07/20 20:23:24 by raph             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ t_vec	checker_get_color(t_texture texture, double u, double v)
 	t_vec	color;
 	t_vec4	color4;
 	t_vec	new_loc;
+	int		check;
 
 	new_loc = apply_transform(texture.tfm, vec_create(u, v, 0.0));
-	int	check = (int) (floor(new_loc.x)) + (int) (floor(new_loc.y));
-
+	check = (int)(floor(new_loc.x)) + (int)(floor(new_loc.y));
 	if (check % 2 == 0)
 	{
 		color4 = texture.color1;
