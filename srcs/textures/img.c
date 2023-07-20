@@ -4,6 +4,8 @@
 #include "mlx_image.h"
 #include "miniRT.h"
 
+#include "stdio.h"
+
 t_texture	img_txt_create(void)
 {
 	t_texture	img;
@@ -41,7 +43,6 @@ t_vec	img_get_color(t_texture texture, double u, double v)
 	pixel_index = y * texture.img.bpl + x * (texture.img.bpp / 8);
 
 	img_extract_rgb(texture.img, pixel_index, &color);
-
 	return (color);
 }
 

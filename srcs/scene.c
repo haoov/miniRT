@@ -23,12 +23,18 @@ int	scene_render(t_app *app, t_scene *scene, t_img *img)
 //Create some textures
 //******************************************************************************
 	t_texture	checker;
+	t_texture	grass;
 	(void)checker;
 
 	checker = create_checker_texture();
 	checker.tfm = set_transform(vec_create(0.0, 0.0, 0.0), 0.0,
 								vec_create(4.0, 4.0, 0.0));
-	assign_texture(&simple, checker);
+	grass = img_txt_create();
+	load_image(app, &grass, "/home/raph/Documents/42/projects/miniRT/imgs/grass.xpm");
+	grass.tfm = set_transform(vec_create(0.0, 0.0, 0.0), 0.0,
+							  vec_create(4.0, 4.0, 1.0));
+
+	assign_texture(&simple, grass);
 
 //******************************************************************************
 //Create normal map
