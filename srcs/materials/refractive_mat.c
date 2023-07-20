@@ -42,6 +42,8 @@ t_vec	ref_compute_color(t_scene scene, t_ray in_ray, t_poi poi)
 	t_vec	s_color;
 	t_vec	t_color;
 
+	s_color = vec_create(0.0, 0.0, 0.0);
+	t_color = vec_create(0.0, 0.0, 0.0);
 	if (poi.obj->mat.has_nmap)
 		poi.normal = nmap_apply(poi.obj->mat.nmap, poi.normal, poi.u, poi.v);
 	m_color = compute_ref_diff(scene, in_ray, poi);

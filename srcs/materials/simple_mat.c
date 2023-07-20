@@ -13,6 +13,8 @@
 #include "material.h"
 #include "scene.h"
 
+#include "stdio.h"
+
 t_material	simple_mat_const(t_vec color, double ref, double shiny)
 {
 	t_material	mat;
@@ -38,6 +40,7 @@ t_vec	compute_ref_diff(t_scene scene, t_ray in_ray, t_poi poi)
 	t_texture	txtr;
 	t_vec		res_color;
 
+	r_color = vec_create(0.0, 0.0, 0.0);
 	if (poi.obj->mat.has_texture)
 	{
 		txtr = poi.obj->mat.texture;
@@ -61,6 +64,7 @@ t_vec	spl_compute_color(t_scene scene, t_ray in_ray, t_poi poi)
 	t_vec	m_color;
 	t_vec	s_color;
 
+	s_color = vec_create(0.0, 0.0, 0.0);
 	if (poi.obj->mat.has_nmap)
 		poi.normal = nmap_apply(poi.obj->mat.nmap, poi.normal, poi.u, poi.v);
 	m_color = compute_ref_diff(scene, in_ray, poi);

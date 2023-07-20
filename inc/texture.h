@@ -15,19 +15,19 @@ typedef struct s_texture
 	t_mtx3	tfm;
 }t_texture;
 
-t_mtx3	set_transform(t_vec trans, double rot, t_vec scale);
-t_vec	blend_colors(t_vec4 input_color);
-t_vec	apply_transform(t_mtx3 tfm_mtx, t_vec input_vec);
+t_mtx3		set_transform(t_vec trans, double rot, t_vec scale);
+t_vec		blend_colors(t_vec4 input_color);
+t_vec		apply_transform(t_mtx3 tfm_mtx, t_vec input_vec);
 
 t_texture	create_flat_texture(void);
 t_texture	create_checker_texture(void);
 t_texture	img_txt_create(void);
 
-t_vec	flat_get_color(t_texture texture, double u, double v);
-t_vec	checker_get_color(t_texture texture, double u, double v);
-t_vec	img_get_color(t_texture texture, double u, double v);
+t_vec		flat_get_color(t_texture texture, double u, double v);
+t_vec		checker_get_color(t_texture texture, double u, double v);
+t_vec		img_get_color(t_texture texture, double u, double v);
 
-int		load_image(t_app *app, t_texture *texture, char *file_name);
-void	img_extract_rgb(t_img img, int index, t_vec *rgb);
+int			load_image(t_app *app, t_texture *texture, char *file_name);
+void		img_extract_rgb(t_img img, int index, t_vec *rgb);
 
 #endif

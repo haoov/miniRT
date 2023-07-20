@@ -27,17 +27,10 @@ t_vec	checker_get_color(t_texture texture, double u, double v)
 {
 	t_vec	color;
 	t_vec4	color4;
-	t_vec	uv_coords;
 	t_vec	new_loc;
 
-	uv_coords.x = u;
-	uv_coords.y = v;
-	new_loc = apply_transform(texture.tfm, uv_coords);
-
-	double	new_u = new_loc.x;
-	double	new_v = new_loc.y;
-
-	int	check = (int) (floor(new_u)) + (int) (floor(new_v));
+	new_loc = apply_transform(texture.tfm, vec_create(u, v, 0.0));
+	int	check = (int) (floor(new_loc.x)) + (int) (floor(new_loc.y));
 
 	if (check % 2 == 0)
 	{

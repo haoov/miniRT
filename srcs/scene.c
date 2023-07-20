@@ -9,17 +9,26 @@ int	scene_render(t_app *app, t_scene *scene, t_img *img)
 	scene->amb_color = vec_create(1.0, 1.0, 1.0);
 	scene->amb_int = 0.2;
 //******************************************************************************
-//Create some mat
+//Create some blue_diff
 //******************************************************************************
-	t_material	mat;
+	t_material	blue_diff;
+	t_material	simple;
 
-	mat = simple_mat_const(vec_create(0.0, 0.0, 1.0), 0.5, 5.0);
-	(void)mat;
+	blue_diff = simple_mat_const(vec_create(0.0, 0.0, 1.0), 0.5, 5.0);
+	simple = simple_mat_const(vec_create(1.0, 1.0, 1.0), 0.0, 0.0);
+	(void)blue_diff;
+	(void)simple;
 
 //******************************************************************************
 //Create some textures
 //******************************************************************************
+	t_texture	checker;
+	(void)checker;
 
+	checker = create_checker_texture();
+	checker.tfm = set_transform(vec_create(0.0, 0.0, 0.0), 0.0,
+								vec_create(8.0, 8.0, 1.0));
+	assign_texture(&simple, checker);
 
 //******************************************************************************
 //Create normal map
@@ -53,7 +62,6 @@ int	scene_render(t_app *app, t_scene *scene, t_img *img)
 	sphere->gtfm = gtfm_set(vec_create(-2.0, 0.0, 0.0),
 							vec_create(0.0, 0.0, 0.0),
 							vec_create(1.0, 1.0, 1.0));
-	assign_mat(sphere, mat);
 	cone = cone_create();
 	cone->gtfm = gtfm_set(vec_create(2.0, 0.0, 0.0),
 						  vec_create(180.0, 0.0, 0.0),
@@ -62,6 +70,8 @@ int	scene_render(t_app *app, t_scene *scene, t_img *img)
 	cylinder->gtfm = gtfm_set(vec_create(0.0, 0.0, 0.0),
 							  vec_create(0.0, 45.0, 0.0),
 							  vec_create(0.5, 0.5, 1.0));
+	assign_mat(sphere, blue_diff);
+	assign_mat(plan, simple);
 
 //******************************************************************************
 //Add objects to the scene
@@ -124,10 +134,10 @@ int	scene_render(t_app *app, t_scene *scene, t_img *img)
 			{
 				t_vec rgb;
 
-				//Check if the object has mat
+				//Check if the object has blue_diff
 				if (poi.obj->has_mat)
 				{
-					//Use the mat to compute the color
+					//Use the blue_diff to compute the color
 					poi.obj->mat.ref_ray_count = 0;
 					rgb = poi.obj->mat.colorfct(*scene, cam_ray, poi);
 				}
