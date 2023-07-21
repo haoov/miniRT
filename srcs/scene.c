@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   scene.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: raph <raph@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/21 12:09:20 by raph              #+#    #+#             */
+/*   Updated: 2023/07/21 12:09:30 by raph             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "scene.h"
 #include "miniRT.h"
 
@@ -23,23 +35,28 @@ int	scene_render(t_app *app, t_scene *scene, t_img *img)
 //Create some textures
 //******************************************************************************
 	t_texture	checker;
-	t_texture	grass;
+	t_texture	wood;
 	(void)checker;
 
 	checker = create_checker_texture();
 	checker.tfm = set_transform(vec_create(0.0, 0.0, 0.0), 0.0,
 								vec_create(4.0, 4.0, 0.0));
-	grass = img_txt_create();
-	load_image(app, &grass, "/home/raph/Documents/42/projects/miniRT/imgs/grass.xpm");
-	grass.tfm = set_transform(vec_create(0.0, 0.0, 0.0), 0.0,
-							  vec_create(4.0, 4.0, 1.0));
-
-	assign_texture(&simple, grass);
+	wood = img_txt_create();
+	load_image(app, &wood, "/home/raph/Documents/42/projects/miniRT/imgs/wood.xpm");
+	wood.tfm = set_transform(vec_create(0.0, 0.0, 0.0), 0.0,
+							 vec_create(1.0, 1.0, 1.0));
+	assign_texture(&simple, wood);
 
 //******************************************************************************
 //Create normal map
 //******************************************************************************
+	t_normal_map	wood_map;
 
+	wood_map = normal_map_create();
+	nmap_load_image(app, &wood_map, "/home/raph/Documents/42/projects/miniRT/nmaps/wood.xpm");
+	wood_map.tfm = set_transform(vec_create(0.0, 0.0, 0.0), 0.0,
+								 vec_create(1.0, 1.0, 1.0));
+	assign_nmap(&simple, wood_map);
 
 //******************************************************************************
 //Configure the camera
@@ -107,7 +124,8 @@ int	scene_render(t_app *app, t_scene *scene, t_img *img)
 	light3->color = vec_create(0.0, 0.0, 1.0);
 	add_light(&scene->light_lst, light3);
 
-    //Loop over every pixel
+	rendering(*scene, img);
+/*    //Loop over every pixel
     t_ray   	cam_ray;
     double		xfact;
     double		yfact;
@@ -154,8 +172,50 @@ int	scene_render(t_app *app, t_scene *scene, t_img *img)
 				img_store_color(img, x, y, rgb);
 			}
         }
-    }
+    }*/
 	return (SUCCESS);
+}
+
+void	render_pixel(t_scene scene, t_img *img, int x, int y)
+{
+	t_poi	poi;
+	t_ray	cam_ray;
+	t_vec	rgb;
+	t_vec	ncd;
+
+	ncd.x = (float)x * (1.0 / ((double)img->size_x / 2.0)) - 1.0;
+	ncd.y = (float)y * (1.0 / ((double)img->size_y / 2.0)) - 1.0;
+	cam_ray = cam_generate_ray(&scene.cam, (float)ncd.x, (float)ncd.y);
+	if (s_cast_ray(cam_ray, &poi, scene.obj_lst))
+	{
+		if (poi.obj->has_mat)
+		{
+			poi.obj->mat.ref_ray_count = 0;
+			rgb = poi.obj->mat.colorfct(scene, cam_ray, poi);
+		}
+		else
+			rgb = diff_color(scene, poi, poi.obj->color);
+		img_store_color(img, x, y, rgb);
+	}
+}
+
+void	rendering(t_scene scene, t_img *img)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < img->size_y)
+	{
+		printf("Processing row %d of %d\r\033[0K", y + 1, img->size_y);
+		x = 0;
+		while (x < img->size_x)
+		{
+			render_pixel(scene, img, x, y);
+			++x;
+		}
+		++y;
+	}
 }
 
 bool	s_cast_ray(t_ray cam_ray, t_poi *closest_poi, t_obj *obj_cur)

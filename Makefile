@@ -27,9 +27,6 @@ SRCS	=	$(SRCDIR)/main.c\
 			$(SRCDIR)/math/matrix4_utils2.c\
 			$(SRCDIR)/math/matrix4_utils3.c\
 			$(SRCDIR)/math/matrix3_utils.c\
-			$(SRCDIR)/math/matrix3_utils2.c\
-			$(SRCDIR)/math/matrix3_utils3.c\
-			$(SRCDIR)/math/matrix3_invert.c\
 			$(SRCDIR)/objects/object.c\
 			$(SRCDIR)/objects/sphere.c\
 			$(SRCDIR)/objects/plane.c\
@@ -50,7 +47,9 @@ SRCS	=	$(SRCDIR)/main.c\
 			$(SRCDIR)/textures/checker.c\
 			$(SRCDIR)/textures/img.c\
 			$(SRCDIR)/normal_map.c\
+			$(SRCDIR)/nmap_img.c\
 			$(SRCDIR)/gtfm.c\
+			$(SRCDIR)/gtfm_mtx.c\
 			$(SRCDIR)/clean.c
 HD		=	$(HDDIR)/miniRT.h\
 			$(HDDIR)/mlx_app.h\

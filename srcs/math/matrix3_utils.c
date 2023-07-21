@@ -51,46 +51,6 @@ t_vec	mtx3_vec_mult(t_vec vec, t_mtx3 m)
 	return (res);
 }
 
-t_mtx3	mtx3_transpose(t_mtx3 mtx)
-{
-	t_mtx3	res;
-	int		l;
-	int		c;
-
-	l = 0;
-	while (l < 3)
-	{
-		c = 0;
-		while (c < 3)
-		{
-			res.val[l][c] = mtx.val[c][l];
-			c++;
-		}
-		l++;
-	}
-	return (res);
-}
-
-t_mtx3	mtx3_extract_linear(t_mtx4 mtx)
-{
-	t_mtx3	res;
-	int		l;
-	int		c;
-
-	l = 0;
-	while (l < 3)
-	{
-		c = 0;
-		while (c < 3)
-		{
-			res.val[l][c] = mtx.val[c][l];
-			c++;
-		}
-		l++;
-	}
-	return (res);
-}
-
 void	mtx3_identity(t_mtx3 *mtx)
 {
 	int	l;

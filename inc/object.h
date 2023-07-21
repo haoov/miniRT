@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   object.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: raph <raph@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/21 11:23:12 by raph              #+#    #+#             */
+/*   Updated: 2023/07/21 11:35:02 by raph             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef OBJECT_H
 # define OBJECT_H
 
@@ -83,7 +95,7 @@ typedef struct s_poi
 	t_vec		normal;
 	t_vec		color;
 	double		intensity;
-	t_obj	*obj;
+	t_obj		*obj;
 }t_poi;
 
 //Struct to hold the intersection function of each objects
@@ -109,4 +121,4 @@ t_obj	*plane_create(void);
 t_obj	*cylinder_create(void);
 t_obj	*cone_create(void);
 
-#endif //OBJECT_H
+#endif

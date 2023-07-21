@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mlx_image.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: raph <raph@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/21 11:22:30 by raph              #+#    #+#             */
+/*   Updated: 2023/07/21 11:22:54 by raph             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MLX_IMAGE_H
 # define MLX_IMAGE_H
 
@@ -9,18 +21,18 @@
 # define GMASK	0xFF0000
 # define BMASK	0xFF00
 
-typedef struct s_app t_app;
+typedef struct s_app	t_app;
 
 typedef struct s_img
 {
 	void	*id;
-	char 	*data;
+	char	*data;
 	t_vec	*colors;
 	double	max_rgb;
 	int		bpp;
 	int		ed;
 	int		size_x;
-	int 	size_y;
+	int		size_y;
 	int		bpl;
 	void	*dsp_id;
 }t_img;
@@ -33,4 +45,4 @@ void		img_set_pixel(t_img *img, int x, int y, uint32_t color);
 void		img_display(void *win_id, t_img *img, int x, int y);
 void		img_destroy(t_img *img);
 
-#endif //MLX_IMAGE_H
+#endif

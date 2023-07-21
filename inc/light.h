@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   light.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: raph <raph@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/21 11:19:26 by raph              #+#    #+#             */
+/*   Updated: 2023/07/21 11:19:55 by raph             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef LIGHT_H
 # define LIGHT_H
 
@@ -7,13 +19,13 @@
 # include "libft.h"
 # include <stdbool.h>
 
-typedef struct s_scene t_scene;
+typedef struct s_scene	t_scene;
 
-typedef	struct s_light
+typedef struct s_light
 {
-	t_vec	color;
-	t_vec	pos;
-	double	intensity;
+	t_vec			color;
+	t_vec			pos;
+	double			intensity;
 	struct s_light	*next;
 }t_light;
 
